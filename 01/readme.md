@@ -42,7 +42,7 @@ Understanding the architecture of the utilized hardware is paramount for underst
     - What interesting information can you retrieve about the caches of the system?
   - Is there anything else you can find out from the output?
 - Based on your observations, how many threads could you utilize at maximum when parallelizing a program (e.g. with OpenMP) on this system?
-- Compare your observations to the [LCC3 documentation](https://www.uibk.ac.at/zid/systeme/hpc-systeme/leo3/hardware/) and [CPU documentation](https://www.intel.com/content/www/us/en/products/sku/47922/intel-xeon-processor-x5650-12m-cache-2-66-ghz-6-40-gts-intel-qpi/specifications.html). Do your observations match the documentation?
+- Compare your observations to the [CPU documentation](https://www.intel.com/content/www/us/en/products/sku/47922/intel-xeon-processor-x5650-12m-cache-2-66-ghz-6-40-gts-intel-qpi/specifications.html). Do your observations match the documentation?
 
 ## General Notes
 
