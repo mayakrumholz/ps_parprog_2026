@@ -30,6 +30,7 @@ for that assignment have to be handed in via OLAT by 17:00 on the previous day
 | ---------- | ---------- | ----------------------------------------------------------- |
 | 2026-03-03 |            | Administrative matters, introduction to LCC3                |
 | 2026-03-10 | [1](01)    | Working on LCC3, hardware architecture                      |
+| 2026-03-17 | [2](02)    | Initial measurements, Amdahl's law                          |
 
 ## General Information
 
