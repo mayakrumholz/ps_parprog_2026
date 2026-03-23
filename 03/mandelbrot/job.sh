@@ -15,9 +15,11 @@
 
 set -e
 
-cd "$(dirname "$0")"
+cd "${SLURM_SUBMIT_DIR:-$(pwd)}"
 
 /bin/hostname
+pwd
+ls -la
 make clean
 make
 
