@@ -1,0 +1,1296 @@
+OMP_NUM_THREADS=1 ./slow
+OMP_NUM_THREADS=2 ./slow
+OMP_NUM_THREADS=4 ./slow
+OMP_NUM_THREADS=8 ./slow
+
+OMP_NUM_THREADS=1 ./medium
+OMP_NUM_THREADS=2 ./medium
+OMP_NUM_THREADS=4 ./medium
+OMP_NUM_THREADS=8 ./medium
+
+OMP_NUM_THREADS=1 ./fast
+OMP_NUM_THREADS=2 ./fast
+OMP_NUM_THREADS=4 ./fast
+OMP_NUM_THREADS=8 ./fast
+
+CFLAGS = -fopenmp
+Run 1:
+sum: 67108864, time: 1.3820 seconds
+sum: 67108864, time: 3.3228 seconds
+sum: 67108864, time: 3.2857 seconds
+sum: 67108864, time: 3.9562 seconds
+
+sum: 67108864, time: 0.3572 seconds
+sum: 67108864, time: 1.7341 seconds
+sum: 67108864, time: 2.0359 seconds
+sum: 67108864, time: 1.8998 seconds
+
+sum: 67108864, time: 0.1432 seconds
+sum: 67108864, time: 0.0733 seconds
+sum: 67108864, time: 0.0397 seconds
+sum: 67108864, time: 0.0279 seconds
+
+Run 2:
+sum: 67108864, time: 1.3823 seconds
+sum: 67108864, time: 2.8681 seconds
+sum: 67108864, time: 3.3990 seconds
+sum: 67108864, time: 4.0972 seconds
+
+sum: 67108864, time: 0.3569 seconds
+sum: 67108864, time: 1.5613 seconds
+sum: 67108864, time: 1.8628 seconds
+sum: 67108864, time: 1.7510 seconds
+
+sum: 67108864, time: 0.1546 seconds
+sum: 67108864, time: 0.0722 seconds
+sum: 67108864, time: 0.0394 seconds
+sum: 67108864, time: 0.0318 seconds
+
+Run 3:
+sum: 67108864, time: 1.5208 seconds
+sum: 67108864, time: 3.1090 seconds
+sum: 67108864, time: 3.3103 seconds
+sum: 67108864, time: 4.0067 seconds
+
+sum: 67108864, time: 0.3655 seconds
+sum: 67108864, time: 1.3511 seconds
+sum: 67108864, time: 1.9667 seconds
+sum: 67108864, time: 1.7738 seconds
+
+sum: 67108864, time: 0.1475 seconds
+sum: 67108864, time: 0.0716 seconds
+sum: 67108864, time: 0.0483 seconds
+sum: 67108864, time: 0.0334 seconds
+
+Run 4:
+sum: 67108864, time: 1.4597 seconds
+sum: 67108864, time: 3.1346 seconds
+sum: 67108864, time: 3.4378 seconds
+sum: 67108864, time: 3.9682 seconds
+
+sum: 67108864, time: 0.3699 seconds
+sum: 67108864, time: 1.6436 seconds
+sum: 67108864, time: 1.9420 seconds
+sum: 67108864, time: 1.8875 seconds
+
+sum: 67108864, time: 0.1456 seconds
+sum: 67108864, time: 0.0746 seconds
+sum: 67108864, time: 0.0450 seconds
+sum: 67108864, time: 0.0377 seconds
+
+Run 5:
+sum: 67108864, time: 1.4310 seconds
+sum: 67108864, time: 2.9746 seconds
+sum: 67108864, time: 3.4361 seconds
+sum: 67108864, time: 3.9751 seconds
+
+sum: 67108864, time: 0.3689 seconds
+sum: 67108864, time: 1.6236 seconds
+sum: 67108864, time: 1.9965 seconds
+sum: 67108864, time: 1.8383 seconds
+
+sum: 67108864, time: 0.1512 seconds
+sum: 67108864, time: 0.0762 seconds
+sum: 67108864, time: 0.0425 seconds
+sum: 67108864, time: 0.0362 seconds
+
+Run 6:
+sum: 67108864, time: 1.4482 seconds
+sum: 67108864, time: 3.0197 seconds
+sum: 67108864, time: 3.4822 seconds
+sum: 67108864, time: 3.9070 seconds
+
+sum: 67108864, time: 0.3723 seconds
+sum: 67108864, time: 1.4350 seconds
+sum: 67108864, time: 1.9661 seconds
+sum: 67108864, time: 1.8150 seconds
+
+sum: 67108864, time: 0.1467 seconds
+sum: 67108864, time: 0.0714 seconds
+sum: 67108864, time: 0.0492 seconds
+sum: 67108864, time: 0.0380 seconds
+
+Run 7:
+sum: 67108864, time: 1.5054 seconds
+sum: 67108864, time: 3.0646 seconds
+sum: 67108864, time: 3.3795 seconds
+sum: 67108864, time: 4.0220 seconds
+
+sum: 67108864, time: 0.3758 seconds
+sum: 67108864, time: 1.1908 seconds
+sum: 67108864, time: 1.8589 seconds
+sum: 67108864, time: 1.8251 seconds
+
+sum: 67108864, time: 0.1455 seconds
+sum: 67108864, time: 0.0734 seconds
+sum: 67108864, time: 0.0401 seconds
+sum: 67108864, time: 0.0294 seconds
+
+Run 8:
+sum: 67108864, time: 1.4147 seconds
+sum: 67108864, time: 3.1597 seconds
+sum: 67108864, time: 3.6745 seconds
+sum: 67108864, time: 4.1483 seconds
+
+sum: 67108864, time: 0.3603 seconds
+sum: 67108864, time: 1.5425 seconds
+sum: 67108864, time: 1.9476 seconds
+sum: 67108864, time: 1.7912 seconds
+
+sum: 67108864, time: 0.1449 seconds
+sum: 67108864, time: 0.0733 seconds
+sum: 67108864, time: 0.0367 seconds
+sum: 67108864, time: 0.0315 seconds
+
+Run 9:
+sum: 67108864, time: 1.5189 seconds
+sum: 67108864, time: 2.8834 seconds
+sum: 67108864, time: 3.5768 seconds
+sum: 67108864, time: 3.9644 seconds
+
+sum: 67108864, time: 0.3593 seconds
+sum: 67108864, time: 1.4173 seconds
+sum: 67108864, time: 1.8758 seconds
+sum: 67108864, time: 1.8078 seconds
+
+sum: 67108864, time: 0.2074 seconds
+sum: 67108864, time: 0.0778 seconds
+sum: 67108864, time: 0.0447 seconds
+sum: 67108864, time: 0.0367 seconds
+
+Run 10:
+sum: 67108864, time: 1.4775 seconds
+sum: 67108864, time: 3.1152 seconds
+sum: 67108864, time: 3.4177 seconds
+sum: 67108864, time: 4.0167 seconds
+
+sum: 67108864, time: 0.3653 seconds
+sum: 67108864, time: 1.6841 seconds
+sum: 67108864, time: 1.9254 seconds
+sum: 67108864, time: 1.8271 seconds
+
+sum: 67108864, time: 0.1480 seconds
+sum: 67108864, time: 0.0759 seconds
+sum: 67108864, time: 0.0399 seconds
+sum: 67108864, time: 0.0297 seconds
+
+CFLAGS = -fopenmp -O1
+Run 1:
+sum: 67108864, time: 1.4156 seconds
+sum: 67108864, time: 3.1258 seconds
+sum: 67108864, time: 3.6003 seconds
+sum: 67108864, time: 3.9610 seconds
+
+sum: 67108864, time: 0.3743 seconds
+sum: 67108864, time: 1.3573 seconds
+sum: 67108864, time: 1.9163 seconds
+sum: 67108864, time: 1.8250 seconds
+
+sum: 67108864, time: 0.0302 seconds
+sum: 67108864, time: 0.0151 seconds
+sum: 67108864, time: 0.0111 seconds
+sum: 67108864, time: 0.0075 seconds
+
+Run 2: 
+sum: 67108864, time: 1.4254 seconds
+sum: 67108864, time: 3.2030 seconds
+sum: 67108864, time: 3.3544 seconds
+sum: 67108864, time: 4.0081 seconds
+
+sum: 67108864, time: 0.3699 seconds
+sum: 67108864, time: 1.3021 seconds
+sum: 67108864, time: 1.9730 seconds
+sum: 67108864, time: 1.8456 seconds
+
+sum: 67108864, time: 0.0221 seconds
+sum: 67108864, time: 0.0113 seconds
+sum: 67108864, time: 0.0080 seconds
+sum: 67108864, time: 0.0063 seconds
+
+Run 3:
+sum: 67108864, time: 1.4417 seconds
+sum: 67108864, time: 3.2753 seconds
+sum: 67108864, time: 3.4527 seconds
+sum: 67108864, time: 3.8683 seconds
+
+sum: 67108864, time: 0.3653 seconds
+sum: 67108864, time: 1.5933 seconds
+sum: 67108864, time: 1.9747 seconds
+sum: 67108864, time: 1.9192 seconds
+
+sum: 67108864, time: 0.0218 seconds
+sum: 67108864, time: 0.0135 seconds
+sum: 67108864, time: 0.0095 seconds
+sum: 67108864, time: 0.0095 seconds
+
+Run 4: 
+sum: 67108864, time: 1.4443 seconds
+sum: 67108864, time: 3.1026 seconds
+sum: 67108864, time: 3.3241 seconds
+sum: 67108864, time: 4.1692 seconds
+sum: 67108864, time: 0.3667 seconds
+sum: 67108864, time: 1.4847 seconds
+sum: 67108864, time: 1.8229 seconds
+sum: 67108864, time: 2.0497 seconds
+sum: 67108864, time: 0.0209 seconds
+sum: 67108864, time: 0.0106 seconds
+sum: 67108864, time: 0.0060 seconds
+sum: 67108864, time: 0.0056 seconds
+
+Run 5:
+sum: 67108864, time: 1.4601 seconds
+sum: 67108864, time: 3.1836 seconds
+sum: 67108864, time: 3.3966 seconds
+sum: 67108864, time: 4.0061 seconds
+sum: 67108864, time: 0.3720 seconds
+sum: 67108864, time: 1.7003 seconds
+sum: 67108864, time: 1.9455 seconds
+sum: 67108864, time: 1.9629 seconds
+sum: 67108864, time: 0.0215 seconds
+sum: 67108864, time: 0.0109 seconds
+sum: 67108864, time: 0.0081 seconds
+sum: 67108864, time: 0.0065 seconds
+
+Run 6:
+sum: 67108864, time: 1.5010 seconds
+sum: 67108864, time: 3.2723 seconds
+sum: 67108864, time: 3.3659 seconds
+sum: 67108864, time: 3.9661 seconds
+
+sum: 67108864, time: 0.3616 seconds
+sum: 67108864, time: 1.5748 seconds
+sum: 67108864, time: 1.8992 seconds
+sum: 67108864, time: 1.8071 seconds
+
+sum: 67108864, time: 0.0218 seconds
+sum: 67108864, time: 0.0122 seconds
+sum: 67108864, time: 0.0097 seconds
+sum: 67108864, time: 0.0098 seconds
+
+Run 7:
+sum: 67108864, time: 1.4313 seconds
+sum: 67108864, time: 3.1139 seconds
+sum: 67108864, time: 3.4476 seconds
+sum: 67108864, time: 4.0034 seconds
+
+sum: 67108864, time: 0.3620 seconds
+sum: 67108864, time: 1.6072 seconds
+sum: 67108864, time: 1.9521 seconds
+sum: 67108864, time: 1.9638 seconds
+
+sum: 67108864, time: 0.0213 seconds
+sum: 67108864, time: 0.0110 seconds
+sum: 67108864, time: 0.0063 seconds
+sum: 67108864, time: 0.0078 seconds
+
+Run 8:
+sum: 67108864, time: 1.4210 seconds
+sum: 67108864, time: 3.2451 seconds
+sum: 67108864, time: 3.5955 seconds
+sum: 67108864, time: 3.9389 seconds
+
+sum: 67108864, time: 0.3640 seconds
+sum: 67108864, time: 1.4809 seconds
+sum: 67108864, time: 2.0007 seconds
+sum: 67108864, time: 1.8941 seconds
+
+sum: 67108864, time: 0.0261 seconds
+sum: 67108864, time: 0.0181 seconds
+sum: 67108864, time: 0.0067 seconds
+sum: 67108864, time: 0.0070 seconds
+
+Run 9:
+sum: 67108864, time: 1.4368 seconds
+sum: 67108864, time: 3.1893 seconds
+sum: 67108864, time: 3.3205 seconds
+sum: 67108864, time: 3.9394 seconds
+
+sum: 67108864, time: 0.3722 seconds
+sum: 67108864, time: 1.6639 seconds
+sum: 67108864, time: 1.7272 seconds
+sum: 67108864, time: 1.9979 seconds
+
+sum: 67108864, time: 0.0226 seconds
+sum: 67108864, time: 0.0104 seconds
+sum: 67108864, time: 0.0106 seconds
+sum: 67108864, time: 0.0069 seconds
+
+Run 10:
+sum: 67108864, time: 1.4204 seconds
+sum: 67108864, time: 3.0134 seconds
+sum: 67108864, time: 3.2547 seconds
+sum: 67108864, time: 4.0361 seconds
+
+sum: 67108864, time: 0.3601 seconds
+sum: 67108864, time: 1.3480 seconds
+sum: 67108864, time: 1.9288 seconds
+sum: 67108864, time: 1.8193 seconds
+
+sum: 67108864, time: 0.0279 seconds
+sum: 67108864, time: 0.0720 seconds
+sum: 67108864, time: 0.0133 seconds
+sum: 67108864, time: 0.0058 seconds
+
+CFLAGS = -fopenmp -O2
+Run 1: 
+sum: 67108864, time: 1.4207 seconds
+sum: 67108864, time: 3.2291 seconds
+sum: 67108864, time: 3.2329 seconds
+sum: 67108864, time: 3.9328 seconds
+
+sum: 67108864, time: 0.3553 seconds
+sum: 67108864, time: 1.7479 seconds
+sum: 67108864, time: 2.1102 seconds
+sum: 67108864, time: 2.0288 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 2:
+sum: 67108864, time: 1.4388 seconds
+sum: 67108864, time: 2.9564 seconds
+sum: 67108864, time: 3.3616 seconds
+sum: 67108864, time: 3.9293 seconds
+
+sum: 67108864, time: 0.3662 seconds
+sum: 67108864, time: 1.8037 seconds
+sum: 67108864, time: 2.0397 seconds
+sum: 67108864, time: 1.8920 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 3:
+sum: 67108864, time: 1.5378 seconds
+sum: 67108864, time: 2.8639 seconds
+sum: 67108864, time: 3.3859 seconds
+sum: 67108864, time: 3.9886 seconds
+
+sum: 67108864, time: 0.3720 seconds
+sum: 67108864, time: 1.3551 seconds
+sum: 67108864, time: 1.9411 seconds
+sum: 67108864, time: 1.7082 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0012 seconds
+
+Run 4: 
+sum: 67108864, time: 1.4309 seconds
+sum: 67108864, time: 3.0508 seconds
+sum: 67108864, time: 3.5765 seconds
+sum: 67108864, time: 3.9710 seconds
+
+sum: 67108864, time: 0.3590 seconds
+sum: 67108864, time: 1.4540 seconds
+sum: 67108864, time: 2.0036 seconds
+sum: 67108864, time: 1.9384 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 5:
+sum: 67108864, time: 1.4475 seconds
+sum: 67108864, time: 3.0648 seconds
+sum: 67108864, time: 3.4400 seconds
+sum: 67108864, time: 4.0437 seconds
+
+sum: 67108864, time: 0.3858 seconds
+sum: 67108864, time: 1.4545 seconds
+sum: 67108864, time: 1.8966 seconds
+sum: 67108864, time: 1.8110 seconds
+
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 6:
+sum: 67108864, time: 1.4325 seconds
+sum: 67108864, time: 3.1776 seconds
+sum: 67108864, time: 3.5037 seconds
+sum: 67108864, time: 4.0322 seconds
+
+sum: 67108864, time: 0.3519 seconds
+sum: 67108864, time: 1.5332 seconds
+sum: 67108864, time: 2.0190 seconds
+sum: 67108864, time: 1.8153 seconds
+
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 7:
+sum: 67108864, time: 1.4922 seconds
+sum: 67108864, time: 3.2175 seconds
+sum: 67108864, time: 3.4264 seconds
+sum: 67108864, time: 4.0157 seconds
+
+sum: 67108864, time: 0.4271 seconds
+sum: 67108864, time: 1.3422 seconds
+sum: 67108864, time: 1.8841 seconds
+sum: 67108864, time: 1.9665 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 8:
+sum: 67108864, time: 1.4926 seconds
+sum: 67108864, time: 3.2177 seconds
+sum: 67108864, time: 3.2944 seconds
+sum: 67108864, time: 4.0088 seconds
+
+sum: 67108864, time: 0.3694 seconds
+sum: 67108864, time: 1.5869 seconds
+sum: 67108864, time: 1.8307 seconds
+sum: 67108864, time: 1.8803 seconds
+
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 9:
+sum: 67108864, time: 1.4262 seconds
+sum: 67108864, time: 3.2630 seconds
+sum: 67108864, time: 3.3180 seconds
+sum: 67108864, time: 3.9712 seconds
+
+sum: 67108864, time: 0.3681 seconds
+sum: 67108864, time: 1.4958 seconds
+sum: 67108864, time: 1.9023 seconds
+sum: 67108864, time: 1.9348 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0012 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 10:
+sum: 67108864, time: 1.4942 seconds
+sum: 67108864, time: 3.2410 seconds
+sum: 67108864, time: 3.3762 seconds
+sum: 67108864, time: 4.0032 seconds
+
+sum: 67108864, time: 0.3775 seconds
+sum: 67108864, time: 1.6497 seconds
+sum: 67108864, time: 2.0416 seconds
+sum: 67108864, time: 1.8712 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0003 seconds
+
+CFLAGS = -fopenmp -O3
+Run 1:
+sum: 67108864, time: 1.4012 seconds
+sum: 67108864, time: 3.3162 seconds
+sum: 67108864, time: 3.6105 seconds
+sum: 67108864, time: 4.0228 seconds
+
+sum: 67108864, time: 0.3811 seconds
+sum: 67108864, time: 1.5019 seconds
+sum: 67108864, time: 2.0208 seconds
+sum: 67108864, time: 1.9368 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 2:
+sum: 67108864, time: 1.3812 seconds
+sum: 67108864, time: 3.1941 seconds
+sum: 67108864, time: 3.2588 seconds
+sum: 67108864, time: 3.9248 seconds
+
+sum: 67108864, time: 0.3588 seconds
+sum: 67108864, time: 1.7876 seconds
+sum: 67108864, time: 2.0299 seconds
+sum: 67108864, time: 1.9663 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 3:
+sum: 67108864, time: 1.4412 seconds
+sum: 67108864, time: 2.9263 seconds
+sum: 67108864, time: 3.5485 seconds
+sum: 67108864, time: 3.8873 seconds
+
+sum: 67108864, time: 0.3537 seconds
+sum: 67108864, time: 1.5626 seconds
+sum: 67108864, time: 2.0488 seconds
+sum: 67108864, time: 2.0489 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0004 seconds
+sum: 67108864, time: 0.0007 seconds
+
+Run 4:
+sum: 67108864, time: 1.3901 seconds
+sum: 67108864, time: 3.2333 seconds
+sum: 67108864, time: 3.3780 seconds
+sum: 67108864, time: 4.0048 seconds
+
+sum: 67108864, time: 0.3513 seconds
+sum: 67108864, time: 1.7936 seconds
+sum: 67108864, time: 2.1013 seconds
+sum: 67108864, time: 2.0235 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0005 seconds
+
+Run 5:
+sum: 67108864, time: 1.3819 seconds
+sum: 67108864, time: 3.1268 seconds
+sum: 67108864, time: 3.3595 seconds
+sum: 67108864, time: 4.1133 seconds
+
+sum: 67108864, time: 0.3846 seconds
+sum: 67108864, time: 1.5486 seconds
+sum: 67108864, time: 1.9925 seconds
+sum: 67108864, time: 1.7905 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 6:
+sum: 67108864, time: 1.4477 seconds
+sum: 67108864, time: 3.2867 seconds
+sum: 67108864, time: 3.3120 seconds
+sum: 67108864, time: 3.9923 seconds
+
+sum: 67108864, time: 0.3593 seconds
+sum: 67108864, time: 1.7497 seconds
+sum: 67108864, time: 2.0455 seconds
+sum: 67108864, time: 1.9688 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 7:
+sum: 67108864, time: 1.3757 seconds
+sum: 67108864, time: 3.2232 seconds
+sum: 67108864, time: 3.2902 seconds
+sum: 67108864, time: 3.9100 seconds
+
+sum: 67108864, time: 0.3664 seconds
+sum: 67108864, time: 1.7559 seconds
+sum: 67108864, time: 2.0356 seconds
+sum: 67108864, time: 2.0317 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 8:
+sum: 67108864, time: 1.3725 seconds
+sum: 67108864, time: 3.3195 seconds
+sum: 67108864, time: 3.2836 seconds
+sum: 67108864, time: 3.8754 seconds
+
+sum: 67108864, time: 0.3480 seconds
+sum: 67108864, time: 1.8476 seconds
+sum: 67108864, time: 2.1028 seconds
+sum: 67108864, time: 2.0109 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 9:
+sum: 67108864, time: 1.3875 seconds
+sum: 67108864, time: 3.3000 seconds
+sum: 67108864, time: 3.3209 seconds
+sum: 67108864, time: 3.9803 seconds
+
+sum: 67108864, time: 0.3536 seconds
+sum: 67108864, time: 1.7296 seconds
+sum: 67108864, time: 2.0224 seconds
+sum: 67108864, time: 1.9758 seconds
+
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 10:
+sum: 67108864, time: 1.4009 seconds
+sum: 67108864, time: 2.9763 seconds
+sum: 67108864, time: 3.6388 seconds
+sum: 67108864, time: 4.0104 seconds
+
+sum: 67108864, time: 0.3521 seconds
+sum: 67108864, time: 1.8175 seconds
+sum: 67108864, time: 2.0401 seconds
+sum: 67108864, time: 1.9844 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+
+CFLAGS = -fopenmp -Ofast
+Run 1:
+sum: 67108864, time: 1.4235 seconds
+sum: 67108864, time: 2.9755 seconds
+sum: 67108864, time: 3.6243 seconds
+sum: 67108864, time: 4.0842 seconds
+
+sum: 67108864, time: 0.4512 seconds
+sum: 67108864, time: 1.7252 seconds
+sum: 67108864, time: 1.9555 seconds
+sum: 67108864, time: 2.0356 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 2:
+sum: 67108864, time: 1.3784 seconds
+sum: 67108864, time: 3.2729 seconds
+sum: 67108864, time: 3.2671 seconds
+sum: 67108864, time: 3.9172 seconds
+
+sum: 67108864, time: 0.3543 seconds
+sum: 67108864, time: 1.8414 seconds
+sum: 67108864, time: 2.0460 seconds
+sum: 67108864, time: 2.0102 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 3:
+sum: 67108864, time: 1.3988 seconds
+sum: 67108864, time: 3.2377 seconds
+sum: 67108864, time: 3.2771 seconds
+sum: 67108864, time: 3.8774 seconds
+
+sum: 67108864, time: 0.3471 seconds
+sum: 67108864, time: 1.8097 seconds
+sum: 67108864, time: 2.0934 seconds
+sum: 67108864, time: 1.9791 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 4:
+sum: 67108864, time: 1.3531 seconds
+sum: 67108864, time: 3.2554 seconds
+sum: 67108864, time: 3.2400 seconds
+sum: 67108864, time: 3.8661 seconds
+
+sum: 67108864, time: 0.3545 seconds
+sum: 67108864, time: 1.7845 seconds
+sum: 67108864, time: 2.0596 seconds
+sum: 67108864, time: 1.9624 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0011 seconds
+
+Run 5:
+sum: 67108864, time: 1.3690 seconds
+sum: 67108864, time: 3.2525 seconds
+sum: 67108864, time: 3.2273 seconds
+sum: 67108864, time: 3.9241 seconds
+
+sum: 67108864, time: 0.3457 seconds
+sum: 67108864, time: 1.8533 seconds
+sum: 67108864, time: 2.1078 seconds
+sum: 67108864, time: 1.9610 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 6:
+sum: 67108864, time: 1.4111 seconds
+sum: 67108864, time: 3.2880 seconds
+sum: 67108864, time: 3.3094 seconds
+sum: 67108864, time: 4.0468 seconds
+
+sum: 67108864, time: 0.3560 seconds
+sum: 67108864, time: 1.5932 seconds
+sum: 67108864, time: 2.0003 seconds
+sum: 67108864, time: 1.9842 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 7:
+sum: 67108864, time: 1.4462 seconds
+sum: 67108864, time: 3.0266 seconds
+sum: 67108864, time: 3.3743 seconds
+sum: 67108864, time: 4.0089 seconds
+
+sum: 67108864, time: 0.3625 seconds
+sum: 67108864, time: 1.7227 seconds
+sum: 67108864, time: 2.0643 seconds
+sum: 67108864, time: 1.9773 seconds
+
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 8:
+sum: 67108864, time: 1.3705 seconds
+sum: 67108864, time: 3.3497 seconds
+sum: 67108864, time: 3.2460 seconds
+sum: 67108864, time: 3.9250 seconds
+
+sum: 67108864, time: 0.3570 seconds
+sum: 67108864, time: 1.8805 seconds
+sum: 67108864, time: 2.0567 seconds
+sum: 67108864, time: 2.0055 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 9:
+sum: 67108864, time: 1.4375 seconds
+sum: 67108864, time: 3.0851 seconds
+sum: 67108864, time: 3.2899 seconds
+sum: 67108864, time: 3.9533 seconds
+
+sum: 67108864, time: 0.3525 seconds
+sum: 67108864, time: 1.8868 seconds
+sum: 67108864, time: 2.0907 seconds
+sum: 67108864, time: 2.0204 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0013 seconds
+
+Run 10:
+sum: 67108864, time: 1.3784 seconds
+sum: 67108864, time: 3.2948 seconds
+sum: 67108864, time: 3.4262 seconds
+sum: 67108864, time: 3.9721 seconds
+
+sum: 67108864, time: 0.3638 seconds
+sum: 67108864, time: 1.4280 seconds
+sum: 67108864, time: 1.8955 seconds
+sum: 67108864, time: 2.0092 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+
+CFLAGS = -fopenmp -O2 -march=native
+Run 1: 
+sum: 67108864, time: 1.4568 seconds
+sum: 67108864, time: 3.1256 seconds
+sum: 67108864, time: 3.3473 seconds
+sum: 67108864, time: 3.9551 seconds
+
+sum: 67108864, time: 0.3522 seconds
+sum: 67108864, time: 1.8933 seconds
+sum: 67108864, time: 2.0446 seconds
+sum: 67108864, time: 1.9571 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 2:
+sum: 67108864, time: 1.3568 seconds
+sum: 67108864, time: 3.1833 seconds
+sum: 67108864, time: 3.1957 seconds
+sum: 67108864, time: 3.9864 seconds
+
+sum: 67108864, time: 0.3487 seconds
+sum: 67108864, time: 1.8211 seconds
+sum: 67108864, time: 2.1278 seconds
+sum: 67108864, time: 2.0216 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0030 seconds
+
+Run 3:
+sum: 67108864, time: 1.3961 seconds
+sum: 67108864, time: 3.1880 seconds
+sum: 67108864, time: 3.2841 seconds
+sum: 67108864, time: 3.9297 seconds
+
+sum: 67108864, time: 0.3506 seconds
+sum: 67108864, time: 1.7598 seconds
+sum: 67108864, time: 2.0465 seconds
+sum: 67108864, time: 1.9608 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0006 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 4:
+sum: 67108864, time: 1.3772 seconds
+sum: 67108864, time: 3.2696 seconds
+sum: 67108864, time: 3.1849 seconds
+sum: 67108864, time: 3.8977 seconds
+
+sum: 67108864, time: 0.3468 seconds
+sum: 67108864, time: 1.8350 seconds
+sum: 67108864, time: 2.0729 seconds
+sum: 67108864, time: 1.8734 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 5:
+sum: 67108864, time: 1.3830 seconds
+sum: 67108864, time: 3.3220 seconds
+sum: 67108864, time: 3.2339 seconds
+sum: 67108864, time: 3.9058 seconds
+
+sum: 67108864, time: 0.3511 seconds
+sum: 67108864, time: 1.7938 seconds
+sum: 67108864, time: 2.0743 seconds
+sum: 67108864, time: 1.8625 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 6:
+sum: 67108864, time: 1.4210 seconds
+sum: 67108864, time: 3.1198 seconds
+sum: 67108864, time: 3.4420 seconds
+sum: 67108864, time: 3.8740 seconds
+
+sum: 67108864, time: 0.3628 seconds
+sum: 67108864, time: 1.7239 seconds
+sum: 67108864, time: 2.0765 seconds
+sum: 67108864, time: 2.0186 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 7:
+sum: 67108864, time: 1.4132 seconds
+sum: 67108864, time: 3.1758 seconds
+sum: 67108864, time: 3.2916 seconds
+sum: 67108864, time: 3.9072 seconds
+
+sum: 67108864, time: 0.3564 seconds
+sum: 67108864, time: 1.7268 seconds
+sum: 67108864, time: 2.0814 seconds
+sum: 67108864, time: 2.0142 seconds
+
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0004 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 8:
+sum: 67108864, time: 1.3819 seconds
+sum: 67108864, time: 3.3669 seconds
+sum: 67108864, time: 3.2001 seconds
+sum: 67108864, time: 3.9471 seconds
+
+sum: 67108864, time: 0.3517 seconds
+sum: 67108864, time: 1.7900 seconds
+sum: 67108864, time: 2.1123 seconds
+sum: 67108864, time: 2.0358 seconds
+
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0005 seconds
+
+Run 9:
+sum: 67108864, time: 1.3627 seconds
+sum: 67108864, time: 3.2671 seconds
+sum: 67108864, time: 3.2130 seconds
+sum: 67108864, time: 3.9994 seconds
+
+sum: 67108864, time: 0.3611 seconds
+sum: 67108864, time: 1.7325 seconds
+sum: 67108864, time: 2.0786 seconds
+sum: 67108864, time: 1.9668 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0006 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 10:
+sum: 67108864, time: 1.4115 seconds
+sum: 67108864, time: 3.2401 seconds
+sum: 67108864, time: 3.3641 seconds
+sum: 67108864, time: 3.9577 seconds
+
+sum: 67108864, time: 0.3551 seconds
+sum: 67108864, time: 1.5660 seconds
+sum: 67108864, time: 1.9739 seconds
+sum: 67108864, time: 1.9102 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0005 seconds
+sum: 67108864, time: 0.0003 seconds
+
+CFLAGS = -fopenmp -O3 -march=native
+Run 1:
+sum: 67108864, time: 1.3880 seconds
+sum: 67108864, time: 3.2971 seconds
+sum: 67108864, time: 3.2314 seconds
+sum: 67108864, time: 3.8853 seconds
+
+sum: 67108864, time: 0.3610 seconds
+sum: 67108864, time: 1.6455 seconds
+sum: 67108864, time: 2.0441 seconds
+sum: 67108864, time: 1.9739 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 2:
+sum: 67108864, time: 1.3794 seconds
+sum: 67108864, time: 3.1753 seconds
+sum: 67108864, time: 3.2840 seconds
+sum: 67108864, time: 3.9353 seconds
+
+sum: 67108864, time: 0.3475 seconds
+sum: 67108864, time: 1.8359 seconds
+sum: 67108864, time: 2.0475 seconds
+sum: 67108864, time: 2.0368 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 3:
+sum: 67108864, time: 1.3673 seconds
+sum: 67108864, time: 3.3330 seconds
+sum: 67108864, time: 3.1827 seconds
+sum: 67108864, time: 3.9167 seconds
+
+sum: 67108864, time: 0.3490 seconds
+sum: 67108864, time: 1.7105 seconds
+sum: 67108864, time: 2.0591 seconds
+sum: 67108864, time: 2.0858 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0004 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 4:
+sum: 67108864, time: 1.3692 seconds
+sum: 67108864, time: 3.2764 seconds
+sum: 67108864, time: 3.2494 seconds
+sum: 67108864, time: 3.9013 seconds
+
+sum: 67108864, time: 0.3478 seconds
+sum: 67108864, time: 1.8501 seconds
+sum: 67108864, time: 2.0562 seconds
+sum: 67108864, time: 2.0341 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0004 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 5:
+sum: 67108864, time: 1.3658 seconds
+sum: 67108864, time: 3.3208 seconds
+sum: 67108864, time: 3.2196 seconds
+sum: 67108864, time: 3.9574 seconds
+
+sum: 67108864, time: 0.3487 seconds
+sum: 67108864, time: 1.7877 seconds
+sum: 67108864, time: 2.0355 seconds
+sum: 67108864, time: 2.0251 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 6:
+sum: 67108864, time: 1.3853 seconds
+sum: 67108864, time: 3.3515 seconds
+sum: 67108864, time: 3.2804 seconds
+sum: 67108864, time: 3.9047 seconds
+
+sum: 67108864, time: 0.3574 seconds
+sum: 67108864, time: 1.7222 seconds
+sum: 67108864, time: 2.0907 seconds
+sum: 67108864, time: 2.0651 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 7:
+sum: 67108864, time: 1.3687 seconds
+sum: 67108864, time: 3.3169 seconds
+sum: 67108864, time: 3.5014 seconds
+sum: 67108864, time: 3.9962 seconds
+
+sum: 67108864, time: 0.3583 seconds
+sum: 67108864, time: 1.7096 seconds
+sum: 67108864, time: 2.0650 seconds
+sum: 67108864, time: 2.0315 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0004 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 8:
+sum: 67108864, time: 1.3900 seconds
+sum: 67108864, time: 3.2209 seconds
+sum: 67108864, time: 3.1782 seconds
+sum: 67108864, time: 3.9066 seconds
+
+sum: 67108864, time: 0.3402 seconds
+sum: 67108864, time: 1.7846 seconds
+sum: 67108864, time: 2.0954 seconds
+sum: 67108864, time: 2.0129 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 9:
+sum: 67108864, time: 1.3746 seconds
+sum: 67108864, time: 3.3070 seconds
+sum: 67108864, time: 3.3017 seconds
+sum: 67108864, time: 3.9710 seconds
+
+sum: 67108864, time: 0.3651 seconds
+sum: 67108864, time: 1.3535 seconds
+sum: 67108864, time: 2.0188 seconds
+sum: 67108864, time: 1.9962 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 10:
+sum: 67108864, time: 1.4067 seconds
+sum: 67108864, time: 3.0919 seconds
+sum: 67108864, time: 3.4359 seconds
+sum: 67108864, time: 4.0213 seconds
+
+sum: 67108864, time: 0.4695 seconds
+sum: 67108864, time: 1.6367 seconds
+sum: 67108864, time: 2.1162 seconds
+sum: 67108864, time: 2.0336 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+CFLAGS = -fopenmp -Ofast -march=native
+Run 1:
+sum: 67108864, time: 1.3789 seconds
+sum: 67108864, time: 3.1730 seconds
+sum: 67108864, time: 3.1495 seconds
+sum: 67108864, time: 4.0360 seconds
+
+sum: 67108864, time: 0.3550 seconds
+sum: 67108864, time: 1.6633 seconds
+sum: 67108864, time: 2.1052 seconds
+sum: 67108864, time: 2.0061 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 2:
+sum: 67108864, time: 1.3954 seconds
+sum: 67108864, time: 3.1704 seconds
+sum: 67108864, time: 3.2265 seconds
+sum: 67108864, time: 3.9174 seconds
+
+sum: 67108864, time: 0.3544 seconds
+sum: 67108864, time: 1.8182 seconds
+sum: 67108864, time: 2.0541 seconds
+sum: 67108864, time: 1.8726 seconds
+
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 3:
+sum: 67108864, time: 1.3761 seconds
+sum: 67108864, time: 3.3452 seconds
+sum: 67108864, time: 3.2414 seconds
+sum: 67108864, time: 3.9165 seconds
+sum: 67108864, time: 0.3478 seconds
+sum: 67108864, time: 1.7426 seconds
+sum: 67108864, time: 2.1234 seconds
+sum: 67108864, time: 2.0118 seconds
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 4:
+sum: 67108864, time: 1.3759 seconds
+sum: 67108864, time: 3.3351 seconds
+sum: 67108864, time: 3.2957 seconds
+sum: 67108864, time: 3.9581 seconds
+
+sum: 67108864, time: 0.3658 seconds
+sum: 67108864, time: 1.6571 seconds
+sum: 67108864, time: 2.0915 seconds
+sum: 67108864, time: 2.0383 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+
+Run 5:
+sum: 67108864, time: 1.3931 seconds
+sum: 67108864, time: 3.3590 seconds
+sum: 67108864, time: 3.2464 seconds
+sum: 67108864, time: 3.9588 seconds
+
+sum: 67108864, time: 0.3533 seconds
+sum: 67108864, time: 1.7541 seconds
+sum: 67108864, time: 2.0554 seconds
+sum: 67108864, time: 2.0219 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 6:
+sum: 67108864, time: 1.3763 seconds
+sum: 67108864, time: 3.1597 seconds
+sum: 67108864, time: 3.4191 seconds
+sum: 67108864, time: 3.9260 seconds
+
+sum: 67108864, time: 0.3471 seconds
+sum: 67108864, time: 1.8526 seconds
+sum: 67108864, time: 2.0276 seconds
+sum: 67108864, time: 1.9696 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 7:
+sum: 67108864, time: 1.3740 seconds
+sum: 67108864, time: 3.2960 seconds
+sum: 67108864, time: 3.4945 seconds
+sum: 67108864, time: 3.9329 seconds
+
+sum: 67108864, time: 0.3479 seconds
+sum: 67108864, time: 1.8144 seconds
+sum: 67108864, time: 2.0991 seconds
+sum: 67108864, time: 1.8497 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 8:
+sum: 67108864, time: 1.3649 seconds
+sum: 67108864, time: 3.3759 seconds
+sum: 67108864, time: 3.2175 seconds
+sum: 67108864, time: 3.9499 seconds
+
+sum: 67108864, time: 0.3499 seconds
+sum: 67108864, time: 1.8099 seconds
+sum: 67108864, time: 2.0403 seconds
+sum: 67108864, time: 1.8629 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0003 seconds
+sum: 67108864, time: 0.0002 seconds
+
+Run 9:
+sum: 67108864, time: 1.3603 seconds
+sum: 67108864, time: 3.1236 seconds
+sum: 67108864, time: 3.2538 seconds
+sum: 67108864, time: 3.9450 seconds
+
+sum: 67108864, time: 0.3565 seconds
+sum: 67108864, time: 1.6787 seconds
+sum: 67108864, time: 2.0446 seconds
+sum: 67108864, time: 1.8545 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0001 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0004 seconds
+
+Run 10:
+sum: 67108864, time: 1.3568 seconds
+sum: 67108864, time: 3.3222 seconds
+sum: 67108864, time: 3.3146 seconds
+sum: 67108864, time: 3.9055 seconds
+
+sum: 67108864, time: 0.3455 seconds
+sum: 67108864, time: 1.7789 seconds
+sum: 67108864, time: 2.1006 seconds
+sum: 67108864, time: 1.8593 seconds
+
+sum: 67108864, time: 0.0000 seconds
+sum: 67108864, time: 0.0009 seconds
+sum: 67108864, time: 0.0002 seconds
+sum: 67108864, time: 0.0002 seconds

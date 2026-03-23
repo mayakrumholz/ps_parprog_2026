@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560">
+<rect width="100%" height="100%" fill="white"/>
+<text x="450.00" y="28.00" font-size="20" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="bold">Speedup vs. Threads (-fopenmp -O2 -march=native)</text>
+<line x1="90.00" y1="60.00" x2="90.00" y2="490.00" stroke="#333" stroke-width="1.5"/>
+<line x1="90.00" y1="490.00" x2="870.00" y2="490.00" stroke="#333" stroke-width="1.5"/>
+<text x="450.00" y="542.00" font-size="15" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="normal">Threads</text>
+<text x="24" y="275.00" font-size="15" font-family="Helvetica, Arial, sans-serif" transform="rotate(-90 24 275.00)">Speedup T(1) / T(p)</text>
+<line x1="90.00" y1="490.00" x2="870.00" y2="490.00" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="80.00" y="495.00" font-size="11" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-weight="normal">0.000</text>
+<line x1="90.00" y1="418.33" x2="870.00" y2="418.33" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="80.00" y="423.33" font-size="11" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-weight="normal">1.467</text>
+<line x1="90.00" y1="346.67" x2="870.00" y2="346.67" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="80.00" y="351.67" font-size="11" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-weight="normal">2.933</text>
+<line x1="90.00" y1="275.00" x2="870.00" y2="275.00" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="80.00" y="280.00" font-size="11" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-weight="normal">4.400</text>
+<line x1="90.00" y1="203.33" x2="870.00" y2="203.33" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="80.00" y="208.33" font-size="11" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-weight="normal">5.867</text>
+<line x1="90.00" y1="131.67" x2="870.00" y2="131.67" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="80.00" y="136.67" font-size="11" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-weight="normal">7.333</text>
+<line x1="90.00" y1="60.00" x2="870.00" y2="60.00" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="80.00" y="65.00" font-size="11" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-weight="normal">8.800</text>
+<line x1="90.00" y1="490.00" x2="90.00" y2="496.00" stroke="#333" stroke-width="1.5"/>
+<text x="90.00" y="514.00" font-size="12" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="normal">1</text>
+<line x1="201.43" y1="490.00" x2="201.43" y2="496.00" stroke="#333" stroke-width="1.5"/>
+<text x="201.43" y="514.00" font-size="12" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="normal">2</text>
+<line x1="424.29" y1="490.00" x2="424.29" y2="496.00" stroke="#333" stroke-width="1.5"/>
+<text x="424.29" y="514.00" font-size="12" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="normal">4</text>
+<line x1="870.00" y1="490.00" x2="870.00" y2="496.00" stroke="#333" stroke-width="1.5"/>
+<text x="870.00" y="514.00" font-size="12" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-weight="normal">8</text>
+<polyline fill="none" stroke="#111111" stroke-width="1.7" points="90.00,441.14 201.43,392.27 424.29,294.55 870.00,99.09" stroke-dasharray="6 4"/>
+<polyline fill="none" stroke="#1f77b4" stroke-width="2.5" points="90.00,441.14 201.43,468.85 424.29,469.18 870.00,472.67"/>
+<circle cx="90.00" cy="441.14" r="4" fill="#1f77b4"/>
+<circle cx="201.43" cy="468.85" r="4" fill="#1f77b4"/>
+<circle cx="424.29" cy="469.18" r="4" fill="#1f77b4"/>
+<circle cx="870.00" cy="472.67" r="4" fill="#1f77b4"/>
+<line x1="700.00" y1="70.00" x2="718.00" y2="70.00" stroke="#1f77b4" stroke-width="2.5"/>
+<circle cx="709.00" cy="70.00" r="3.5" fill="#1f77b4"/>
+<text x="728.00" y="74.00" font-size="12" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-weight="normal">slow</text>
+<polyline fill="none" stroke="#d62728" stroke-width="2.5" points="90.00,441.14 201.43,480.20 424.29,481.65 870.00,481.19"/>
+<circle cx="90.00" cy="441.14" r="4" fill="#d62728"/>
+<circle cx="201.43" cy="480.20" r="4" fill="#d62728"/>
+<circle cx="424.29" cy="481.65" r="4" fill="#d62728"/>
+<circle cx="870.00" cy="481.19" r="4" fill="#d62728"/>
+<line x1="700.00" y1="92.00" x2="718.00" y2="92.00" stroke="#d62728" stroke-width="2.5"/>
+<circle cx="709.00" cy="92.00" r="3.5" fill="#d62728"/>
+<text x="728.00" y="96.00" font-size="12" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-weight="normal">medium</text>
+<polyline fill="none" stroke="#2ca02c" stroke-width="2.5" points="90.00,441.14 201.43,445.58 424.29,476.43 870.00,480.95"/>
+<circle cx="90.00" cy="441.14" r="4" fill="#2ca02c"/>
+<circle cx="201.43" cy="445.58" r="4" fill="#2ca02c"/>
+<circle cx="424.29" cy="476.43" r="4" fill="#2ca02c"/>
+<circle cx="870.00" cy="480.95" r="4" fill="#2ca02c"/>
+<line x1="700.00" y1="114.00" x2="718.00" y2="114.00" stroke="#2ca02c" stroke-width="2.5"/>
+<circle cx="709.00" cy="114.00" r="3.5" fill="#2ca02c"/>
+<text x="728.00" y="118.00" font-size="12" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-weight="normal">fast</text>
+<line x1="700.00" y1="136.00" x2="718.00" y2="136.00" stroke="#111111" stroke-width="1.7" stroke-dasharray="6 4"/>
+<text x="728.00" y="140.00" font-size="12" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-weight="normal">Idealer Speedup</text>
+</svg>
