@@ -1,0 +1,202 @@
+===== JOB INFO =====
+n001.intern.lcc3.intra.uibk.ac.at
+/gpfs/gpfs1/scratch/cb761157/exercises/assignment4
+Sizes: 512 1024 2048
+
+===== BUILD =====
+cc -std=gnu11 -Wall -Werror -Wextra -O3    hadamard.c   -o hadamard
+
+==================================================
+n=512 | mode=0 | v0 (j aussen, i innen)
+==================================================
+
+--- PROGRAM OUTPUT ---
+checksum = 860632784
+
+--- CACHEGRIND ---
+==1199667== Cachegrind, a high-precision tracing profiler
+==1199667== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.
+==1199667== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1199667== Command: ./hadamard 512 0
+==1199667== 
+checksum = 860632784
+==1199667== 
+==1199667== I refs:        10,672,738
+
+--- PERF ---
+checksum = 860632784
+
+ Performance counter stats for './hadamard 512 0':
+
+               444      LLC-load-misses:u                                           
+               136      LLC-store-misses:u                                          
+
+       0.007024509 seconds time elapsed
+
+       0.004960000 seconds user
+       0.001993000 seconds sys
+
+
+
+==================================================
+n=512 | mode=1 | v1 (i aussen, j innen)
+==================================================
+
+--- PROGRAM OUTPUT ---
+checksum = 860632784
+
+--- CACHEGRIND ---
+==1199700== Cachegrind, a high-precision tracing profiler
+==1199700== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.
+==1199700== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1199700== Command: ./hadamard 512 1
+==1199700== 
+checksum = 860632784
+==1199700== 
+==1199700== I refs:        9,293,915
+
+--- PERF ---
+checksum = 860632784
+
+ Performance counter stats for './hadamard 512 1':
+
+                81      LLC-load-misses:u                                           
+                 1      LLC-store-misses:u                                          
+
+       0.003961967 seconds time elapsed
+
+       0.000000000 seconds user
+       0.003863000 seconds sys
+
+
+
+==================================================
+n=1024 | mode=0 | v0 (j aussen, i innen)
+==================================================
+
+--- PROGRAM OUTPUT ---
+checksum = 3442893200
+
+--- CACHEGRIND ---
+==1199731== Cachegrind, a high-precision tracing profiler
+==1199731== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.
+==1199731== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1199731== Command: ./hadamard 1024 0
+==1199731== 
+checksum = 3442893200
+==1199731== 
+==1199731== I refs:        41,943,668
+
+--- PERF ---
+checksum = 3442893200
+
+ Performance counter stats for './hadamard 1024 0':
+
+           753,962      LLC-load-misses:u                                           
+           336,807      LLC-store-misses:u                                          
+
+       0.033429724 seconds time elapsed
+
+       0.027284000 seconds user
+       0.005861000 seconds sys
+
+
+
+==================================================
+n=1024 | mode=1 | v1 (i aussen, j innen)
+==================================================
+
+--- PROGRAM OUTPUT ---
+checksum = 3442893200
+
+--- CACHEGRIND ---
+==1199847== Cachegrind, a high-precision tracing profiler
+==1199847== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.
+==1199847== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1199847== Command: ./hadamard 1024 1
+==1199847== 
+checksum = 3442893200
+==1199847== 
+==1199847== I refs:        36,433,517
+
+--- PERF ---
+checksum = 3442893200
+
+ Performance counter stats for './hadamard 1024 1':
+
+             5,799      LLC-load-misses:u                                           
+                20      LLC-store-misses:u                                          
+
+       0.010746731 seconds time elapsed
+
+       0.007307000 seconds user
+       0.003135000 seconds sys
+
+
+
+==================================================
+n=2048 | mode=0 | v0 (j aussen, i innen)
+==================================================
+
+--- PROGRAM OUTPUT ---
+checksum = 13771984064
+
+--- CACHEGRIND ---
+==1199880== Cachegrind, a high-precision tracing profiler
+==1199880== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.
+==1199880== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1199880== Command: ./hadamard 2048 0
+==1199880== 
+checksum = 13771984064
+==1199880== 
+==1199880== I refs:        167,006,849
+
+--- PERF ---
+checksum = 13771984064
+
+ Performance counter stats for './hadamard 2048 0':
+
+         7,780,523      LLC-load-misses:u                                           
+         4,146,135      LLC-store-misses:u                                          
+
+       0.181725296 seconds time elapsed
+
+       0.168982000 seconds user
+       0.010760000 seconds sys
+
+
+
+==================================================
+n=2048 | mode=1 | v1 (i aussen, j innen)
+==================================================
+
+--- PROGRAM OUTPUT ---
+checksum = 13771984064
+
+--- CACHEGRIND ---
+==1200232== Cachegrind, a high-precision tracing profiler
+==1200232== Copyright (C) 2002-2017, and GNU GPL'd, by Nicholas Nethercote et al.
+==1200232== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1200232== Command: ./hadamard 2048 1
+==1200232== 
+checksum = 13771984064
+==1200232== 
+==1200232== I refs:        144,976,506
+
+--- PERF ---
+checksum = 13771984064
+
+ Performance counter stats for './hadamard 2048 1':
+
+           139,804      LLC-load-misses:u                                           
+                77      LLC-store-misses:u                                          
+
+       0.034410404 seconds time elapsed
+
+       0.022439000 seconds user
+       0.011703000 seconds sys
+
+
+
+===== DONE =====
+Wrote combined report to results/report.txt
