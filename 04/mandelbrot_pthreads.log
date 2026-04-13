@@ -1,0 +1,60 @@
+rm -f mandelbrot_pthreads mandelbrot_pthreads.png
+rm -f benchmark_results.csv
+rm -f -r results images
+cc -std=gnu11 -Wall -Wextra -O2    mandelbrot_pthreads.c  -lm -pthread -o mandelbrot_pthreads
+n001.intern.lcc3.intra.uibk.ac.at
+/home/cb76/cb761174/ps_parprog_2026/04
+Threads: 1 2 4 8 12
+Runs per thread count: 10
+===== threads=1 run=1/10 =====
+===== threads=1 run=2/10 =====
+===== threads=1 run=3/10 =====
+===== threads=1 run=4/10 =====
+===== threads=1 run=5/10 =====
+===== threads=1 run=6/10 =====
+===== threads=1 run=7/10 =====
+===== threads=1 run=8/10 =====
+===== threads=1 run=9/10 =====
+===== threads=1 run=10/10 =====
+===== threads=2 run=1/10 =====
+===== threads=2 run=2/10 =====
+===== threads=2 run=3/10 =====
+===== threads=2 run=4/10 =====
+===== threads=2 run=5/10 =====
+===== threads=2 run=6/10 =====
+===== threads=2 run=7/10 =====
+===== threads=2 run=8/10 =====
+===== threads=2 run=9/10 =====
+===== threads=2 run=10/10 =====
+===== threads=4 run=1/10 =====
+===== threads=4 run=2/10 =====
+===== threads=4 run=3/10 =====
+===== threads=4 run=4/10 =====
+===== threads=4 run=5/10 =====
+===== threads=4 run=6/10 =====
+===== threads=4 run=7/10 =====
+===== threads=4 run=8/10 =====
+===== threads=4 run=9/10 =====
+===== threads=4 run=10/10 =====
+===== threads=8 run=1/10 =====
+===== threads=8 run=2/10 =====
+===== threads=8 run=3/10 =====
+===== threads=8 run=4/10 =====
+===== threads=8 run=5/10 =====
+===== threads=8 run=6/10 =====
+===== threads=8 run=7/10 =====
+===== threads=8 run=8/10 =====
+===== threads=8 run=9/10 =====
+===== threads=8 run=10/10 =====
+===== threads=12 run=1/10 =====
+===== threads=12 run=2/10 =====
+===== threads=12 run=3/10 =====
+===== threads=12 run=4/10 =====
+===== threads=12 run=5/10 =====
+===== threads=12 run=6/10 =====
+===== threads=12 run=7/10 =====
+===== threads=12 run=8/10 =====
+===== threads=12 run=9/10 =====
+===== threads=12 run=10/10 =====
+Wrote raw timing data to results/time_results.csv
+Wrote images to results/images
