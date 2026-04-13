@@ -2,26 +2,38 @@
 
 ## Exercise 1
 
-### 1) Parallelisierte Mandelbrot-Implementierung mit `Posix Threads`
+### 1) Implement a parallelized version of the mandelbrot calculation using `Posix Threads`
 
-Die Mandelbrot-Berechnung wurde parallelisiert, indem das Bild in horizontale Zeilenblöcke aufgeteilt wird. Jeder Thread bekommt also einen eigenen Bereich von Bildzeilen und berechnet nur diesen Ausschnitt. Das ist für dieses Problem eine naheliegende Lösung, weil die Berechnung eines Pixels nicht von anderen Pixeln abhängt.
+Was gleich bleiben konnte:
+- Für jedes Pixel (px, py) werden cx und cy auf den Mandelbrot-Bereich abgebildet
+- Die while Schleife läuft durch bis der Punkt divergiert oderr MAX_ITER erreicht ist
+- Die Iterationszahl wird auf einen Grauwert von 0..255 abgebildet
 
-Im Code sieht man diese Aufteilung an mehreren Stellen sehr deutlich:
+Was ich erweitert habe:
+1. pthread.h wurde eingebunden
+2. Eine worker_args_t-Struktur enthält image, start_row und end_row (einfacher um es dem Thread als einem Argument zu übergeben)
+3. Die Berechnung habe ich in eine Thread-Funktion verschoben  
+    - Früher `calc_mandelbrot(image)`: eine Funktion berechnet das ganze Bild
+    - Jetzt `calc_rows(void *arg)`: Jeder Thread berechnet nur einen Teil des Bildes (seine Zeilen start_row bis end_row)
+    = Die äußere Schleife über py wird aufgeteilt
+4. Die Arbeit wird zeilenweise auf Threads verteilt
+    - `start_row = (t * Y) / thread_count`
+    - `end_row = ((t + 1) * Y) / thread_count``
+    -> Dadurch werden die Y Bildzeilen möglichst gleichmäßig verteilt
+    -> Jeder Thread schreibt in einem eigenen Bereich des Arrays - vermeidet Datenkonflikte beim Schreiben
+5. Thread-Anzahl als Programmargument eingelesen und durch parse_thread_count(...) geprüft
+6. Dynamische Arrays für Threads und deren Argumente (`pthread_t *threads` und `worker_args_t *args`)
+7. Threads werden gestartet und wieder eingesammelt
+    - pthread_create startet parallele Ausführung
+    - pthread_join stellt sicher, dass das Hauptprogramm erst weitermacht, wenn alle Threads fertig sind
 
-- In [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:13) bis [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:17) definiert `worker_args_t`, welche Daten ein Thread bekommt: den gemeinsamen Bildpuffer und die Grenzen `start_row` und `end_row`.
-- In [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:19) bis [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:41) bearbeitet `calc_rows(...)` nur genau diesen Zeilenbereich.
-- In [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:82) bis [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:88) wird für jeden Thread der Bereich berechnet:
-  `start_row = (t * Y) / thread_count`
-  `end_row = ((t + 1) * Y) / thread_count`
-- In [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:90) werden die Threads mit `pthread_create(...)` gestartet und in [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:98) bis [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:105) mit `pthread_join(...)` wieder eingesammelt.
-
-Der Vorteil dieser Lösung ist, dass keine Threads dieselben Pixel schreiben. Jeder Thread schreibt nur in seine eigenen Zeilen, konkret in `args->image[py][px]` in [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:37). Deshalb braucht man keine Locks oder andere Synchronisation während der Berechnung. Synchronisiert werden die Threads erst am Ende über `pthread_join(...)`, wenn das Hauptprogramm wartet, bis alle Threads fertig sind.
+Der Vorteil dieser Lösung ist, dass keine Threads dieselben Pixel schreiben. Jeder Thread schreibt nur in seine eigenen Zeilen, konkret in `args->image[py][px]`. Deshalb braucht man keine Locks oder andere Synchronisation während der Berechnung. Synchronisiert werden die Threads erst am Ende über `pthread_join(...)`, wenn das Hauptprogramm wartet, bis alle Threads fertig sind.
 
 Diese Aufteilung ist außerdem einfach und effizient, weil die große Rechenarbeit in der doppelten Schleife über `py` und `px` und vor allem in der inneren `while`-Schleife steckt. Genau diese Arbeit wird auf mehrere Threads verteilt, während der restliche Programmteil nur noch Thread-Erzeugung, Warten und das Schreiben des PNGs umfasst.
 
 ### 2) Benchmark-Ergebnisse für 1, 2, 4, 8 und 12 Threads
 
-Die Benchmarks wurden auf dem LCC3-Cluster durchgeführt. Für jede Thread-Anzahl wurden 10 Läufe ausgeführt. Ausgewertet wurden die `real`-Zeiten aus `results/time_results.csv`, weil sie die tatsächliche Wandzeit des Programms beschreiben.
+Für jede Thread-Anzahl wurden 10 Läufe ausgeführt. Ausgewertet wurden die `real`-Zeiten aus `results/time_results.csv`.
 
 | Threads | Mittlere Laufzeit [s] | Median [s] | Standardabweichung [s] | Speedup gegenüber 1 Thread | Effizienz |
 | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -30,8 +42,6 @@ Die Benchmarks wurden auf dem LCC3-Cluster durchgeführt. Für jede Thread-Anzah
 | 4 | 4.121 | 4.120 | 0.009 | 2.380 | 0.595 |
 | 8 | 2.542 | 2.540 | 0.004 | 3.859 | 0.482 |
 | 12 | 1.796 | 1.790 | 0.010 | 5.462 | 0.455 |
-
-Damit die Tabelle verständlich ist, sind die wichtigsten Werte kurz zu erklären:
 
 - Die mittlere Laufzeit ist der Durchschnitt der 10 Messungen für eine feste Thread-Anzahl.
 - Der Median ist der mittlere Wert der sortierten Messreihe. Er ist nützlich, weil einzelne Ausreißer den Median weniger stark beeinflussen als den Durchschnitt.
@@ -60,19 +70,15 @@ Beispiel für die Effizienz bei 12 Threads:
 
 Das bedeutet: Mit 12 Threads läuft das Programm etwa 5.46-mal schneller als mit einem Thread, aber die 12 Threads werden nicht ideal ausgenutzt. Bei perfekter linearer Skalierung läge der Speedup bei 12 und die Effizienz bei 1.0.
 
-Inhaltlich passen die Ergebnisse gut zum Aufbau des Programms. Von 1 auf 2 Threads halbiert sich die Laufzeit fast von `9.810 s` auf `4.928 s`. Das ist plausibel, weil die eigentliche Rechenarbeit in [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:22) bis [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:37) komplett unabhängig pro Pixel erfolgt. Solange nur wenige Threads gleichzeitig arbeiten, ist der Parallelisierungsaufwand im Verhältnis zur Rechenzeit klein.
+Inhaltlich passen die Ergebnisse gut zum Aufbau des Programms. Von 1 auf 2 Threads halbiert sich die Laufzeit fast von `9.810 s` auf `4.928 s`. Das ist plausibel, weil die eigentliche Rechenarbeit komplett unabhängig pro Pixel erfolgt. Solange nur wenige Threads gleichzeitig arbeiten, ist der Parallelisierungsaufwand im Verhältnis zur Rechenzeit klein.
 
-Ab 4 Threads sieht man aber, dass die Skalierung schwächer wird. Die Laufzeit sinkt zwar weiter auf `4.121 s`, `2.542 s` und `1.796 s`, aber der zusätzliche Gewinn pro weiterem Thread wird kleiner. Das hat mehrere naheliegende Ursachen, die man gut mit dem Code verbinden kann:
+Ab 4 Threads sieht man aber, dass die Skalierung schwächer wird. Die Laufzeit sinkt zwar weiter auf `4.121 s`, `2.542 s` und `1.796 s`, aber der zusätzliche Gewinn pro weiterem Thread wird kleiner. Ursachen:
 
-- Die Threads arbeiten unabhängig, greifen aber alle auf denselben großen Bildpuffer `image[Y][X]` zu.
-- Jeder Thread führt dieselben rechenintensiven Schleifen aus, konkurriert dabei aber mit den anderen Threads um gemeinsame Hardware-Ressourcen wie Caches, Speicherbandbreite und Recheneinheiten.
-- Das Starten und Einsammeln der Threads in [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:90) bis [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:105) kostet ebenfalls Zeit, die in der seriellen Version nicht anfällt.
+- Die Threads arbeiten unabhängig, greifen aber alle auf denselben großen Bildpuffer `image[Y][X]` zu
+- Jeder Thread führt dieselben rechenintensiven Schleifen aus, konkurriert dabei aber mit den anderen Threads um gemeinsame Hardware-Ressourcen wie Caches, Speicherbandbreite und Recheneinheiten
+- Das Starten und Einsammeln der Threads kostet ebenfalls Zeit, die in der seriellen Version nicht anfällt
 
-Ein weiterer wichtiger Punkt ist die Lastverteilung. Im Programm werden die Zeilen statisch und nach Anzahl gleichmäßig aufgeteilt. Formal ist das fair, aber nicht jede Bildzeile ist gleich teuer. In Bereichen der Mandelbrot-Menge läuft die `while`-Schleife in [`mandelbrot_pthreads.c`](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/04/mandelbrot_pthreads.c:30) unter Umständen viel länger als in Bereichen, in denen die Punkte schnell divergieren. Dadurch kann es passieren, dass einige Threads früher fertig sind, während andere noch an aufwendigeren Zeilen arbeiten. Die Aufteilung ist also einfach und korrekt, aber nicht perfekt lastbalanciert.
-
-Auch der Blick auf die Rohdaten ist interessant: Die `real`-Zeit sinkt mit mehr Threads deutlich, die `user`-Zeit bleibt dagegen ungefähr bei 10 Sekunden oder steigt leicht an. Das ist typisch für parallele Programme. Insgesamt wird ähnlich viel Rechenarbeit ausgeführt, aber sie wird von mehreren Threads gleichzeitig erledigt, wodurch die Wandzeit sinkt.
-
-Für das Performance-Vergleichsblatt ergeben sich damit folgende mittlere Laufzeiten:
+Ein weiterer wichtiger Punkt ist die Lastverteilung. Im Programm werden die Zeilen statisch und nach Anzahl gleichmäßig aufgeteilt. Formal ist das fair, aber nicht jede Bildzeile ist gleich teuer. In Bereichen der Mandelbrot-Menge läuft die `while`-Schleife unter Umständen viel länger als in Bereichen, in denen die Punkte schnell divergieren. Dadurch kann es passieren, dass einige Threads früher fertig sind, während andere noch an aufwendigeren Zeilen arbeiten. Die Aufteilung ist also einfach und korrekt, aber nicht perfekt lastbalanciert.
 
 - 1 Thread: `9.810 s`
 - 12 Threads: `1.796 s`
