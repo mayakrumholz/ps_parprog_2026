@@ -25,6 +25,9 @@ CSV_FILE="${RESULTS_DIR}/time_results.csv"
 SUMMARY_FILE="${RESULTS_DIR}/run_summary.txt"
 TIME_FILE="${RESULTS_DIR}/time_output.txt"
 
+make clean
+make
+
 mkdir -p "$IMAGES_DIR"
 : > "$SUMMARY_FILE"
 printf "threads,run,real,user,sys,image\n" > "$CSV_FILE"
@@ -33,9 +36,6 @@ printf "threads,run,real,user,sys,image\n" > "$CSV_FILE"
 pwd | tee -a "$SUMMARY_FILE"
 echo "Threads: $THREADS" | tee -a "$SUMMARY_FILE"
 echo "Runs per thread count: $RUNS" | tee -a "$SUMMARY_FILE"
-
-make clean
-make
 
 for thread_count in $THREADS; do
     for run in $(seq 1 "$RUNS"); do
