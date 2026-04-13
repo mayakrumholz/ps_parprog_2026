@@ -43,11 +43,11 @@ Für jede Thread-Anzahl wurden 10 Läufe ausgeführt. Ausgewertet wurden die `re
 | 8 | 2.542 | 2.540 | 0.004 | 3.859 | 0.482 |
 | 12 | 1.796 | 1.790 | 0.010 | 5.462 | 0.455 |
 
-- Die mittlere Laufzeit ist der Durchschnitt der 10 Messungen für eine feste Thread-Anzahl.
-- Der Median ist der mittlere Wert der sortierten Messreihe. Er ist nützlich, weil einzelne Ausreißer den Median weniger stark beeinflussen als den Durchschnitt.
-- Die Standardabweichung beschreibt, wie stark die einzelnen Messungen um den Mittelwert streuen.
-- Der Speedup gibt an, um welchen Faktor die parallele Version schneller ist als die Version mit 1 Thread.
-- Die Effizienz berechnet sich als `Speedup / Thread-Anzahl`. Sie zeigt, wie gut die zusätzlich eingesetzten Threads tatsächlich ausgenutzt werden.
+- Die mittlere Laufzeit ist der Durchschnitt der 10 Messungen für eine feste Thread-Anzahl
+- Der Median ist der mittlere Wert der sortierten Messreihe. Er ist nützlich, weil einzelne Ausreißer den Median weniger stark beeinflussen als den Durchschnitt
+- Die Standardabweichung beschreibt, wie stark die einzelnen Messungen um den Mittelwert streuen
+- Der Speedup gibt an, um welchen Faktor die parallele Version schneller ist als die Version mit 1 Thread
+- Die Effizienz berechnet sich als `Speedup / Thread-Anzahl`. Sie zeigt, wie gut die zusätzlich eingesetzten Threads tatsächlich ausgenutzt werden
 
 Beispiel für die Berechnung des Speedups bei 2 Threads:
 
