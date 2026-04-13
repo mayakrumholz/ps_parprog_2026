@@ -8,6 +8,6 @@ all: mandelbrot_pthreads
 mandelbrot_pthreads: mandelbrot_pthreads.c
 
 clean:
-	$(RM) mandelbrot_pthreads mandelbrot_pthreads.png
+	$(RM) mandelbrot_pthreads mandelbrot_pthreads.png mandelbrot_pthreads.log
 	$(RM) benchmark_results.csv
 	$(RM) -r results images

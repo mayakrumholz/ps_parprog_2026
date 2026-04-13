@@ -102,72 +102,6 @@ def ensure_directory(path: str) -> None:
     os.makedirs(path, exist_ok=True)
 
 
-def write_summary_csv(output_dir: str, summaries: list[ThreadStats]) -> str:
-    summary_path = os.path.join(output_dir, "summary.csv")
-    with open(summary_path, "w", newline="", encoding="utf-8") as csv_file:
-        writer = csv.writer(csv_file)
-        writer.writerow(
-            [
-                "threads",
-                "runs",
-                "mean_real",
-                "median_real",
-                "min_real",
-                "max_real",
-                "stdev_real",
-                "mean_user",
-                "mean_sys",
-                "speedup_vs_1",
-                "efficiency_vs_1",
-            ]
-        )
-        for summary in summaries:
-            writer.writerow(
-                [
-                    summary.thread_count,
-                    summary.runs,
-                    f"{summary.mean_real:.6f}",
-                    f"{summary.median_real:.6f}",
-                    f"{summary.min_real:.6f}",
-                    f"{summary.max_real:.6f}",
-                    f"{summary.stdev_real:.6f}",
-                    f"{summary.mean_user:.6f}",
-                    f"{summary.mean_sys:.6f}",
-                    f"{summary.speedup_vs_1:.6f}",
-                    f"{summary.efficiency_vs_1:.6f}",
-                ]
-            )
-    return summary_path
-
-
-def write_summary_markdown(output_dir: str, summaries: list[ThreadStats]) -> str:
-    summary_path = os.path.join(output_dir, "summary.md")
-    with open(summary_path, "w", encoding="utf-8") as md_file:
-        md_file.write("# Benchmark Summary\n\n")
-        md_file.write(
-            "| Threads | Runs | Mean real [s] | Median [s] | Stddev [s] | Min [s] | Max [s] | Speedup | Efficiency |\n"
-        )
-        md_file.write(
-            "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n"
-        )
-        for summary in summaries:
-            md_file.write(
-                f"| {summary.thread_count} | {summary.runs} | {summary.mean_real:.4f} | "
-                f"{summary.median_real:.4f} | {summary.stdev_real:.4f} | {summary.min_real:.4f} | "
-                f"{summary.max_real:.4f} | {summary.speedup_vs_1:.3f} | {summary.efficiency_vs_1:.3f} |\n"
-            )
-    return summary_path
-
-
-def escape_xml(text: str) -> str:
-    return (
-        text.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
-    )
-
-
 def svg_header(width: int, height: int) -> list[str]:
     return [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
@@ -377,43 +311,6 @@ def write_speedup_svg(output_dir: str, summaries: list[ThreadStats]) -> str:
     return path
 
 
-def write_index(output_dir: str, generated_files: list[str]) -> str:
-    path = os.path.join(output_dir, "index.html")
-    file_names = [os.path.basename(file_path) for file_path in generated_files]
-    links = "\n".join(
-        f'    <li><a href="{escape_xml(file_name)}">{escape_xml(file_name)}</a></li>'
-        for file_name in file_names
-    )
-    content = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Benchmark Visualization</title>
-  <style>
-    body {{ font-family: Helvetica, Arial, sans-serif; margin: 32px; background: #fcfbf7; color: #1f2937; }}
-    h1 {{ margin-bottom: 8px; }}
-    p {{ max-width: 820px; line-height: 1.5; }}
-    img {{ max-width: 100%; border: 1px solid #d1d5db; background: white; margin: 18px 0 30px; }}
-  </style>
-</head>
-<body>
-  <h1>Benchmark Visualization</h1>
-  <p>Generated from <code>results/time_results.csv</code>. The overview files are listed below and the SVG charts are embedded directly for quick inspection.</p>
-  <ul>
-{links}
-  </ul>
-  <h2>Runtime by Thread Count</h2>
-  <img src="runtime_by_threads.svg" alt="Runtime by thread count">
-  <h2>Speedup and Efficiency</h2>
-  <img src="speedup_efficiency.svg" alt="Speedup and efficiency">
-</body>
-</html>
-"""
-    with open(path, "w", encoding="utf-8") as html_file:
-        html_file.write(content)
-    return path
-
-
 def main() -> int:
     csv_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join("results", "time_results.csv")
     output_dir = (
@@ -425,12 +322,9 @@ def main() -> int:
         summaries = summarize(results)
         ensure_directory(output_dir)
         generated_files = [
-            write_summary_csv(output_dir, summaries),
-            write_summary_markdown(output_dir, summaries),
             write_runtime_svg(output_dir, results, summaries),
             write_speedup_svg(output_dir, summaries),
         ]
-        generated_files.append(write_index(output_dir, generated_files))
     except (OSError, ValueError) as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
