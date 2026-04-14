@@ -87,7 +87,7 @@ Ein weiterer wichtiger Punkt ist die Lastverteilung. Im Programm werden die Zeil
 
 #### Laufzeit in Abhängigkeit von der Thread-Anzahl
 
-![Laufzeit nach Thread-Anzahl](results/visualization/runtime_by_threads.svg)
+![Laufzeit nach Thread-Anzahl](mandelbrot/results/visualization/runtime_by_threads.svg)
 
 Die erste Grafik zeigt die einzelnen Messläufe, den Mittelwert und die Streuung. Man erkennt, dass die Punkte für jede Thread-Anzahl sehr eng beieinander liegen. Das bedeutet, dass die Messungen stabil und gut reproduzierbar sind. Besonders wichtig ist dabei die kleine Standardabweichung: Die Unterschiede zwischen den 10 Läufen sind also gering und die Mittelwerte damit aussagekräftig.
 
@@ -95,7 +95,7 @@ Außerdem sieht man an der Kurve sehr gut das typische Verhalten einer Paralleli
 
 #### Speedup und Effizienz
 
-![Speedup und Effizienz](results/visualization/speedup_efficiency.svg)
+![Speedup und Effizienz](mandelbrot/results/visualization/speedup_efficiency.svg)
 
 Die zweite Grafik macht noch deutlicher, wie weit das reale Verhalten vom idealen linearen Verlauf entfernt ist. Der Speedup steigt kontinuierlich an, bleibt aber klar unter der Idealgeraden. Das heißt: Die Parallelisierung funktioniert, aber nicht perfekt.
 

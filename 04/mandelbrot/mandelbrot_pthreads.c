@@ -10,16 +10,18 @@
 #define Y 720
 #define MAX_ITER 10000
 
+// "Paket" das jedem Thread übergeben wird
 typedef struct {
-    uint8_t (*image)[X];
-    int start_row;
-    int end_row;
+    uint8_t (*image)[X]; //Zeiger auf gemeinsames Bild
+    int start_row; //erste Zeile, die der Thread berechnen soll
+    int end_row; //erste Zeile, die nicht mehr dazu gehört
 } worker_args_t;
 
 static void *calc_rows(void *arg) {
-    worker_args_t *args = (worker_args_t *)arg;
+    worker_args_t *args = (worker_args_t *)arg; //jeder Thread arbeitet mit "seinen" Argumenten
 
-    for (int py = args->start_row; py < args->end_row; ++py) {
+    for (int py = args->start_row; py < args->end_row; ++py) { //eingeschränkt auf Zeilenbereich des Threads
+        // eigentliche Mandelbrot-Berechnung bleibt gleich
         for (int px = 0; px < X; ++px) {
             double x = 0.0;
             double y = 0.0;
@@ -34,6 +36,7 @@ static void *calc_rows(void *arg) {
                 ++iteration;
             }
 
+            //Alle Threads schreiben in dasselbe Bildarray, aber nie dieselbe Stelle (andere py-Bereiche)
             args->image[py][px] = (uint8_t)(255.0 * iteration / MAX_ITER);
         }
     }
@@ -41,6 +44,7 @@ static void *calc_rows(void *arg) {
     return NULL;
 }
 
+//Eingabe überprüfen
 static int parse_thread_count(const char *arg) {
     char *endptr = NULL;
     long value = strtol(arg, &endptr, 10);
@@ -67,7 +71,7 @@ int main(int argc, char **argv) {
 
     if (argc >= 3) {
         output_path = argv[2];
-    }
+    } 
 
     pthread_t *threads = malloc((size_t)thread_count * sizeof(*threads));
     worker_args_t *args = malloc((size_t)thread_count * sizeof(*args));
@@ -80,6 +84,7 @@ int main(int argc, char **argv) {
     }
 
     for (int t = 0; t < thread_count; ++t) {
+        //Für jeden Thread berechnen, welche Zeilen er bekommt
         int start_row = (t * Y) / thread_count;
         int end_row = ((t + 1) * Y) / thread_count;
 
