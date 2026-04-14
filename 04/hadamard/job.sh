@@ -47,7 +47,13 @@ for n in $SIZES; do
         echo "" | tee -a "$REPORT_FILE"
 
         echo "--- CACHEGRIND ---" | tee -a "$REPORT_FILE"
-        valgrind --tool=cachegrind ./hadamard "$n" "$mode" 2>&1 | tee -a "$REPORT_FILE"
+        CG_OUT="${RESULTS_DIR}/cachegrind_n${n}_m${mode}.out"
+        valgrind --tool=cachegrind \
+        --cache-sim=yes \
+        --cachegrind-out-file="$CG_OUT" \
+        ./hadamard "$n" "$mode" >> "$REPORT_FILE" 2>&1
+        
+        cg_annotate "$CG_OUT" | grep "PROGRAM TOTALS" | tee -a "$REPORT_FILE"
         echo "" | tee -a "$REPORT_FILE"
 
         echo "--- PERF ---" | tee -a "$REPORT_FILE"

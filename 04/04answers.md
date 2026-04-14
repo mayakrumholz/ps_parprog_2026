@@ -283,3 +283,52 @@ Trotzdem liefern beide Tools konsistente Hinweise:
 Die Ergebnisse zeigen eindeutig, dass die Schleifenreihenfolge einen großen Einfluss auf das Cache-Verhalten hat. Die zeilenweise Implementierung (**i außen, j innen**) ist cache-freundlich und deutlich effizienter, während die spaltenweise Implementierung (**j außen, i innen**) viele Cache-Misses verursacht.
 
 Die Messungen mit `perf` bestätigen die theoretischen Erwartungen klar. `cachegrind` wurde ebenfalls verwendet, konnte in dieser Messung jedoch nur eingeschränkt zur Validierung beitragen, da die relevanten Daten-Cache-Metriken nicht im Output enthalten waren.
+
+#### Nachtrag zu Cachegrind
+## Nachtrag zur Cachegrind-Auswertung
+
+Nach der Abgabe habe ich mich noch einmal genauer mit den von `cachegrind` erzeugten Dateien beschäftigt und dabei den Grund gefunden, warum in der ersten Auswertung nur eingeschränkt verwertbare Daten sichtbar waren.
+
+Im ersten Schritt wurde `valgrind --tool=cachegrind` wie in der Aufgabenstellung verwendet, jedoch wurden die relevanten Daten-Cache-Metriken nicht in der geeigneten Form ausgewertet. In der zunächst betrachteten Datei war lediglich der Event-Typ `Ir` sichtbar. `Ir` steht für *Instruction references*, also Instruktionszugriffe. Damit lässt sich hauptsächlich das Instruktionsverhalten analysieren, nicht jedoch das Daten-Cache-Verhalten der Matrizen.
+
+Bei der erneuten Auswertung zeigte sich, dass `cachegrind` die benötigten Daten tatsächlich liefert, wenn der vollständige Bericht betrachtet wird. In den später ausgewerteten Ausgaben waren folgende Kennzahlen enthalten:
+
+- `D refs`: gesamte Datenzugriffe  
+  - aufgeteilt in `rd` (*reads*) und `wr` (*writes*)
+- `D1 misses`: Misses im L1-Datencache  
+  - ebenfalls getrennt nach Lese- und Schreibmisses
+- `LLd misses`: Misses im Last-Level-Datencache
+- `LL refs`: alle Zugriffe, die bis zum Last-Level-Cache weitergereicht wurden
+- `LL misses`: Misses auch im Last-Level-Cache
+
+Für die Aufgabenstellung sind insbesondere die **Read-Misses** relevant. Daher sind vor allem die Werte `D1 misses (rd)` sowie ergänzend `LLd misses (rd)` von Interesse.
+
+### Analyse der Cachegrind-Ergebnisse
+
+Die neuen `cachegrind`-Ausgaben bestätigen die theoretische Erwartung deutlich. Für alle getesteten Matrixgrößen erzeugt die Variante mit Schleifenreihenfolge **`j` außen, `i` innen** wesentlich mehr Daten-Read-Misses als die Variante **`i` außen, `j` innen`**.
+
+Beispielsweise für `n = 1024` ergeben sich im L1-Datencache:
+
+- Variante 0 (`j` außen, `i` innen): **2,165,384 Read Misses**
+- Variante 1 (`i` außen, `j` innen): **199,289 Read Misses**
+
+Für `n = 2048` ist der Unterschied noch deutlicher:
+
+- Variante 0: **8,653,464 Read Misses**
+- Variante 1: **789,113 Read Misses**
+
+Damit verursacht die spaltenweise Variante ungefähr eine Größenordnung mehr Lese-Misses als die zeilenweise Variante.
+
+### Interpretation
+
+Der Grund liegt in der Speicheranordnung der Matrizen. Diese sind in **row-major order** gespeichert, also zeilenweise im Speicher abgelegt. Die Variante mit `i` außen und `j` innen greift entlang zusammenhängender Speicherbereiche zu und nutzt die räumliche Lokalität des Caches optimal aus. Mehrere aufeinanderfolgende Elemente befinden sich innerhalb derselben Cache-Line.
+
+Die Variante mit `j` außen und `i` innen greift hingegen spaltenweise auf eine row-major gespeicherte Matrix zu. Dabei springt der Zugriff jeweils um eine ganze Zeile weiter. Der Abstand zwischen zwei Zugriffen beträgt `n * sizeof(int32_t)` Byte, also `n * 4` Byte. Für große Matrizen ist dieser Abstand deutlich größer als eine Cache-Line, sodass viele geladene Cache-Lines kaum wiederverwendet werden. Dadurch entstehen deutlich mehr Cache-Misses.
+
+### Vergleich mit perf
+
+Auch die `perf`-Messungen zeigen denselben Trend. Die absoluten Werte unterscheiden sich von `cachegrind`, da `perf` reale Hardware-Ereignisse im Last-Level-Cache misst, während `cachegrind` eine Simulation verwendet. Qualitativ stimmen beide Werkzeuge jedoch überein: Die zeilenweise Implementierung ist deutlich cache-freundlicher als die spaltenweise.
+
+### Fazit
+
+Die vollständige Auswertung von `cachegrind` bestätigt die theoretische Analyse zusätzlich. Der anfängliche Eindruck, dass `cachegrind` keine brauchbaren Daten liefere, lag nicht daran, dass das Tool ungeeignet wäre, sondern daran, dass zunächst nur ein unvollständig ausgewerteter Ausschnitt betrachtet wurde. Mit den vollständigen `D1`- und `LLd`-Metriken zeigt `cachegrind` denselben klaren Unterschied zwischen beiden Implementierungen wie `perf`.
