@@ -1,0 +1,2 @@
+rm -f ex1
+cc -std=gnu11 -Wall -Wextra -lm -fopenmp -O3    ex1.c   -o ex1

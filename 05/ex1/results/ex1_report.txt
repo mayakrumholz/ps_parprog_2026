@@ -1,0 +1,39 @@
+===== JOB INFO =====
+n001.intern.lcc3.intra.uibk.ac.at
+/home/cb76/cb761174/ps_parprog_2026/05/ex1
+Batches: 5
+Runs per batch: 1000
+Timeout per run: 2s
+
+===== BUILD =====
+rm -f ex1
+cc -std=gnu11 -Wall -Wextra -lm -fopenmp -O3    ex1.c   -o ex1
+
+===== BATCH 1/5 =====
+successful runs: 999
+timed out runs:  1
+error runs:      0
+
+===== BATCH 2/5 =====
+successful runs: 1000
+timed out runs:  0
+error runs:      0
+
+===== BATCH 3/5 =====
+successful runs: 1000
+timed out runs:  0
+error runs:      0
+
+===== BATCH 4/5 =====
+successful runs: 997
+timed out runs:  3
+error runs:      0
+
+===== BATCH 5/5 =====
+successful runs: 1000
+timed out runs:  0
+error runs:      0
+
+===== DONE =====
+Detailed per-run results: results/ex1_outputs.txt
+Summary report: results/ex1_report.txt
