@@ -33,6 +33,7 @@ for that assignment have to be handed in via OLAT by 17:00 on the previous day
 | 2026-03-17 | [2](02)    | Initial measurements, Amdahl's law                          |
 | 2026-03-24 | [3](03)    | Sequential performance, false sharing                       |
 | 2026-04-14 | [4](04)    | Mandelbrot parallelization, cache effects                   |
+| 2026-04-21 | [5](05)    | OpenMP correctness and flush                                |
 
 ## General Information
 
