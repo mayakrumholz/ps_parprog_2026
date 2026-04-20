@@ -49,6 +49,10 @@ outdated. You may load a never version by calling `module load gcc/12.2.0-gcc-8.
 **As the tutorial states, use job scripts to run your applications on LCC3
 compute nodes, do NOT run applications directly on the LCC3 login node.**
 
+If you work with a tight disk quota on LCC3, see the short
+[cluster sparse checkout guide](cluster_sparse_checkout.md) for a workflow that
+checks out only the currently needed assignment folder.
+
 ### Connecting to LCC3 via SSH
 
 **NOTE**: You have to be inside the University network to be able to connect via

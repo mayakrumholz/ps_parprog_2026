@@ -15,8 +15,7 @@
 
 set -eu
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-cd "$SCRIPT_DIR"
+cd "${SLURM_SUBMIT_DIR:-$(pwd)}"
 
 RESULTS_DIR="results"
 REPORT_FILE="${RESULTS_DIR}/ex1_report.txt"
