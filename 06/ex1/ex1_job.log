@@ -1,0 +1,8 @@
+rm -f serial critical atomic reduction
+gcc -std=gnu11 -Wall -Wextra -Werror -O3 -fopenmp    serial.c  -lm -o serial
+gcc -std=gnu11 -Wall -Wextra -Werror -O3 -fopenmp    critical.c  -lm -o critical
+critical.c: In function ‘main’:
+critical.c:39:46: error: ‘samples’ is predetermined ‘shared’ for ‘shared’
+     #pragma omp parallel default(none) shared(samples, inside_circle)
+                                              ^
+make: *** [<builtin>: critical] Error 1
