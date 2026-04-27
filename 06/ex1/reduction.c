@@ -29,7 +29,6 @@ static double next_unit_random(uint32_t *state) {
 
 int main(int argc, char **argv) {
     const long long samples = parse_samples(argc, argv);
-    uint32_t seed = 0x12345678u;
     long long inside_circle = 0;
     double start_time;
     double end_time;
@@ -37,19 +36,26 @@ int main(int argc, char **argv) {
 
     start_time = omp_get_wtime();
 
-    for (long long i = 0; i < samples; ++i) {
-        const double x = next_unit_random(&seed);
-        const double y = next_unit_random(&seed);
+    #pragma omp parallel default(none) shared(samples) reduction(+ : inside_circle)
+    {
+        uint32_t seed = 0x12345678u ^ (uint32_t)(0x9e3779b9u * (unsigned)(omp_get_thread_num() + 1));
 
-        if ((x * x) + (y * y) <= 1.0) {
-            inside_circle++;
+        #pragma omp for
+        for (long long i = 0; i < samples; ++i) {
+            const double x = next_unit_random(&seed);
+            const double y = next_unit_random(&seed);
+
+            if ((x * x) + (y * y) <= 1.0) {
+                inside_circle++;
+            }
         }
     }
 
     end_time = omp_get_wtime();
     pi = 4.0 * (double)inside_circle / (double)samples;
 
-    printf("variant=serial threads=1 n=%lld pi=%.12f elapsed_seconds=%.6f\n",
+    printf("variant=reduction threads=%d n=%lld pi=%.12f elapsed_seconds=%.6f\n",
+           omp_get_max_threads(),
            samples,
            pi,
            end_time - start_time);

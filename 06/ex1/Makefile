@@ -1,16 +1,17 @@
-CFLAGS = -std=gnu11 -Wall -Werror -Wextra -fopenmp -O3
+CC = gcc
+CFLAGS = -std=gnu11 -Wall -Wextra -Werror -O3 -fopenmp
+LDLIBS = -lm
 
-.PHONY: all
-all: serial atomic critical reduction
+.PHONY: all clean
 
-.PHONY: clean
+PROGRAMS = serial critical atomic reduction
+
+all: $(PROGRAMS)
+
 clean:
-	$(RM) serial atomic critical reduction
+	$(RM) $(PROGRAMS)
 
 serial: serial.c
-
-atomic: atomic.c
-
 critical: critical.c
-
+atomic: atomic.c
 reduction: reduction.c
