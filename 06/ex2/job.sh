@@ -18,10 +18,10 @@ RESULTS_DIR="results"
 IMAGES_DIR="${RESULTS_DIR}/images"
 CSV_FILE="${RESULTS_DIR}/time_results.csv"
 
-mkdir -p "$RESULTS_DIR" "$IMAGES_DIR"
-
 make clean
 make
+
+mkdir -p "$RESULTS_DIR" "$IMAGES_DIR"
 
 printf "variant,threads,run,chunk,elapsed_seconds,image\n" > "$CSV_FILE"
 
