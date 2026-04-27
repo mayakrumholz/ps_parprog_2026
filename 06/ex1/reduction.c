@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
 
     start_time = omp_get_wtime();
 
-    #pragma omp parallel default(none) shared(samples) reduction(+ : inside_circle)
+    #pragma omp parallel default(none) firstprivate(samples) reduction(+ : inside_circle)
     {
         uint32_t seed = 0x12345678u ^ (uint32_t)(0x9e3779b9u * (unsigned)(omp_get_thread_num() + 1));
 
