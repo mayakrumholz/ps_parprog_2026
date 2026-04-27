@@ -199,20 +199,23 @@ def add_y_grid(elements: list[str], left: float, top: float, width: float, heigh
         )
 
 
-def write_runtime_svg(summaries: list[Summary], output_path: str) -> None:
+def write_runtime_svg(
+    summaries: list[Summary], output_path: str, plot_variants: list[str], title: str, subtitle: str
+) -> None:
     width, height = 1220, 780
     left, top = 90.0, 100.0
     plot_width, plot_height = 1000.0, 520.0
-    thread_counts = sorted({s.threads for s in summaries})
-    variants = sorted({s.variant for s in summaries})
-    grouped = {(s.variant, s.threads): s for s in summaries}
+    filtered = [s for s in summaries if s.variant in plot_variants]
+    thread_counts = sorted({s.threads for s in filtered})
+    variants = [variant for variant in plot_variants if any(s.variant == variant for s in filtered)]
+    grouped = {(s.variant, s.threads): s for s in filtered}
     colors = ["#2563eb", "#b45309", "#059669", "#dc2626", "#7c3aed", "#0f766e", "#4b5563"]
     color_map = {variant: colors[index % len(colors)] for index, variant in enumerate(variants)}
-    max_value = max(s.mean_seconds + s.stdev_seconds for s in summaries)
+    max_value = max(s.mean_seconds + s.stdev_seconds for s in filtered)
 
     elements = svg_header(width, height)
-    elements.append('<text class="title" x="90" y="50">Mandelbrot Runtime by Schedule</text>')
-    elements.append('<text class="subtitle" x="90" y="72">Each line shows the mean runtime for one OpenMP schedule.</text>')
+    elements.append(f'<text class="title" x="90" y="50">{title}</text>')
+    elements.append(f'<text class="subtitle" x="90" y="72">{subtitle}</text>')
 
     add_y_grid(elements, left, top, plot_width, plot_height, max_value * 1.1)
     add_axes(elements, left, top, plot_width, plot_height)
@@ -247,20 +250,23 @@ def write_runtime_svg(summaries: list[Summary], output_path: str) -> None:
         handle.write("\n".join(elements))
 
 
-def write_speedup_svg(summaries: list[Summary], output_path: str) -> None:
+def write_speedup_svg(
+    summaries: list[Summary], output_path: str, plot_variants: list[str], title: str, subtitle: str
+) -> None:
     width, height = 1220, 780
     left, top = 90.0, 100.0
     plot_width, plot_height = 1000.0, 520.0
-    thread_counts = sorted({s.threads for s in summaries})
-    variants = sorted({s.variant for s in summaries})
-    grouped = {(s.variant, s.threads): s for s in summaries}
+    filtered = [s for s in summaries if s.variant in plot_variants]
+    thread_counts = sorted({s.threads for s in filtered})
+    variants = [variant for variant in plot_variants if any(s.variant == variant for s in filtered)]
+    grouped = {(s.variant, s.threads): s for s in filtered}
     colors = ["#2563eb", "#b45309", "#059669", "#dc2626", "#7c3aed", "#0f766e", "#4b5563"]
     color_map = {variant: colors[index % len(colors)] for index, variant in enumerate(variants)}
-    max_value = max(max(s.speedup_variant for s in summaries), float(max(thread_counts)))
+    max_value = max(max(s.speedup_variant for s in filtered), float(max(thread_counts)))
 
     elements = svg_header(width, height)
-    elements.append('<text class="title" x="90" y="50">Mandelbrot Speedup by Schedule</text>')
-    elements.append('<text class="subtitle" x="90" y="72">Gray dashed line shows ideal linear speedup.</text>')
+    elements.append(f'<text class="title" x="90" y="50">{title}</text>')
+    elements.append(f'<text class="subtitle" x="90" y="72">{subtitle}</text>')
 
     add_y_grid(elements, left, top, plot_width, plot_height, max_value * 1.1)
     add_axes(elements, left, top, plot_width, plot_height)
@@ -302,8 +308,34 @@ def main() -> int:
 
     write_summary_csv(os.path.join(results_dir, "summary_stats.csv"), summaries)
     write_markdown_summary(os.path.join(results_dir, "summary_table.md"), summaries)
-    write_runtime_svg(summaries, os.path.join(plots_dir, "runtime_by_schedule.svg"))
-    write_speedup_svg(summaries, os.path.join(plots_dir, "speedup_by_schedule.svg"))
+    write_runtime_svg(
+        summaries,
+        os.path.join(plots_dir, "runtime_core_schedules.svg"),
+        ["static", "dynamic", "guided", "auto"],
+        "Mandelbrot Runtime by Core OpenMP Schedules",
+        "Comparison of static, dynamic, guided and auto scheduling.",
+    )
+    write_speedup_svg(
+        summaries,
+        os.path.join(plots_dir, "speedup_core_schedules.svg"),
+        ["static", "dynamic", "guided", "auto"],
+        "Mandelbrot Speedup by Core OpenMP Schedules",
+        "Gray dashed line shows ideal linear speedup for static, dynamic, guided and auto.",
+    )
+    write_runtime_svg(
+        summaries,
+        os.path.join(plots_dir, "runtime_runtime_vs_auto.svg"),
+        ["auto", "runtime_static", "runtime_dynamic", "runtime_guided"],
+        "Mandelbrot Runtime: Auto vs Runtime Schedules",
+        "Comparison of auto with runtime-configured static, dynamic and guided scheduling.",
+    )
+    write_speedup_svg(
+        summaries,
+        os.path.join(plots_dir, "speedup_runtime_vs_auto.svg"),
+        ["auto", "runtime_static", "runtime_dynamic", "runtime_guided"],
+        "Mandelbrot Speedup: Auto vs Runtime Schedules",
+        "Gray dashed line shows ideal linear speedup for auto and runtime variants.",
+    )
 
     print(f"Analyzed {len(results)} runs from {csv_path}")
     print(f"Wrote summary CSV to {os.path.join(results_dir, 'summary_stats.csv')}")

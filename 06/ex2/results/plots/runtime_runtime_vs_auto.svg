@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="780" viewBox="0 0 1220 780" role="img">
+<rect width="100%" height="100%" fill="#faf8f3"/>
+<style>
+text { font-family: "Helvetica", "Arial", sans-serif; fill: #1f2937; }
+.title { font-size: 22px; font-weight: 700; }
+.subtitle { font-size: 12px; fill: #4b5563; }
+.axis { stroke: #374151; stroke-width: 1.2; }
+.grid { stroke: #d1d5db; stroke-width: 1; stroke-dasharray: 4 4; }
+.label { font-size: 12px; }
+.tick { font-size: 11px; fill: #4b5563; }
+.legend { font-size: 12px; }
+</style>
+<text class="title" x="90" y="50">Mandelbrot Runtime: Auto vs Runtime Schedules</text>
+<text class="subtitle" x="90" y="72">Comparison of auto with runtime-configured static, dynamic and guided scheduling.</text>
+<line class="grid" x1="90.0" y1="620.0" x2="1090.0" y2="620.0"/>
+<text class="tick" x="82.0" y="624.0" text-anchor="end">0.00</text>
+<line class="grid" x1="90.0" y1="516.0" x2="1090.0" y2="516.0"/>
+<text class="tick" x="82.0" y="520.0" text-anchor="end">2.16</text>
+<line class="grid" x1="90.0" y1="412.0" x2="1090.0" y2="412.0"/>
+<text class="tick" x="82.0" y="416.0" text-anchor="end">4.31</text>
+<line class="grid" x1="90.0" y1="308.0" x2="1090.0" y2="308.0"/>
+<text class="tick" x="82.0" y="312.0" text-anchor="end">6.47</text>
+<line class="grid" x1="90.0" y1="204.0" x2="1090.0" y2="204.0"/>
+<text class="tick" x="82.0" y="208.0" text-anchor="end">8.63</text>
+<line class="grid" x1="90.0" y1="100.0" x2="1090.0" y2="100.0"/>
+<text class="tick" x="82.0" y="104.0" text-anchor="end">10.79</text>
+<line class="axis" x1="90.0" y1="620.0" x2="1090.0" y2="620.0"/>
+<line class="axis" x1="90.0" y1="100.0" x2="90.0" y2="620.0"/>
+<text class="tick" x="90.0" y="644.0" text-anchor="middle">1</text>
+<text class="tick" x="423.3" y="644.0" text-anchor="middle">4</text>
+<text class="tick" x="756.7" y="644.0" text-anchor="middle">8</text>
+<text class="tick" x="1090.0" y="644.0" text-anchor="middle">12</text>
+<circle cx="90.0" cy="149.6" r="4.5" fill="#2563eb"/>
+<circle cx="423.3" cy="423.1" r="4.5" fill="#2563eb"/>
+<circle cx="756.7" cy="499.2" r="4.5" fill="#2563eb"/>
+<circle cx="1090.0" cy="535.1" r="4.5" fill="#2563eb"/>
+<polyline fill="none" stroke="#2563eb" stroke-width="3" points="90.0,149.6 423.3,423.1 756.7,499.2 1090.0,535.1"/>
+<circle cx="90.0" cy="148.7" r="4.5" fill="#b45309"/>
+<circle cx="423.3" cy="500.9" r="4.5" fill="#b45309"/>
+<circle cx="756.7" cy="558.5" r="4.5" fill="#b45309"/>
+<circle cx="1090.0" cy="578.7" r="4.5" fill="#b45309"/>
+<polyline fill="none" stroke="#b45309" stroke-width="3" points="90.0,148.7 423.3,500.9 756.7,558.5 1090.0,578.7"/>
+<circle cx="90.0" cy="149.4" r="4.5" fill="#059669"/>
+<circle cx="423.3" cy="500.0" r="4.5" fill="#059669"/>
+<circle cx="756.7" cy="558.5" r="4.5" fill="#059669"/>
+<circle cx="1090.0" cy="578.7" r="4.5" fill="#059669"/>
+<polyline fill="none" stroke="#059669" stroke-width="3" points="90.0,149.4 423.3,500.0 756.7,558.5 1090.0,578.7"/>
+<circle cx="90.0" cy="148.4" r="4.5" fill="#dc2626"/>
+<circle cx="423.3" cy="477.6" r="4.5" fill="#dc2626"/>
+<circle cx="756.7" cy="545.2" r="4.5" fill="#dc2626"/>
+<circle cx="1090.0" cy="570.2" r="4.5" fill="#dc2626"/>
+<polyline fill="none" stroke="#dc2626" stroke-width="3" points="90.0,148.4 423.3,477.6 756.7,545.2 1090.0,570.2"/>
+<text class="label" x="590.0" y="734.0" text-anchor="middle">Threads</text>
+<text class="label" x="28" y="360.0" transform="rotate(-90 28 360.0)" text-anchor="middle">Runtime [s]</text>
+<line x1="760" y1="54" x2="788" y2="54" stroke="#2563eb" stroke-width="3"/>
+<circle cx="774" cy="54" r="4.5" fill="#2563eb"/>
+<text class="legend" x="798" y="58">auto</text>
+<line x1="760" y1="76" x2="788" y2="76" stroke="#b45309" stroke-width="3"/>
+<circle cx="774" cy="76" r="4.5" fill="#b45309"/>
+<text class="legend" x="798" y="80">runtime_static</text>
+<line x1="760" y1="98" x2="788" y2="98" stroke="#059669" stroke-width="3"/>
+<circle cx="774" cy="98" r="4.5" fill="#059669"/>
+<text class="legend" x="798" y="102">runtime_dynamic</text>
+<line x1="760" y1="120" x2="788" y2="120" stroke="#dc2626" stroke-width="3"/>
+<circle cx="774" cy="120" r="4.5" fill="#dc2626"/>
+<text class="legend" x="798" y="124">runtime_guided</text>
+</svg>

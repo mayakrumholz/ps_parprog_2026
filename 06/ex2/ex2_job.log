@@ -1,4 +1,0 @@
-rm -f mandelbrot_openmp
-rm -f -r results
-gcc -std=gnu11 -Wall -Wextra -Werror -O3 -fopenmp    mandelbrot_openmp.c  -lm -o mandelbrot_openmp
-Fertig. Ergebnisse stehen in results/time_results.csv

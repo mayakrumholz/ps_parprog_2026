@@ -10,4 +10,3 @@ mandelbrot_openmp: mandelbrot_openmp.c
 
 clean:
 	$(RM) mandelbrot_openmp
-	$(RM) -r results

@@ -212,7 +212,7 @@ Parallelisiert wird die äußere Schleife über die Bildzeilen `py`. Das ist nah
 - jeder Thread in einen anderen Bereich des Bildarrays schreibt
 - keine Synchronisation beim Schreiben einzelner Pixel nötig ist
 
-Eine typische Form ist:
+Meistens so:
 
 ```c
 #pragma omp parallel for schedule(...)
@@ -259,90 +259,166 @@ Getestete Varianten im Skript:
 - `runtime_dynamic`
 - `runtime_guided`
 
-### 4) Ausführung auf dem Cluster
-
-Im Verzeichnis `06/ex2`:
-
-```bash
-sbatch job.sh
-```
-
-Nach dem Lauf sollten vor allem diese Dateien vorliegen:
-
-- `06/ex2/results/time_results.csv`
-- `06/ex2/ex2_job.log`
-- erzeugte Bilder in `06/ex2/results/images`
-
-### 5) Lokale Auswertung nach dem Push
-
-Nach dem Zurückpushen der Ergebnisdateien lokal:
-
-```bash
-cd 06/ex2
-python3 analyze_results.py
-```
-
-Das Skript erzeugt dann:
-
-- `results/summary_stats.csv`
-- `results/summary_table.md`
-- `results/plots/runtime_by_schedule.svg`
-- `results/plots/speedup_by_schedule.svg`
-
-### 6) Ergebnistabellen zum Ausfüllen
+### 4) Ergebnistabellen 
 
 #### Tabelle der Messwerte
 
 | Variante | Threads | Mittelwert [s] | Median [s] | Standardabweichung [s] | Speedup | Effizienz |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| static | 1 | TODO | TODO | TODO | TODO | TODO |
-| static | 4 | TODO | TODO | TODO | TODO | TODO |
-| static | 8 | TODO | TODO | TODO | TODO | TODO |
-| static | 12 | TODO | TODO | TODO | TODO | TODO |
-| dynamic | 1 | TODO | TODO | TODO | TODO | TODO |
-| dynamic | 4 | TODO | TODO | TODO | TODO | TODO |
-| dynamic | 8 | TODO | TODO | TODO | TODO | TODO |
-| dynamic | 12 | TODO | TODO | TODO | TODO | TODO |
-| guided | 1 | TODO | TODO | TODO | TODO | TODO |
-| guided | 4 | TODO | TODO | TODO | TODO | TODO |
-| guided | 8 | TODO | TODO | TODO | TODO | TODO |
-| guided | 12 | TODO | TODO | TODO | TODO | TODO |
-| auto | 1 | TODO | TODO | TODO | TODO | TODO |
-| auto | 4 | TODO | TODO | TODO | TODO | TODO |
-| auto | 8 | TODO | TODO | TODO | TODO | TODO |
-| auto | 12 | TODO | TODO | TODO | TODO | TODO |
-| runtime_static | 1 | TODO | TODO | TODO | TODO | TODO |
-| runtime_static | 4 | TODO | TODO | TODO | TODO | TODO |
-| runtime_static | 8 | TODO | TODO | TODO | TODO | TODO |
-| runtime_static | 12 | TODO | TODO | TODO | TODO | TODO |
-| runtime_dynamic | 1 | TODO | TODO | TODO | TODO | TODO |
-| runtime_dynamic | 4 | TODO | TODO | TODO | TODO | TODO |
-| runtime_dynamic | 8 | TODO | TODO | TODO | TODO | TODO |
-| runtime_dynamic | 12 | TODO | TODO | TODO | TODO | TODO |
-| runtime_guided | 1 | TODO | TODO | TODO | TODO | TODO |
-| runtime_guided | 4 | TODO | TODO | TODO | TODO | TODO |
-| runtime_guided | 8 | TODO | TODO | TODO | TODO | TODO |
-| runtime_guided | 12 | TODO | TODO | TODO | TODO | TODO |
+| static | 1 | 9.768482 | 9.776715 | 0.018019 | 1.000 | 1.000 |
+| static | 4 | 4.085424 | 4.085619 | 0.005626 | 2.391 | 0.598 |
+| static | 8 | 2.517991 | 2.508092 | 0.014150 | 3.879 | 0.485 |
+| static | 12 | 1.760753 | 1.760656 | 0.001363 | 5.548 | 0.462 |
+| dynamic | 1 | 9.775214 | 9.752230 | 0.039735 | 1.000 | 1.000 |
+| dynamic | 4 | 2.456005 | 2.455745 | 0.002048 | 3.980 | 0.995 |
+| dynamic | 8 | 1.274836 | 1.274843 | 0.000286 | 7.668 | 0.958 |
+| dynamic | 12 | 0.850369 | 0.850292 | 0.000244 | 11.495 | 0.958 |
+| guided | 1 | 9.763315 | 9.758531 | 0.012783 | 1.000 | 1.000 |
+| guided | 4 | 2.948721 | 2.956956 | 0.014586 | 3.311 | 0.828 |
+| guided | 8 | 1.549154 | 1.550375 | 0.002544 | 6.302 | 0.788 |
+| guided | 12 | 1.032178 | 1.031881 | 0.000733 | 9.459 | 0.788 |
+| auto | 1 | 9.757247 | 9.750061 | 0.014200 | 1.000 | 1.000 |
+| auto | 4 | 4.084650 | 4.085974 | 0.003267 | 2.389 | 0.597 |
+| auto | 8 | 2.506206 | 2.507177 | 0.003401 | 3.893 | 0.487 |
+| auto | 12 | 1.761671 | 1.761932 | 0.001553 | 5.539 | 0.462 |
+| runtime_static | 1 | 9.776532 | 9.778774 | 0.028937 | 1.000 | 1.000 |
+| runtime_static | 4 | 2.471400 | 2.472567 | 0.004052 | 3.956 | 0.989 |
+| runtime_static | 8 | 1.276462 | 1.276768 | 0.001120 | 7.659 | 0.957 |
+| runtime_static | 12 | 0.857614 | 0.853951 | 0.008975 | 11.400 | 0.950 |
+| runtime_dynamic | 1 | 9.760834 | 9.750055 | 0.016179 | 1.000 | 1.000 |
+| runtime_dynamic | 4 | 2.488253 | 2.491038 | 0.007005 | 3.923 | 0.981 |
+| runtime_dynamic | 8 | 1.274972 | 1.275045 | 0.000369 | 7.656 | 0.957 |
+| runtime_dynamic | 12 | 0.856859 | 0.852606 | 0.008041 | 11.391 | 0.949 |
+| runtime_guided | 1 | 9.781497 | 9.780579 | 0.003023 | 1.000 | 1.000 |
+| runtime_guided | 4 | 2.954057 | 2.958776 | 0.015552 | 3.311 | 0.828 |
+| runtime_guided | 8 | 1.551885 | 1.550834 | 0.004492 | 6.303 | 0.788 |
+| runtime_guided | 12 | 1.032719 | 1.032929 | 0.000758 | 9.472 | 0.789 |
+
 
 #### Grafiken
 
-Nach der Auswertung können diese Grafiken eingebunden werden:
+#### Grafiken zu `static`, `dynamic`, `guided` und `auto`
 
-![Laufzeiten nach Scheduling-Variante](./ex2/results/plots/runtime_by_schedule.svg)
+![Laufzeiten der Kern-Schedules](./ex2/results/plots/runtime_core_schedules.svg)
 
-![Speedup nach Scheduling-Variante](./ex2/results/plots/speedup_by_schedule.svg)
+![Speedup der Kern-Schedules](./ex2/results/plots/speedup_core_schedules.svg)
 
-### 7) Leitfaden für die spätere Interpretation
+#### Grafiken zu `auto` und `runtime`
 
-Bei der Interpretation der Messwerte sollte besonders auf diese Punkte geachtet werden:
+![Laufzeiten von auto und runtime](./ex2/results/plots/runtime_runtime_vs_auto.svg)
 
-- Wie stark skaliert die Grundimplementierung von `1` auf `4`, `8` und `12` Threads?
-- Ist `static` wegen geringer Scheduling-Kosten schnell oder leidet es unter Lastungleichgewicht?
-- Verbessern `dynamic` oder `guided` die Lastverteilung sichtbar?
-- Ist `guided` ein guter Kompromiss zwischen Lastbalancierung und Verwaltungsaufwand?
-- Was macht `auto` konkret auf dem verwendeten System?
-- Zeigt `runtime_*`, dass `runtime` keine eigene Strategie ist, sondern nur die Policy aus der Laufzeitumgebung übernimmt?
+![Speedup von auto und runtime](./ex2/results/plots/speedup_runtime_vs_auto.svg)
 
-### 8) Beobachtung und Interpretation
 
-Diesen Abschnitt formuliere ich sauber aus, sobald du mir die echten Cluster-Ergebnisse für Exercise 2 gibst.
+### 5) Beobachtung und Interpretation
+
+#### Was machen die Scheduling-Methoden?
+
+- `static`: Die Iterationen werden von Anfang an fest auf die Threads verteilt.
+- `dynamic`: Threads bekommen neue Arbeit erst dann, wenn sie ihre aktuelle Arbeit beendet haben.
+- `guided`: Wie `dynamic`, aber mit anfangs größeren und später kleineren Paketen.
+- `auto`: Die Entscheidung über den Schedule wird der OpenMP-Laufzeit bzw. dem Compiler überlassen.
+- `runtime`: Die konkrete Strategie wird nicht fest im Quelltext vorgegeben, sondern erst zur Laufzeit gesetzt.
+
+Für Mandelbrot ist das wichtig, weil nicht jede Bildzeile gleich teuer ist. Bereiche nahe am Rand der Mandelbrot-Menge benötigen oft deutlich mehr Iterationen als einfache Bereiche außerhalb. Deshalb spielt Lastverteilung hier eine große Rolle.
+
+#### Vergleich von `static`, `dynamic`, `guided` und `auto`
+
+Bei `1` Thread liegen alle vier Varianten fast gleichauf, jeweils ungefähr bei `9.76 s` bis `9.78 s`. Das ist plausibel, weil bei nur einem Thread noch kein echter Effekt der Arbeitsverteilung zwischen mehreren Threads auftritt.
+
+Mit mehreren Threads trennt sich das Verhalten jedoch klar:
+
+- `dynamic` ist am schnellsten
+- `guided` liegt dazwischen
+- `static` und `auto` sind deutlich langsamer
+
+##### `static`
+
+`static` skaliert zwar, aber deutlich schlechter als `dynamic` und `guided`:
+
+- `4` Threads: `4.085424 s`
+- `8` Threads: `2.517991 s`
+- `12` Threads: `1.760753 s`
+
+Der Speedup bei `12` Threads beträgt `5.548`, die Effizienz `0.462`.
+
+Beobachtung: `static` wird mit mehr Threads schneller, aber deutlich schwächer als die flexibleren Schedules.
+
+Erklärung: Bei `static` werden die Zeilen fest auf die Threads verteilt. Dadurch können einige Threads früher fertig sein, während andere noch aufwendigeren Zeilen zugeteilt sind. Genau dieses Lastungleichgewicht kostet Leistung.
+
+##### `dynamic`
+
+`dynamic` liefert die besten Ergebnisse:
+
+- `4` Threads: `2.456005 s`
+- `8` Threads: `1.274836 s`
+- `12` Threads: `0.850369 s`
+
+Der Speedup bei `12` Threads liegt bei `11.495`, die Effizienz bei `0.958`.
+
+Beobachtung: `dynamic` ist in allen Parallelfällen die schnellste Variante.
+
+Erklärung: Sobald ein Thread eine Zeile fertig bearbeitet hat, bekommt er die nächste. Dadurch wird das Lastungleichgewicht der Mandelbrot-Berechnung sehr gut abgefangen. In dieser Aufgabe ist der Vorteil der besseren Verteilung klar größer als der zusätzliche Overhead des Schedulings.
+
+Auch die Streuung ist sehr klein. Bei `12` Threads beträgt die Standardabweichung nur `0.000244 s`. Die Messungen sind also sehr stabil.
+
+##### `guided`
+
+`guided` ist ebenfalls deutlich besser als `static`, aber etwas schlechter als `dynamic`:
+
+- `4` Threads: `2.948721 s`
+- `8` Threads: `1.549154 s`
+- `12` Threads: `1.032178 s`
+
+Der Speedup bei `12` Threads beträgt `9.459`, die Effizienz `0.788`.
+
+Beobachtung: `guided` ist ein guter Mittelweg zwischen `static` und `dynamic`.
+
+Erklärung: Bei `guided` werden anfangs größere und später kleinere Arbeitspakete vergeben. Das reduziert den Verwaltungsaufwand gegenüber rein dynamischem Scheduling, bleibt aber flexibler als `static`. In den Messungen ist das klar besser als `static`, aber nicht so gut wie `dynamic`.
+
+##### `auto`
+
+`auto` verhält sich in diesen Messungen fast genauso wie `static`:
+
+- `auto`, `12` Threads: `1.761671 s`
+- `static`, `12` Threads: `1.760753 s`
+
+Auch bei `4` und `8` Threads liegen die Werte praktisch übereinander.
+
+Beobachtung: `auto` war hier nicht besonders gut, sondern fast identisch zu `static`.
+
+Erklärung: `auto` bedeutet nicht automatisch optimale Performance. Es bedeutet nur, dass die Entscheidung dem System überlassen wird. Auf diesem Cluster wurde offenbar eine Strategie gewählt, die sich sehr ähnlich zu `static` verhält.
+
+#### Was machen `auto` und `runtime`, und was kann man beobachten?
+
+`auto` überlässt die Entscheidung der Laufzeit bzw. dem Compiler. `runtime` ist noch expliziter: Dort steht im Quelltext nur `schedule(runtime)`, und die tatsächliche Policy wird erst zur Laufzeit gesetzt. `runtime` ist also kein eigener Scheduling-Algorithmus, sondern ein Mechanismus zur späteren Konfiguration.
+
+##### `runtime`
+
+Das zeigt sich direkt in den Messwerten:
+
+- `runtime_dynamic` verhält sich fast wie `dynamic`
+- `runtime_guided` verhält sich fast wie `guided`
+- `runtime_static` ist deutlich schneller als das direkte `static`
+
+Für `runtime_dynamic` und `dynamic` bei `12` Threads:
+
+- `dynamic`: `0.850369 s`
+- `runtime_dynamic`: `0.856859 s`
+
+Für `guided` und `runtime_guided` bei `12` Threads:
+
+- `guided`: `1.032178 s`
+- `runtime_guided`: `1.032719 s`
+
+Beobachtung: `runtime_dynamic` und `runtime_guided` liegen jeweils sehr nahe an den direkt kodierten Varianten.
+
+Erklärung: Das bestätigt genau die Bedeutung von `runtime`: Die tatsächliche Strategie kommt aus der Laufzeitkonfiguration.
+
+Auffällig ist allerdings `runtime_static`:
+
+- `runtime_static`, `12` Threads: `0.857614 s`
+- `static`, `12` Threads: `1.760753 s`
+
+Der Grund ist hier sehr wahrscheinlich die konkrete Konfiguration. In der `runtime`-Variante wurde `omp_set_schedule(..., 1)` verwendet. Bei `runtime_static` bedeutet das eine statische Verteilung mit Chunk-Größe `1`. Das ist nicht dasselbe wie das direkte `schedule(static)` ohne explizite Chunk-Größe. Durch die feinere Verteilung der Zeilen wird das Lastungleichgewicht deutlich besser abgefangen. Deshalb liegt `runtime_static` in diesen Messungen viel näher an `dynamic` als an der einfachen Blockverteilung von `static`.
+
