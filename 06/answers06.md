@@ -86,6 +86,22 @@ Das Skript:
 - kompiliert alle vier Programme mit `-O3` und `-fopenmp`
 - setzt `OMP_NUM_THREADS` auf `1`, `4`, `8` und `12`
 - führt für jede Konfiguration mehrere Läufe aus
+- verwendet für `critical` standardmäßig weniger Wiederholungen
+- schreibt vor und nach jedem Lauf einen kurzen Fortschrittsstatus ins Job-Log
 - schreibt alle Rohdaten direkt in `results/time_results.csv`
 
+Die Standardparameter im Skript sind:
+
+- `RUNS=5` für `serial`, `atomic` und `reduction`
+- `CRITICAL_RUNS=1` für `critical`
+- `SAMPLES=700000000`
+
+Der getrennte Wert für `critical` ist sinnvoll, weil diese Variante durch die globale kritische Sektion extrem schlecht skaliert und sonst leicht in das Slurm-Zeitlimit läuft.
+
+Falls du die Varianten getrennt starten willst, geht das direkt über `sbatch`:
+
+```bash
+sbatch --export=ALL,VARIANTS="serial atomic reduction" job.sh
+sbatch --export=ALL,VARIANTS="critical",CRITICAL_RUNS=1 job.sh
+```
 
