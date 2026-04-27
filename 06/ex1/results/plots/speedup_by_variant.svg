@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="760" viewBox="0 0 1180 760" role="img">
+<rect width="100%" height="100%" fill="#faf8f3"/>
+<style>
+text { font-family: "Helvetica", "Arial", sans-serif; fill: #1f2937; }
+.title { font-size: 22px; font-weight: 700; }
+.subtitle { font-size: 12px; fill: #4b5563; }
+.axis { stroke: #374151; stroke-width: 1.2; }
+.grid { stroke: #d1d5db; stroke-width: 1; stroke-dasharray: 4 4; }
+.label { font-size: 12px; }
+.tick { font-size: 11px; fill: #4b5563; }
+.legend { font-size: 12px; }
+</style>
+<text class="title" x="90" y="50">Speedup by OpenMP Construct</text>
+<text class="subtitle" x="90" y="72">Dashed gray line shows ideal linear speedup for the tested thread counts.</text>
+<line class="grid" x1="90.0" y1="600.0" x2="1070.0" y2="600.0"/>
+<text class="tick" x="82.0" y="604.0" text-anchor="end">0.00</text>
+<line class="grid" x1="90.0" y1="500.0" x2="1070.0" y2="500.0"/>
+<text class="tick" x="82.0" y="504.0" text-anchor="end">2.64</text>
+<line class="grid" x1="90.0" y1="400.0" x2="1070.0" y2="400.0"/>
+<text class="tick" x="82.0" y="404.0" text-anchor="end">5.28</text>
+<line class="grid" x1="90.0" y1="300.0" x2="1070.0" y2="300.0"/>
+<text class="tick" x="82.0" y="304.0" text-anchor="end">7.92</text>
+<line class="grid" x1="90.0" y1="200.0" x2="1070.0" y2="200.0"/>
+<text class="tick" x="82.0" y="204.0" text-anchor="end">10.56</text>
+<line class="grid" x1="90.0" y1="100.0" x2="1070.0" y2="100.0"/>
+<text class="tick" x="82.0" y="104.0" text-anchor="end">13.20</text>
+<line class="axis" x1="90.0" y1="600.0" x2="1070.0" y2="600.0"/>
+<line class="axis" x1="90.0" y1="100.0" x2="90.0" y2="600.0"/>
+<text class="tick" x="90.0" y="624.0" text-anchor="middle">1</text>
+<text class="tick" x="416.7" y="624.0" text-anchor="middle">4</text>
+<text class="tick" x="743.3" y="624.0" text-anchor="middle">8</text>
+<text class="tick" x="1070.0" y="624.0" text-anchor="middle">12</text>
+<polyline fill="none" stroke="#9ca3af" stroke-dasharray="8 6" stroke-width="2" points="90.0,562.1 416.7,448.5 743.3,297.0 1070.0,145.5"/>
+<circle cx="90.0" cy="562.1" r="5" fill="#b45309"/>
+<circle cx="416.7" cy="593.9" r="5" fill="#b45309"/>
+<circle cx="743.3" cy="595.8" r="5" fill="#b45309"/>
+<circle cx="1070.0" cy="596.2" r="5" fill="#b45309"/>
+<polyline fill="none" stroke="#b45309" stroke-width="3" points="90.0,562.1 416.7,593.9 743.3,595.8 1070.0,596.2"/>
+<circle cx="90.0" cy="562.1" r="5" fill="#2563eb"/>
+<circle cx="416.7" cy="571.4" r="5" fill="#2563eb"/>
+<circle cx="743.3" cy="573.8" r="5" fill="#2563eb"/>
+<circle cx="1070.0" cy="578.7" r="5" fill="#2563eb"/>
+<polyline fill="none" stroke="#2563eb" stroke-width="3" points="90.0,562.1 416.7,571.4 743.3,573.8 1070.0,578.7"/>
+<circle cx="90.0" cy="562.1" r="5" fill="#059669"/>
+<circle cx="416.7" cy="452.9" r="5" fill="#059669"/>
+<circle cx="743.3" cy="309.8" r="5" fill="#059669"/>
+<circle cx="1070.0" cy="215.8" r="5" fill="#059669"/>
+<polyline fill="none" stroke="#059669" stroke-width="3" points="90.0,562.1 416.7,452.9 743.3,309.8 1070.0,215.8"/>
+<text class="label" x="580.0" y="714.0" text-anchor="middle">Threads</text>
+<text class="label" x="28" y="350.0" transform="rotate(-90 28 350.0)" text-anchor="middle">Speedup vs. same variant at 1 thread</text>
+<line x1="760" y1="54" x2="788" y2="54" stroke="#9ca3af" stroke-dasharray="8 6" stroke-width="2"/>
+<text class="legend" x="798" y="58">ideal</text>
+<line x1="760" y1="78" x2="788" y2="78" stroke="#b45309" stroke-width="3"/>
+<circle cx="774" cy="78" r="5" fill="#b45309"/>
+<text class="legend" x="798" y="82">critical</text>
+<line x1="760" y1="102" x2="788" y2="102" stroke="#2563eb" stroke-width="3"/>
+<circle cx="774" cy="102" r="5" fill="#2563eb"/>
+<text class="legend" x="798" y="106">atomic</text>
+<line x1="760" y1="126" x2="788" y2="126" stroke="#059669" stroke-width="3"/>
+<circle cx="774" cy="126" r="5" fill="#059669"/>
+<text class="legend" x="798" y="130">reduction</text>
+</svg>

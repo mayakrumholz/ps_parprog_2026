@@ -1,7 +1,7 @@
-#include <omp.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
+#include <stdint.h>
 
 #define DEFAULT_SAMPLES 700000000LL
 
