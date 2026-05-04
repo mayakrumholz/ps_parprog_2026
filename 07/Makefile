@@ -1,6 +1,6 @@
-CC = gcc-15
-CFLAGS = -std=c11 -O3 -Wall -Wextra -Werror -fopenmp
-LDLIBS = -lm
+CC ?= gcc
+CFLAGS ?= -std=c11 -O3 -Wall -Wextra -Werror -fopenmp
+LDLIBS ?= -lm
 
 .PHONY: all clean check
 

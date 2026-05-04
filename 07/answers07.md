@@ -39,7 +39,7 @@ for (int i = 0; i < n - 1; i++) {
 free(x_old);
 ```
 
-Warum korrekt:
+Warum:
 
 - jede Iteration liest nur aus `x_old`
 - jede Iteration schreibt nur nach `x[i]`
@@ -131,7 +131,7 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-Warum korrekt:
+Warum:
 
 - Die implizite Barriere am Ende des ersten `omp for` stellt sicher, dass alle `x[i]` fertig sind, bevor die zweite Schleife startet.
 
@@ -224,7 +224,7 @@ for (int i = 1; i < n; i++) {
 }
 ```
 
-Warum korrekt:
+Warum:
 
 - Nach Phase 1 enthält `y[i]` bereits die neuen Werte.
 - Phase 2 liest damit genau dieselben Werte wie die serielle Originalschleife.
@@ -325,9 +325,9 @@ Dabei werden Original- und Parallelversion mit identischen Eingabedaten verglich
 
 ### 4) Benchmark-Setup
 
-Lokal gemessen mit:
+Für den Benchmark ist das bereitgestellte Jobscript `job.sh` vorgesehen:
 
-- `gcc-15`
+- `gcc` bzw. auf LCC3 das Modul `gcc/12.2.0-gcc-8.5.0-p4pe45v`
 - `-O3 -fopenmp`
 - Thread-Zahlen `1`, `4`, `8`, `12`
 - `5` Läufe pro Konfiguration
@@ -339,11 +339,11 @@ Verwendete Problemgrößen:
 - `c_false`: `n = 16,000,000`, `16` Wiederholungen
 - `c_true`: `n = 16,000,000`, `12` Wiederholungen
 
-Hinweis:
+Wichtiger Hinweis:
 
-- Die lokale Maschine hat `8` logische Kerne.
-- Die Messung mit `12` Threads ist daher bereits leicht überbucht.
-- Für die eigentliche Abgabe kann dasselbe Skript auf LCC3 erneut ausgeführt werden.
+- Ein erster LCC3-Lauf ist fehlgeschlagen, weil `gcc-15` auf dem Cluster nicht existiert.
+- Deshalb sind die aktuell eingecheckten Dateien in `07/results/` noch **vorläufige Ergebnisse** und nicht der finale bestätigte Clusterlauf.
+- Nach dem Fix in `Makefile` und `job.sh` muss der Job einmal neu auf LCC3 ausgeführt werden.
 
 
 ### 5) Messergebnisse
@@ -470,7 +470,7 @@ Dass bereits die 1-Thread-Version schneller ist, liegt daran, dass die umgeformt
 
 ### 8) Reproduktion auf LCC3
 
-Falls die Messungen zusätzlich auf LCC3 wiederholt werden sollen:
+Zur erneuten Reproduktion der Messungen:
 
 ```bash
 cd 07

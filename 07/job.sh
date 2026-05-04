@@ -11,6 +11,10 @@ set -eu
 
 cd "${SLURM_SUBMIT_DIR:-$(pwd)}"
 
+if command -v module >/dev/null 2>&1; then
+    module load gcc/12.2.0-gcc-8.5.0-p4pe45v
+fi
+
 THREADS="1 4 8 12"
 CASES="a b c_false c_true"
 RUNS=5
