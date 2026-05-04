@@ -1,7 +1,8 @@
 # UIBK PS Parallel Systems (703078, 2026)
 
 This repository contains material required to complete exercises for the
-Parallel Programming lab in the 2026 summer semester, including assignment
+Parallel Progr
+amming lab in the 2026 summer semester, including assignment
 sheets and any associated materials. Note that some of this material is based
 on previous years.
 

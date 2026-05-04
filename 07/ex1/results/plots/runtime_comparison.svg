@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+<rect width="100%" height="100%" fill="#faf8f3"/>
+<style>
+text { font-family: Helvetica, Arial, sans-serif; fill: #1f2937; }
+.title { font-size: 24px; font-weight: 700; }
+.subtitle { font-size: 12px; fill: #4b5563; }
+.axis { stroke: #111827; stroke-width: 1.2; }
+.grid { stroke: #d1d5db; stroke-dasharray: 4 4; }
+.tick { font-size: 11px; fill: #4b5563; }
+.legend { font-size: 12px; }
+</style>
+<text class="title" x="90" y="52">Exercise 1 Runtime Comparison</text>
+<text class="subtitle" x="90" y="74">Parallel variants are compared against the serial baseline of each snippet.</text>
+<line class="grid" x1="90" y1="610.0" x2="1070" y2="610.0"/>
+<text class="tick" x="80" y="614.0" text-anchor="end">0.00</text>
+<line class="grid" x1="90" y1="510.0" x2="1070" y2="510.0"/>
+<text class="tick" x="80" y="514.0" text-anchor="end">0.00</text>
+<line class="grid" x1="90" y1="410.0" x2="1070" y2="410.0"/>
+<text class="tick" x="80" y="414.0" text-anchor="end">0.01</text>
+<line class="grid" x1="90" y1="310.0" x2="1070" y2="310.0"/>
+<text class="tick" x="80" y="314.0" text-anchor="end">0.01</text>
+<line class="grid" x1="90" y1="210.0" x2="1070" y2="210.0"/>
+<text class="tick" x="80" y="214.0" text-anchor="end">0.02</text>
+<line class="grid" x1="90" y1="110.0" x2="1070" y2="110.0"/>
+<text class="tick" x="80" y="114.0" text-anchor="end">0.02</text>
+<line class="axis" x1="90" y1="610" x2="1070" y2="610"/>
+<line class="axis" x1="90" y1="110" x2="90" y2="610"/>
+<text class="tick" x="90.0" y="634" text-anchor="middle">1</text>
+<text class="tick" x="416.7" y="634" text-anchor="middle">2</text>
+<text class="tick" x="743.3" y="634" text-anchor="middle">4</text>
+<text class="tick" x="1070.0" y="634" text-anchor="middle">8</text>
+<line x1="90" y1="159.5" x2="1070" y2="159.5" stroke="#2563eb" stroke-dasharray="8 6" stroke-width="1.5" opacity="0.55"/>
+<line x1="90.0" y1="169.4" x2="90.0" y2="239.0" stroke="#2563eb" stroke-width="2"/>
+<circle cx="90.0" cy="204.2" r="5" fill="#2563eb"/>
+<line x1="416.7" y1="236.4" x2="416.7" y2="367.3" stroke="#2563eb" stroke-width="2"/>
+<circle cx="416.7" cy="301.8" r="5" fill="#2563eb"/>
+<line x1="743.3" y1="336.7" x2="743.3" y2="421.3" stroke="#2563eb" stroke-width="2"/>
+<circle cx="743.3" cy="379.0" r="5" fill="#2563eb"/>
+<line x1="1070.0" y1="364.8" x2="1070.0" y2="396.3" stroke="#2563eb" stroke-width="2"/>
+<circle cx="1070.0" cy="380.5" r="5" fill="#2563eb"/>
+<polyline fill="none" stroke="#2563eb" stroke-width="3" points="90.0,204.2 416.7,301.8 743.3,379.0 1070.0,380.5"/>
+<line x1="90" y1="257.7" x2="1070" y2="257.7" stroke="#d97706" stroke-dasharray="8 6" stroke-width="1.5" opacity="0.55"/>
+<line x1="90.0" y1="161.0" x2="90.0" y2="277.9" stroke="#d97706" stroke-width="2"/>
+<circle cx="90.0" cy="219.4" r="5" fill="#d97706"/>
+<line x1="416.7" y1="288.3" x2="416.7" y2="358.0" stroke="#d97706" stroke-width="2"/>
+<circle cx="416.7" cy="323.1" r="5" fill="#d97706"/>
+<line x1="743.3" y1="361.9" x2="743.3" y2="391.9" stroke="#d97706" stroke-width="2"/>
+<circle cx="743.3" cy="376.9" r="5" fill="#d97706"/>
+<line x1="1070.0" y1="378.8" x2="1070.0" y2="402.7" stroke="#d97706" stroke-width="2"/>
+<circle cx="1070.0" cy="390.7" r="5" fill="#d97706"/>
+<polyline fill="none" stroke="#d97706" stroke-width="3" points="90.0,219.4 416.7,323.1 743.3,376.9 1070.0,390.7"/>
+<line x1="90" y1="155.5" x2="1070" y2="155.5" stroke="#059669" stroke-dasharray="8 6" stroke-width="1.5" opacity="0.55"/>
+<line x1="90.0" y1="177.2" x2="90.0" y2="222.8" stroke="#059669" stroke-width="2"/>
+<circle cx="90.0" cy="200.0" r="5" fill="#059669"/>
+<line x1="416.7" y1="301.6" x2="416.7" y2="354.9" stroke="#059669" stroke-width="2"/>
+<circle cx="416.7" cy="328.3" r="5" fill="#059669"/>
+<line x1="743.3" y1="355.8" x2="743.3" y2="382.7" stroke="#059669" stroke-width="2"/>
+<circle cx="743.3" cy="369.3" r="5" fill="#059669"/>
+<line x1="1070.0" y1="318.6" x2="1070.0" y2="380.7" stroke="#059669" stroke-width="2"/>
+<circle cx="1070.0" cy="349.7" r="5" fill="#059669"/>
+<polyline fill="none" stroke="#059669" stroke-width="3" points="90.0,200.0 416.7,328.3 743.3,369.3 1070.0,349.7"/>
+<text x="580.0" y="714" text-anchor="middle">Threads</text>
+<text x="28" y="360.0" transform="rotate(-90 28 360.0)" text-anchor="middle">Runtime [s]</text>
+<line x1="810" y1="58" x2="838" y2="58" stroke="#2563eb" stroke-width="3"/>
+<circle cx="824" cy="58" r="5" fill="#2563eb"/>
+<text class="legend" x="848" y="62">snippet1</text>
+<line x1="810" y1="82" x2="838" y2="82" stroke="#d97706" stroke-width="3"/>
+<circle cx="824" cy="82" r="5" fill="#d97706"/>
+<text class="legend" x="848" y="86">snippet2</text>
+<line x1="810" y1="106" x2="838" y2="106" stroke="#059669" stroke-width="3"/>
+<circle cx="824" cy="106" r="5" fill="#059669"/>
+<text class="legend" x="848" y="110">snippet3</text>
+</svg>
