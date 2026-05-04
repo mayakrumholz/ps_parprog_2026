@@ -1,4 +1,11 @@
 rm -f ex2_benchmark
-gcc-15 -std=c11 -O3 -Wall -Wextra -Werror -fopenmp    ex2_benchmark.c  -lm -o ex2_benchmark
-make: gcc-15: Command not found
-make: *** [<builtin>: ex2_benchmark] Error 127
+/usr/site/hpc/spack/v0.19-lcc3-20230919/opt/spack/linux-rocky8-westmere/gcc-8.5.0/gcc-12.2.0-p4pe45vebc7w5leppo2eeesyakewpbxf/bin/gcc -std=c11 -O3 -Wall -Wextra -Werror -fopenmp    ex2_benchmark.c  -lm -o ex2_benchmark
+./ex2_benchmark verify
+verify case=a n=2048 repetitions=4 status=ok
+verify case=b n=4096 repetitions=5 status=ok
+verify case=c_false n=4096 repetitions=6 status=ok
+verify case=c_true n=4096 repetitions=5 status=ok
+Traceback (most recent call last):
+  File "./analyze_results.py", line 8, in <module>
+    from dataclasses import dataclass
+ModuleNotFoundError: No module named 'dataclasses'
