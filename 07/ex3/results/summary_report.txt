@@ -1,4 +1,0 @@
-Assignment 07 - Exercise 3 Summary
-
-original threads=1 mean=0.015470s speedup=1.000
-parallel threads=2 mean=0.009699s speedup=1.595
