@@ -1,0 +1,30 @@
+===== JOB INFO =====
+n002.intern.lcc3.intra.uibk.ac.at
+/home/cb76/cb761174/ps_parprog_2026/07
+SLURM_CPUS_PER_TASK=12
+
+make -C ex1 clean
+make[1]: Entering directory '/home/cb76/cb761174/ps_parprog_2026/07/ex1'
+rm -f benchmark
+make[1]: Leaving directory '/home/cb76/cb761174/ps_parprog_2026/07/ex1'
+make -C ex2 clean
+make[1]: Entering directory '/home/cb76/cb761174/ps_parprog_2026/07/ex2'
+rm -f benchmark
+make[1]: Leaving directory '/home/cb76/cb761174/ps_parprog_2026/07/ex2'
+make -C ex3 clean
+make[1]: Entering directory '/home/cb76/cb761174/ps_parprog_2026/07/ex3'
+rm -f benchmark
+make[1]: Leaving directory '/home/cb76/cb761174/ps_parprog_2026/07/ex3'
+make -C ex1
+make[1]: Entering directory '/home/cb76/cb761174/ps_parprog_2026/07/ex1'
+gcc -std=c11 -O3 -Wall -Wextra -Werror -pedantic  -o benchmark benchmark.c -lm -pthread
+make[1]: Leaving directory '/home/cb76/cb761174/ps_parprog_2026/07/ex1'
+make -C ex2
+make[1]: Entering directory '/home/cb76/cb761174/ps_parprog_2026/07/ex2'
+gcc -std=c11 -O3 -Wall -Wextra -Werror -pedantic  -o benchmark benchmark.c -lm -pthread
+make[1]: Leaving directory '/home/cb76/cb761174/ps_parprog_2026/07/ex2'
+make -C ex3
+make[1]: Entering directory '/home/cb76/cb761174/ps_parprog_2026/07/ex3'
+gcc -std=c11 -O3 -Wall -Wextra -Werror -pedantic  -o benchmark benchmark.c -pthread
+make[1]: Leaving directory '/home/cb76/cb761174/ps_parprog_2026/07/ex3'
+python3: can't open file 'run_benchmarks.py': [Errno 2] No such file or directory
