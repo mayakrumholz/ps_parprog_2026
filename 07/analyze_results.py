@@ -5,37 +5,49 @@ import os
 import statistics
 import sys
 from collections import defaultdict
-from dataclasses import dataclass
 
 
-@dataclass
 class RunResult:
-    bench_case: str
-    variant: str
-    n: int
-    repetitions: int
-    threads: int
-    run: int
-    elapsed_seconds: float
-    checksum: float
+    def __init__(self, bench_case, variant, n, repetitions, threads, run, elapsed_seconds, checksum):
+        self.bench_case = bench_case
+        self.variant = variant
+        self.n = n
+        self.repetitions = repetitions
+        self.threads = threads
+        self.run = run
+        self.elapsed_seconds = elapsed_seconds
+        self.checksum = checksum
 
 
-@dataclass
 class Summary:
-    bench_case: str
-    variant: str
-    threads: int
-    n: int
-    repetitions: int
-    runs: int
-    mean_seconds: float
-    median_seconds: float
-    stdev_seconds: float
-    speedup_vs_original_1t: float
-    efficiency_vs_original_1t: float
+    def __init__(
+        self,
+        bench_case,
+        variant,
+        threads,
+        n,
+        repetitions,
+        runs,
+        mean_seconds,
+        median_seconds,
+        stdev_seconds,
+        speedup_vs_original_1t,
+        efficiency_vs_original_1t,
+    ):
+        self.bench_case = bench_case
+        self.variant = variant
+        self.threads = threads
+        self.n = n
+        self.repetitions = repetitions
+        self.runs = runs
+        self.mean_seconds = mean_seconds
+        self.median_seconds = median_seconds
+        self.stdev_seconds = stdev_seconds
+        self.speedup_vs_original_1t = speedup_vs_original_1t
+        self.efficiency_vs_original_1t = efficiency_vs_original_1t
 
 
-def load_results(csv_path: str) -> list[RunResult]:
+def load_results(csv_path):
     with open(csv_path, newline="", encoding="utf-8") as handle:
         rows = []
         reader = csv.DictReader(handle)
@@ -44,27 +56,25 @@ def load_results(csv_path: str) -> list[RunResult]:
             raise ValueError(f"{csv_path} misses required columns: {sorted(required)}")
 
         for row in reader:
-            rows.append(
-                RunResult(
-                    bench_case=row["case"],
-                    variant=row["variant"],
-                    n=int(row["n"]),
-                    repetitions=int(row["repetitions"]),
-                    threads=int(row["threads"]),
-                    run=int(row["run"]),
-                    elapsed_seconds=float(row["elapsed_seconds"]),
-                    checksum=float(row["checksum"]),
-                )
-            )
+            rows.append(RunResult(
+                bench_case=row["case"],
+                variant=row["variant"],
+                n=int(row["n"]),
+                repetitions=int(row["repetitions"]),
+                threads=int(row["threads"]),
+                run=int(row["run"]),
+                elapsed_seconds=float(row["elapsed_seconds"]),
+                checksum=float(row["checksum"]),
+            ))
 
     if not rows:
         raise ValueError(f"{csv_path} contains no benchmark rows")
     return rows
 
 
-def summarize(results: list[RunResult]) -> list[Summary]:
-    grouped: dict[tuple[str, str, int], list[RunResult]] = defaultdict(list)
-    baselines: dict[str, float] = {}
+def summarize(results):
+    grouped = defaultdict(list)
+    baselines = {}
 
     for result in results:
         grouped[(result.bench_case, result.variant, result.threads)].append(result)
@@ -99,7 +109,7 @@ def summarize(results: list[RunResult]) -> list[Summary]:
     return summaries
 
 
-def write_summary_csv(path: str, summaries: list[Summary]) -> None:
+def write_summary_csv(path, summaries):
     with open(path, "w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
         writer.writerow(
@@ -135,7 +145,7 @@ def write_summary_csv(path: str, summaries: list[Summary]) -> None:
             )
 
 
-def write_summary_markdown(path: str, summaries: list[Summary]) -> None:
+def write_summary_markdown(path, summaries):
     lines = [
         "# Exercise 2 Benchmark Summary",
         "",
@@ -161,11 +171,11 @@ def write_summary_markdown(path: str, summaries: list[Summary]) -> None:
         handle.write("\n".join(lines))
 
 
-def ensure_dir(path: str) -> None:
+def ensure_dir(path):
     os.makedirs(path, exist_ok=True)
 
 
-def svg_header(width: int, height: int) -> list[str]:
+def svg_header(width, height):
     return [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img">',
         '<rect width="100%" height="100%" fill="#f6f3ee"/>',
@@ -182,19 +192,19 @@ def svg_header(width: int, height: int) -> list[str]:
     ]
 
 
-def map_x(index: int, count: int, left: float, width: float) -> float:
+def map_x(index, count, left, width):
     if count <= 1:
         return left + width / 2.0
     return left + index * width / (count - 1)
 
 
-def map_y(value: float, max_value: float, top: float, height: float) -> float:
+def map_y(value, max_value, top, height):
     if max_value <= 0.0:
         return top + height
     return top + height - (value / max_value) * height
 
 
-def write_case_plot(summaries: list[Summary], bench_case: str, output_path: str, field: str, title: str, ylabel: str) -> None:
+def write_case_plot(summaries, bench_case, output_path, field, title, ylabel):
     width, height = 980, 620
     left, top = 80.0, 90.0
     plot_width, plot_height = 760.0, 420.0
@@ -248,7 +258,7 @@ def write_case_plot(summaries: list[Summary], bench_case: str, output_path: str,
         handle.write("\n".join(elements))
 
 
-def main() -> int:
+def main():
     if len(sys.argv) != 2:
         print(f"usage: {sys.argv[0]} <results/time_results.csv>", file=sys.stderr)
         return 1

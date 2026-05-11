@@ -339,12 +339,6 @@ Verwendete Problemgrößen:
 - `c_false`: `n = 16,000,000`, `16` Wiederholungen
 - `c_true`: `n = 16,000,000`, `12` Wiederholungen
 
-Wichtiger Hinweis:
-
-- Ein erster LCC3-Lauf ist fehlgeschlagen, weil `gcc-15` auf dem Cluster nicht existiert.
-- Deshalb sind die aktuell eingecheckten Dateien in `07/results/` noch **vorläufige Ergebnisse** und nicht der finale bestätigte Clusterlauf.
-- Nach dem Fix in `Makefile` und `job.sh` muss der Job einmal neu auf LCC3 ausgeführt werden.
-
 
 ### 5) Messergebnisse
 
@@ -360,41 +354,41 @@ Zusammenfassung:
 
 | Variante | Threads | Mittelwert [s] | Speedup ggü. Original 1T |
 | --- | ---: | ---: | ---: |
-| original | 1 | 0.561424 | 1.000 |
-| parallel | 1 | 0.549286 | 1.022 |
-| parallel | 4 | 0.346099 | 1.622 |
-| parallel | 8 | 0.328984 | 1.707 |
-| parallel | 12 | 0.305795 | 1.836 |
+| original | 1 | 0.799369 | 1.000 |
+| parallel | 1 | 0.806686 | 0.991 |
+| parallel | 4 | 0.454159 | 1.760 |
+| parallel | 8 | 0.472211 | 1.693 |
+| parallel | 12 | 0.484782 | 1.649 |
 
 #### Fall b
 
 | Variante | Threads | Mittelwert [s] | Speedup ggü. Original 1T |
 | --- | ---: | ---: | ---: |
-| original | 1 | 0.612782 | 1.000 |
-| parallel | 1 | 0.623753 | 0.982 |
-| parallel | 4 | 0.484276 | 1.265 |
-| parallel | 8 | 0.487457 | 1.257 |
-| parallel | 12 | 0.473371 | 1.295 |
+| original | 1 | 0.684812 | 1.000 |
+| parallel | 1 | 0.785085 | 0.872 |
+| parallel | 4 | 0.568355 | 1.205 |
+| parallel | 8 | 0.594297 | 1.152 |
+| parallel | 12 | 0.607936 | 1.126 |
 
 #### Fall `c_false`
 
 | Variante | Threads | Mittelwert [s] | Speedup ggü. Original 1T |
 | --- | ---: | ---: | ---: |
-| original | 1 | 0.328548 | 1.000 |
-| parallel | 1 | 0.339187 | 0.969 |
-| parallel | 4 | 0.260301 | 1.262 |
-| parallel | 8 | 0.257557 | 1.276 |
-| parallel | 12 | 0.251606 | 1.306 |
+| original | 1 | 0.415554 | 1.000 |
+| parallel | 1 | 0.409297 | 1.015 |
+| parallel | 4 | 0.299762 | 1.386 |
+| parallel | 8 | 0.315110 | 1.319 |
+| parallel | 12 | 0.325011 | 1.279 |
 
 #### Fall `c_true`
 
 | Variante | Threads | Mittelwert [s] | Speedup ggü. Original 1T |
 | --- | ---: | ---: | ---: |
-| original | 1 | 0.625826 | 1.000 |
-| parallel | 1 | 0.269002 | 2.326 |
-| parallel | 4 | 0.202027 | 3.098 |
-| parallel | 8 | 0.195464 | 3.202 |
-| parallel | 12 | 0.186387 | 3.358 |
+| original | 1 | 0.763524 | 1.000 |
+| parallel | 1 | 0.335290 | 2.277 |
+| parallel | 4 | 0.229138 | 3.332 |
+| parallel | 8 | 0.234391 | 3.257 |
+| parallel | 12 | 0.239875 | 3.183 |
 
 
 ### 6) Visualisierung
@@ -430,59 +424,42 @@ Zusammenfassung:
 
 Die ursprüngliche Schleife ist wegen `factor` seriell. Durch die Umformung auf blockweise Startfaktoren wird sie parallelisierbar. Die Skalierung ist sichtbar vorhanden, aber nicht ideal:
 
-- `4` Threads: Speedup `1.622`
-- `8` Threads: Speedup `1.707`
-- `12` Threads: Speedup `1.836`
+- `4` Threads: Speedup `1.760`
+- `8` Threads: Speedup `1.693`
+- `12` Threads: Speedup `1.649`
 
-Der Grund ist, dass pro Element nur sehr wenig Arbeit anfällt. Die Schleife ist daher eher speicher- bzw. overhead-limitiert als rechenlimitiert.
+Interessant ist, dass `4` Threads hier am besten abschneiden. Darüber hinaus sinkt der Speedup wieder leicht. Das spricht dafür, dass bei dieser sehr einfachen Schleife der Verwaltungsaufwand und die Speicherbandbreite ab etwa `8` Threads stärker ins Gewicht fallen als zusätzliche Rechenkerne.
 
 #### Fall b
 
 Die Phasentrennung entfernt die Abhängigkeit korrekt, bringt aber nur einen moderaten Gewinn:
 
-- `4` Threads: Speedup `1.265`
-- `8` Threads: Speedup `1.257`
-- `12` Threads: Speedup `1.295`
+- `4` Threads: Speedup `1.205`
+- `8` Threads: Speedup `1.152`
+- `12` Threads: Speedup `1.126`
 
-Hier sieht man gut, dass eine korrekte Parallelisierung nicht automatisch starke Skalierung bedeutet. Die Schleife besteht fast nur aus linearen Speicherzugriffen und wenigen arithmetischen Operationen.
+Hier sieht man gut, dass eine korrekte Parallelisierung nicht automatisch starke Skalierung bedeutet. Die zusätzliche Phase erzeugt mehr Speicherverkehr, und die Schleife besteht fast nur aus linearen Speicherzugriffen und wenigen arithmetischen Operationen. Deshalb ist der Gewinn klein und nimmt mit mehr Threads sogar wieder etwas ab.
 
 #### Fall `c_false`
 
 Ohne den `twice`-Zweig ist die Schleife praktisch ein einfacher Vektor-Update. Auch hier ist die Parallelisierung korrekt, aber nur mäßig wirksam:
 
-- `4` Threads: Speedup `1.262`
-- `8` Threads: Speedup `1.276`
-- `12` Threads: Speedup `1.306`
+- `4` Threads: Speedup `1.386`
+- `8` Threads: Speedup `1.319`
+- `12` Threads: Speedup `1.279`
 
-Auch das spricht für eine eher speicherbandbreitenlimitierte Schleife.
+Auch hier liegt das Optimum bereits bei `4` Threads. Mehr Threads bringen keine weitere Verbesserung, weil der Kernel sehr einfach ist und damit primär durch Speicherzugriffe begrenzt wird.
 
 #### Fall `c_true`
 
 Dieser Fall ist am interessantesten. Die algebraische Umformung entfernt nicht nur die Schleifenabhängigkeit, sondern auch die ungünstige In-Place-Kette zwischen Nachbariterationen. Dadurch ist der Gewinn deutlich größer:
 
-- `1` Thread: schon `2.326` mal schneller als das Original
-- `4` Threads: `3.098`
-- `8` Threads: `3.202`
-- `12` Threads: `3.358`
+- `1` Thread: schon `2.277` mal schneller als das Original
+- `4` Threads: `3.332`
+- `8` Threads: `3.257`
+- `12` Threads: `3.183`
 
-Dass bereits die 1-Thread-Version schneller ist, liegt daran, dass die umgeformte Variante weniger serielle Kettenbildung besitzt und pro Element einfacher strukturiert ist.
-
-
-### 8) Reproduktion auf LCC3
-
-Zur erneuten Reproduktion der Messungen:
-
-```bash
-cd 07
-sbatch job.sh
-```
-
-Danach stehen die Ergebnisse in:
-
-- `07/results/time_results.csv`
-- `07/results/summary_stats.csv`
-- `07/results/summary_table.md`
-- `07/results/plots/*.svg`
+Dass bereits die 1-Thread-Version schneller ist, liegt daran, dass die umgeformte Variante weniger serielle Kettenbildung besitzt und pro Element einfacher strukturiert ist. Das Maximum liegt hier ebenfalls bei `4` Threads; danach flacht die Skalierung leicht ab.
 
 
 ## Exercise 3
@@ -586,4 +563,4 @@ Dann:
 - schreiben nur nach `a_new`
 - die Iterationen werden unabhängig
 
-Falls zwingend in-place gearbeitet werden muss, braucht man stattdessen eine wellenförmige Abarbeitung der abhängigen Iterationen. Für diese Aufgabe ist die Variante mit temporärem Array aber die klarste und robusteste Parallelisierung.
+Falls zwingend in-place gearbeitet werden muss, braucht man stattdessen eine wellenförmige Abarbeitung der abhängigen Iterationen. Für diese Aufgabe ist die Variante mit temporärem Array aber wahrscheinlich die klarste und robusteste Parallelisierung.
