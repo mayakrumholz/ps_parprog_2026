@@ -1,0 +1,10 @@
+rm -f first_touch
+gcc -O3 -Wall -Wextra -std=c11 -fopenmp -o first_touch first_touch.c
+Traceback (most recent call last):
+  File "./analyze_results.py", line 150, in <module>
+    raise SystemExit(main())
+  File "./analyze_results.py", line 75, in main
+    "allocation_mean": mean([entry["allocation_seconds"] for entry in group]),
+  File "./analyze_results.py", line 12, in mean
+    return statistics.fmean(values)
+AttributeError: module 'statistics' has no attribute 'fmean'
