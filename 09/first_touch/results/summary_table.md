@@ -1,0 +1,8 @@
+| Case | Init | Schedule | Threads | N | Runs | Init mean [s] | Compute mean [s] | Compute median [s] | Compute stdev [s] | Total mean [s] | Relative to bad static |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| first_touch_bad | serial | static | 12 | 40000 | 5 | 2.609743 | 0.648515 | 0.648438 | 0.000999 | 3.290322 | 1.000 |
+| first_touch_good | parallel | static | 12 | 40000 | 5 | 3.244726 | 0.423355 | 0.423924 | 0.003091 | 3.705345 | 1.532 |
+| schedule_check | parallel | dynamic | 12 | 40000 | 5 | 3.520192 | 0.498355 | 0.493780 | 0.013076 | 4.057656 | 1.301 |
+| schedule_check | parallel | guided | 12 | 40000 | 5 | 0.963427 | 0.440965 | 0.466566 | 0.041682 | 1.441788 | 1.471 |
+| schedule_check | serial | dynamic | 12 | 40000 | 5 | 2.608901 | 0.548355 | 0.547752 | 0.001383 | 3.189257 | 1.183 |
+| schedule_check | serial | guided | 12 | 40000 | 5 | 2.614802 | 0.533050 | 0.532915 | 0.000394 | 3.179883 | 1.217 |

@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 def mean(values):
-    return statistics.fmean(values)
+    return sum(values) / len(values)
 
 
 def median(values):
