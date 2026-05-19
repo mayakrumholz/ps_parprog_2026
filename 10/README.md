@@ -1,4 +1,4 @@
-# Assignment 11
+# Assignment 10
 
 The goal of this assignment is to study several means of vectorizing a simple program.
 
