@@ -449,31 +449,20 @@ Die Aufgabenstellung verlangt dabei ausdrücklich:
 - den Vergleich zusätzlich für `double` statt `float` zu wiederholen
 - die Beobachtungen wieder mit `perf` zu überprüfen
 
-Die Kernfrage ist also diesmal nicht mehr:
 
-- „Kann der Compiler die Schleife selbst vektorisieren?“
-
-sondern:
-
-- „Was passiert, wenn wir dem Compiler die SIMD-Parallelität mit OpenMP explizit vorgeben?“
-
-
-### 2. Welches Thema man dafür verstehen muss
+### 2. Grundlegend
 
 Der wichtige neue Punkt in Exercise 2 ist der Unterschied zwischen:
 
 - OpenMP für **Threads**
 - OpenMP für **SIMD**
 
-Viele verbinden OpenMP zuerst mit `#pragma omp parallel for`. Das würde aber mehrere Threads starten und die Arbeit auf mehrere Kerne verteilen. Genau das ist hier **nicht** erlaubt.
-
-Stattdessen wird hier nur:
+Hier wird nicht `#pragma omp parallel for` verwendet, sondern:
 
 ```c
 #pragma omp simd
 ```
 
-verwendet.
 
 Diese Direktive sagt dem Compiler:
 
@@ -481,11 +470,6 @@ Diese Direktive sagt dem Compiler:
 - es sollen aber **keine zusätzlichen Threads** erzeugt werden
 
 Man arbeitet also weiterhin nur auf **einem Kern**, nutzt aber innerhalb dieses Kerns die Vektorregister breiter aus.
-
-Für das Verständnis ist außerdem wichtig:
-
-- `float` bedeutet einfache Genauigkeit und erlaubt bei SSE mehr Werte pro Vektorregister
-- `double` bedeutet doppelte Genauigkeit und benötigt pro Wert mehr Platz
 
 Bei 128-Bit-SSE gilt grob:
 
@@ -525,8 +509,6 @@ Dadurch kann derselbe Code als
 gebaut werden, ohne Logik doppelt schreiben zu müssen.
 
 #### 3.2 Die SIMD-relevante Schleife
-
-Die zentrale Funktion steht in [10/ex2/vector_add_typed.c](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex2/vector_add_typed.c:53):
 
 ```c
 for (run = 0; run < repetitions; ++run) {
@@ -636,33 +618,456 @@ Nachteil:
 
 ### 5. Ergebnisse und Einordnung
 
-Die finale Ergebnisinterpretation wird ergänzt, sobald die echten LCC3-Daten für `10/ex2` vorliegen.
+Die Messungen auf LCC3 wurden erfolgreich durchgeführt. Alle Varianten liefern `status=ok`, also korrekte Ergebnisse.
 
-Nach dem Clusterlauf sollen hier eingetragen und besprochen werden:
+#### 5.1 Laufzeitergebnisse
 
-- mittlere Laufzeit von `baseline_float`
-- mittlere Laufzeit von `auto_float`
-- mittlere Laufzeit von `omp_simd_float`
-- Vergleich `baseline_double` vs. `omp_simd_double`
-- Interpretation von `SSE_FP_PACKED` und `SSE_FP_SCALAR`
-- Interpretation von `SSE_SINGLE_PRECISION` und `SSE_DOUBLE_PRECISION`
-- Einordnung der drei erzeugten Grafiken
+Die gemittelten Laufzeiten sind:
+
+| Variant | Type | Mean [s] |
+| --- | --- | ---: |
+| `baseline_float` | `float` | `2.684614` |
+| `auto_float` | `float` | `0.508945` |
+| `omp_simd_float` | `float` | `0.509245` |
+| `baseline_double` | `double` | `2.690833` |
+| `omp_simd_double` | `double` | `1.793308` |
+
+Die wichtigsten Vergleiche daraus:
+
+- `baseline_float` vs. `omp_simd_float`: Speedup `5.272`
+- `baseline_float` vs. `auto_float`: Speedup `5.275`
+- `auto_float` vs. `omp_simd_float`: Faktor `0.999`, also praktisch gleich schnell
+- `baseline_double` vs. `omp_simd_double`: Speedup `1.500`
+
+Für die von der Aufgabe verlangte OpenMP-SIMD-Zeit bei `size = 2048`, `1e6` Wiederholungen und `float` ergibt sich also:
+
+- `omp_simd_float = 0.509245 s`
+
+#### 5.2 Analyse der Laufzeitgrafik
+
+Die Grafik [runtime_variants.svg](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex2/results/plots/runtime_variants.svg:1) zeigt den Gesamtvergleich aller Varianten.
+
+![Laufzeiten aller Varianten in Exercise 2](./ex2/results/plots/runtime_variants.svg)
+
+Man erkennt dort sofort:
+
+- beide Baseline-Versionen liegen bei ungefähr `2.69 s`
+- `auto_float` und `omp_simd_float` liegen fast exakt übereinander bei ungefähr `0.509 s`
+- `omp_simd_double` liegt mit ungefähr `1.79 s` deutlich unter `baseline_double`, aber klar über den `float`-SIMD-Varianten
+
+Das bedeutet:
+
+- OpenMP-SIMD funktioniert für `float` sehr gut
+- bei `float` ist die OpenMP-SIMD-Version praktisch gleich schnell wie die Auto-Vektorisierung aus Exercise 1
+- bei `double` gibt es ebenfalls einen Gewinn, aber deutlich kleiner
+
+#### 5.3 Detaillierter Vergleich der `float`-Varianten
+
+Die Grafik [float_variant_comparison.svg](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex2/results/plots/float_variant_comparison.svg:1) zoomt auf die drei `float`-Varianten:
+
+![Vergleich der Float-Varianten](./ex2/results/plots/float_variant_comparison.svg)
+
+Hier sieht man besonders gut:
+
+- der große Sprung passiert zwischen `baseline_float` und den beiden SIMD-Varianten
+- zwischen `auto_float` und `omp_simd_float` gibt es praktisch keinen relevanten Unterschied
+
+Das ist ein wichtiges Ergebnis dieser Aufgabe:
+
+- wenn die Schleife so einfach und regelmäßig ist wie hier, dann kommt OpenMP-SIMD auf praktisch denselben Effekt wie die Compiler-Auto-Vektorisierung
+
+Mit anderen Worten:
+
+- Exercise 2 bestätigt das Ergebnis aus Exercise 1
+- nur diesmal wird die SIMD-Eigenschaft nicht vom Compiler erkannt, sondern explizit im Quellcode angegeben
+
+#### 5.4 Analyse der `perf`-Ergebnisse für `float`
+
+Für `float` ergeben sich diese zentralen Zähler:
+
+Baseline:
+
+- `r1010:u = 0`
+- `r2010:u = 4095816729`
+- `r4010:u = 4100214428`
+- `cycles:u = 8308198700`
+- `instructions:u = 14340740509`
+
+Auto:
+
+- `r1010:u = 1023368807`
+- `r2010:u = 16`
+- `r4010:u = 1024409675`
+- `cycles:u = 1553765529`
+- `instructions:u = 4614418603`
+
+OpenMP-SIMD:
+
+- `r1010:u = 1024173347`
+- `r2010:u = 16`
+- `r4010:u = 1023545859`
+- `cycles:u = 1554255720`
+- `instructions:u = 4614090951`
+
+Interpretation:
+
+- `r1010:u` entspricht `SSE_FP_PACKED`
+- `r2010:u` entspricht `SSE_FP_SCALAR`
+- `r4010:u` entspricht `SSE_SINGLE_PRECISION`
+
+Damit zeigt sich für `float` sehr klar:
+
+- die Baseline nutzt praktisch keine gepackten SIMD-FP-Operationen
+- sowohl Auto-Vektorisierung als auch OpenMP-SIMD verwenden sehr viele gepackte FP-Operationen
+- die skalaren FP-Operationen verschwinden in beiden SIMD-Fällen fast vollständig
+
+Besonders wichtig ist:
+
+- `auto_float` und `omp_simd_float` haben nicht nur ähnliche Laufzeiten
+- sie haben auch fast identische `perf`-Zähler
+
+Das ist ein starker Hinweis darauf, dass beide Ansätze am Ende sehr ähnlichen SIMD-Maschinencode erzeugen.
+
+#### 5.5 Analyse der `perf`-Ergebnisse für `double`
+
+Für `double` ist vor allem dieser Vergleich interessant:
+
+Baseline:
+
+- `r1010:u = 0`
+- `r2010:u = 4095988613`
+- `r8010:u = 4096467175`
+
+OpenMP-SIMD:
+
+- `r1010:u = 2080777666`
+- `r2010:u = 16`
+- `r8010:u = 2083011791`
+
+Hier ist `r8010:u` besonders relevant, weil es `SSE_DOUBLE_PRECISION` zählt.
+
+Die Interpretation ist:
+
+- `baseline_double` führt die Rechnung weitgehend skalar aus
+- `omp_simd_double` schaltet klar auf gepackte SIMD-Operationen um
+- trotzdem ist der Speedup mit Faktor `1.500` kleiner als bei `float`
+
+Der Grund passt genau zur Erwartung:
+
+- bei `double` passen weniger Werte gleichzeitig in ein SSE-Register
+- dadurch fällt der mögliche SIMD-Gewinn kleiner aus
+
+#### 5.6 Analyse der `perf`-Grafik
+
+Die Grafik [perf_variant_events.svg](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex2/results/plots/perf_variant_events.svg:1) fasst diese Beobachtungen visuell zusammen.
+
+![Perf-Ereignisse für Exercise 2](./ex2/results/plots/perf_variant_events.svg)
+
+Besonders gut erkennbar ist:
+
+- bei den Baseline-Varianten ist `SSE_FP_PACKED` praktisch null
+- bei den SIMD-Varianten ist `SSE_FP_PACKED` hoch
+- bei den SIMD-Varianten fällt `SSE_FP_SCALAR` nahezu auf null
+- `float` zeigt Aktivität bei `SSE_SINGLE_PRECISION`
+- `double` zeigt Aktivität bei `SSE_DOUBLE_PRECISION`
+
+Diese Grafik ist deshalb sehr geeignet für die Abgabe, weil sie gleichzeitig zeigt:
+
+- dass SIMD wirklich genutzt wurde
+- dass sich `float` und `double` auch in den gezählten Präzisionstypen unterscheiden
+
+
+### 6. Vergleich zu Exercise 1 und Fazit
+
+Exercise 2 lässt sich sehr gut mit Exercise 1 vergleichen.
+
+Vorteile von OpenMP-SIMD:
+
+- man kann die SIMD-Absicht explizit im Code ausdrücken
+- man ist weniger darauf angewiesen, dass der Compiler die Schleife komplett selbst erkennt
+- der Ansatz bleibt portabler und deutlich lesbarer als spätere Intrinsics-Lösungen
+
+Nachteile von OpenMP-SIMD:
+
+- der Quellcode ist nicht mehr rein sequenziell
+- man trägt Optimierungswissen direkt in den Code ein
+- wenn der Compiler die Schleife ohnehin schon perfekt auto-vektorisiert, ist der zusätzliche Gewinn möglicherweise null
+
+Genau das sieht man hier bei `float`:
+
+- `auto_float` und `omp_simd_float` sind praktisch gleich schnell
+- die `perf`-Zähler sind nahezu identisch
+
+Das bedeutet:
+
+- für diese einfache Schleife bringt OpenMP-SIMD gegenüber der Compiler-Auto-Vektorisierung keinen spürbaren Zusatzgewinn
+- es bestätigt aber, dass dieselbe SIMD-Ausführung auch explizit über OpenMP erreichbar ist
+
+Für `double` zeigt sich zusätzlich:
+
+- auch dort hilft SIMD klar
+- der Gewinn ist aber kleiner als bei `float`
+
+Damit lautet das Gesamtfazit für Exercise 2:
+
+1. Die OpenMP-SIMD-Version ist korrekt.
+2. Für `float` erreicht sie praktisch dieselbe Leistung wie die Auto-Vektorisierung aus Exercise 1.
+3. Gegenüber der Baseline ist der Geschwindigkeitsgewinn bei `float` sehr groß, etwa Faktor `5.27`.
+4. Bei `double` gibt es ebenfalls eine Beschleunigung, aber nur etwa Faktor `1.50`.
+5. Die `perf`-Zähler bestätigen in beiden Fällen, dass die OpenMP-SIMD-Versionen tatsächlich gepackte SIMD-Gleitkommaoperationen verwenden.
+
+
+## Exercise 3
+
+### 1. Erklärung der Aufgabe
+
+In Exercise 3 soll die Vektorisierung nicht mehr dem Compiler oder OpenMP überlassen werden. Stattdessen soll die Rechenoperation mit **gcc-spezifischen SIMD-Intrinsics** direkt von Hand formuliert werden.
+
+Die Aufgabenstellung nennt dafür ausdrücklich:
+
+- `_mm_load_ps`
+- `_mm_add_ps`
+- `_mm_mul_ps`
+- `_mm_store_ps`
+
+sowie den Header:
+
+```c
+#include <xmmintrin.h>
+```
+
+Die Idee dieser Aufgabe ist:
+
+- in Exercise 1 hat der Compiler die Vektorisierung selbst erkannt
+- in Exercise 2 haben wir dem Compiler mit `#pragma omp simd` die SIMD-Struktur explizit mitgeteilt
+- in Exercise 3 schreiben wir die SIMD-Rechnung direkt selbst
+
+Dadurch rückt man noch näher an die eigentlichen Maschinenoperationen heran.
+
+
+### 2. Welches Thema man dafür verstehen muss
+
+Der wichtige neue Punkt hier ist der Unterschied zwischen:
+
+- automatischer Vektorisierung
+- deklarativer Vektorisierung mit OpenMP
+- expliziter Vektorisierung mit Intrinsics
+
+#### Was sind Intrinsics?
+
+Intrinsics sind Compiler-Funktionen, die sehr eng an konkrete SIMD-Instruktionen gebunden sind. Sie sehen im C-Code wie Funktionsaufrufe aus, stehen aber konzeptionell fast direkt für Maschinenbefehle.
+
+Beispielhaft gilt hier:
+
+- `_mm_load_ps` lädt vier `float`-Werte in ein SSE-Register
+- `_mm_mul_ps` multipliziert zwei solche Register elementweise
+- `_mm_add_ps` addiert sie elementweise
+- `_mm_store_ps` schreibt das Ergebnis zurück in den Speicher
+
+Damit arbeitet man direkt mit dem Datentyp:
+
+```c
+__m128
+```
+
+Ein `__m128` enthält bei SSE vier `float`-Werte.
+
+#### Warum ist das stärker „manuell“ als OpenMP-SIMD?
+
+Bei OpenMP-SIMD beschreibt man nur:
+
+- „Diese Schleife darf SIMD-parallel ausgeführt werden.“
+
+Bei Intrinsics beschreibt man dagegen schon:
+
+- welche SIMD-Register verwendet werden
+- wann Daten geladen werden
+- wann multipliziert wird
+- wann addiert wird
+- wann zurückgeschrieben wird
+
+Dadurch bekommt man mehr Kontrolle, aber der Code wird auch deutlich hardware-näher und weniger portabel.
+
+#### Warum braucht man hier einen Restfall?
+
+Die Intrinsics arbeiten immer mit Viererblöcken von `float`.
+
+Wenn `size` nicht durch `4` teilbar wäre, könnten am Ende noch einzelne Elemente übrig bleiben. Deshalb braucht man zusätzlich zur Vektorschleife noch eine kleine skalare Restschleife.
+
+Auch wenn die gewählten Problemgrößen in unseren Messungen Vielfache von `4` sind, ist dieser Restfall für einen sauberen allgemeinen Code wichtig.
+
+
+### 3. Umsetzung mit dem Code
+
+Verwendete Dateien:
+
+- Programm: [10/ex3/vector_add_intrinsics.c](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/vector_add_intrinsics.c)
+- Build-Datei: [10/ex3/Makefile](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/Makefile)
+- Jobscript: [10/ex3/job.sh](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/job.sh)
+- Auswertung: [10/ex3/analyze_results.py](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/analyze_results.py)
+
+#### 3.1 Die manuell vektorisierte Schleife
+
+Die Kernschleife steht in [10/ex3/vector_add_intrinsics.c](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/vector_add_intrinsics.c:42):
+
+```c
+for (i = 0; i + 3 < size; i += 4) {
+    __m128 a_vec = _mm_load_ps(&a[i]);
+    __m128 b_vec = _mm_load_ps(&b[i]);
+    __m128 c_vec = _mm_load_ps(&c[i]);
+    __m128 mul_vec = _mm_mul_ps(b_vec, c_vec);
+    __m128 sum_vec = _mm_add_ps(a_vec, mul_vec);
+    _mm_store_ps(&a[i], sum_vec);
+}
+```
+
+Die Bedeutung der einzelnen Zeilen ist:
+
+- `_mm_load_ps(&a[i])`
+  lädt vier aufeinanderfolgende `float`-Werte aus `a`
+- `_mm_load_ps(&b[i])`
+  lädt vier Werte aus `b`
+- `_mm_load_ps(&c[i])`
+  lädt vier Werte aus `c`
+- `_mm_mul_ps(b_vec, c_vec)`
+  multipliziert die vier Werte von `b` und `c` elementweise
+- `_mm_add_ps(a_vec, mul_vec)`
+  addiert das Ergebnis elementweise zu den vier Werten aus `a`
+- `_mm_store_ps(&a[i], sum_vec)`
+  schreibt die vier aktualisierten Werte zurück
+
+Damit wird die skalare Operation
+
+```text
+a[i] += b[i] * c[i]
+```
+
+nicht mehr elementweise, sondern blockweise für vier `float`-Werte gleichzeitig ausgeführt.
+
+#### 3.2 Restschleife für nicht durch 4 teilbare Größen
+
+Direkt danach folgt:
+
+```c
+for (; i < size; ++i) {
+    a[i] += b[i] * c[i];
+}
+```
+
+Diese Schleife behandelt eventuell übrig gebliebene Einzelelemente.
+
+Der Vorteil ist:
+
+- das Programm bleibt korrekt für allgemeine `size`
+- die SIMD-Schleife muss nicht künstlich auf Vielfache von `4` beschränkt werden
+
+#### 3.3 Warum `_mm_load_ps` hier zulässig ist
+
+`_mm_load_ps` setzt ausgerichteten Speicher voraus. Deshalb werden die Arrays auch hier wieder mit ausgerichteter Allokation erzeugt:
+
+```c
+a = xaligned_alloc(64, bytes);
+b = xaligned_alloc(64, bytes);
+c = xaligned_alloc(64, bytes);
+```
+
+Dadurch ist sichergestellt, dass die verwendeten Adressen für diese SSE-Ladeoperationen geeignet sind.
+
+#### 3.4 Build-Entscheidung
+
+Im [10/ex3/Makefile](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/Makefile:1) wird die Intrinsics-Version mit:
+
+- `-O1`
+- `-fno-tree-vectorize`
+- `-msse`
+
+gebaut.
+
+Das ist hier wichtig:
+
+- `-O1`, damit die Bedingungen mit den vorigen Aufgaben vergleichbar bleiben
+- `-fno-tree-vectorize`, damit nicht zusätzlich die normale Auto-Vektorisierung über die Schleife läuft
+- `-msse`, damit die verwendeten SSE-Intrinsics explizit verfügbar sind
+
+#### 3.5 Was auf LCC3 gemessen wird
+
+Das Jobscript misst die Intrinsics-Version für dieselben Problemgrößen wie Exercise 1:
+
+```text
+256, 512, 1024, 2048, 4096, 8192
+```
+
+Jede Größe wird `5` mal gemessen.
+
+Für `2048` und `8192` wird zusätzlich `perf` ausgeführt.
+
+Die Auswertung liest dann:
+
+- die Baseline- und Auto-Daten aus `ex1`
+- die OpenMP-SIMD-Daten aus `ex2`
+- die neuen Intrinsics-Daten aus `ex3`
+
+Dadurch kann Exercise 3 direkt gegen beide vorherigen Lösungen verglichen werden, ohne dass auf dem Cluster unnötig alle alten Programme noch einmal mitgemessen werden müssen.
+
+
+### 4. Was man vor den Ergebnissen erwarten kann und warum
+
+Vor der Messung ist fachlich zu erwarten:
+
+1. Die Intrinsics-Version sollte deutlich schneller sein als die Baseline.
+2. Sie sollte SIMD-Zähler zeigen, die zu einer echten Vektorversion passen.
+3. Sie könnte ähnlich schnell wie die Auto-Vektorisierung und die OpenMP-SIMD-Version sein.
+4. Ein sehr großer zusätzlicher Gewinn gegenüber Exercise 1 und 2 ist nicht zwingend zu erwarten.
+
+Warum?
+
+Wenn Compiler und OpenMP in den vorherigen Aufgaben bereits sehr guten SIMD-Code erzeugt haben, dann bleibt für die manuelle Intrinsics-Variante oft nur wenig zusätzlicher Spielraum.
+
+Trotzdem gibt es hier einen wichtigen inhaltlichen Unterschied:
+
+- Exercise 1: der Compiler entscheidet selbst
+- Exercise 2: der Compiler bekommt eine SIMD-Direktive
+- Exercise 3: die SIMD-Rechenoperation wird direkt von uns festgelegt
+
+Ein möglicher Vorteil von Intrinsics ist:
+
+- maximale Kontrolle über die SIMD-Operationen
+
+Mögliche Nachteile sind:
+
+- deutlich schlechtere Lesbarkeit
+- stärkere Bindung an eine konkrete SIMD-Architektur
+- geringere Portabilität
+
+
+### 5. Ergebnisse und Einordnung
+
+Die finale Ergebnisinterpretation wird ergänzt, sobald die echten LCC3-Daten für `10/ex3` vorliegen.
+
+Nach dem Clusterlauf sollen hier insbesondere ergänzt werden:
+
+- Laufzeit der Intrinsics-Version für alle Problemgrößen
+- Vergleich zu Baseline und Auto-Vektorisierung aus Exercise 1
+- Vergleich zur OpenMP-SIMD-Version aus Exercise 2
+- spezielle Betrachtung von `size = 2048`
+- Interpretation der `perf`-Zähler
+- Einordnung der automatisch erzeugten Vergleichsgrafiken
 
 
 ### 6. Vorbereitung für den LCC3-Lauf
 
-Für Exercise 2 sind jetzt alle Materialien vorbereitet. Auf dem Cluster sind dann nur diese Schritte nötig:
+Für Exercise 3 sind jetzt alle Materialien vorbereitet. Auf dem Cluster sind dann nur diese Schritte nötig:
 
 ```bash
-cd 10/ex2
+cd 10/ex3
 sbatch job.sh
 ```
 
 Wichtige Ergebnisdateien danach:
 
-- `10/ex2/job_ex2.log`
-- `10/ex2/results/time_results.csv`
-- `10/ex2/results/perf_results.csv`
-- `10/ex2/results/summary_table.md`
-- `10/ex2/results/perf_summary.md`
-- `10/ex2/results/plots/*.svg`
+- `10/ex3/job_ex3.log`
+- `10/ex3/results/time_results.csv`
+- `10/ex3/results/perf_results.csv`
+- `10/ex3/results/summary_table.md`
+- `10/ex3/results/perf_summary.md`
+- `10/ex3/results/plots/*.svg`
