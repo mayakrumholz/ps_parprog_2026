@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+<rect width="100%" height="100%" fill="#fffdf8"/>
+<text x="450.0" y="30" text-anchor="middle" font-size="22" font-family="Helvetica, Arial, sans-serif">Runtime of a[i] += b[i] * c[i]</text>
+<line x1="90" y1="440.00" x2="870" y2="440.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="445.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">0.000</text>
+<line x1="90" y1="364.00" x2="870" y2="364.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="369.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">2.372</text>
+<line x1="90" y1="288.00" x2="870" y2="288.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="293.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">4.744</text>
+<line x1="90" y1="212.00" x2="870" y2="212.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="217.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">7.116</text>
+<line x1="90" y1="136.00" x2="870" y2="136.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="141.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">9.488</text>
+<line x1="90" y1="60.00" x2="870" y2="60.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="65.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">11.860</text>
+<line x1="90.00" y1="60" x2="90.00" y2="440" stroke="#eeeeee"/>
+<text x="90.00" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">256</text>
+<line x1="115.16" y1="60" x2="115.16" y2="440" stroke="#eeeeee"/>
+<text x="115.16" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">512</text>
+<line x1="165.48" y1="60" x2="165.48" y2="440" stroke="#eeeeee"/>
+<text x="165.48" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">1024</text>
+<line x1="266.13" y1="60" x2="266.13" y2="440" stroke="#eeeeee"/>
+<text x="266.13" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">2048</text>
+<line x1="467.42" y1="60" x2="467.42" y2="440" stroke="#eeeeee"/>
+<text x="467.42" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">4096</text>
+<line x1="870.00" y1="60" x2="870.00" y2="440" stroke="#eeeeee"/>
+<text x="870.00" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">8192</text>
+<line x1="90" y1="60" x2="90" y2="440" stroke="#333333" stroke-width="2"/>
+<line x1="90" y1="440" x2="870" y2="440" stroke="#333333" stroke-width="2"/>
+<polyline fill="none" stroke="#9b2226" stroke-width="3" points="90.00,429.14 115.16,418.37 165.48,396.75 266.13,353.95 467.42,267.52 870.00,94.55"/>
+<circle cx="90.00" cy="429.14" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<circle cx="115.16" cy="418.37" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<circle cx="165.48" cy="396.75" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<circle cx="266.13" cy="353.95" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<circle cx="467.42" cy="267.52" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<circle cx="870.00" cy="94.55" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<polyline fill="none" stroke="#005f73" stroke-width="3" points="90.00,437.97 115.16,435.74 165.48,431.70 266.13,423.65 467.42,382.09 870.00,324.35"/>
+<circle cx="90.00" cy="437.97" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<circle cx="115.16" cy="435.74" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<circle cx="165.48" cy="431.70" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<circle cx="266.13" cy="423.65" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<circle cx="467.42" cy="382.09" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<circle cx="870.00" cy="324.35" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<rect x="600" y="70" width="250" height="70" fill="#ffffff" stroke="#cccccc"/>
+<line x1="612" y1="94" x2="642" y2="94" stroke="#9b2226" stroke-width="3"/>
+<text x="652" y="99" font-size="13" font-family="Helvetica, Arial, sans-serif">baseline (-O1, no vectorization)</text>
+<line x1="612" y1="122" x2="642" y2="122" stroke="#005f73" stroke-width="3"/>
+<text x="652" y="127" font-size="13" font-family="Helvetica, Arial, sans-serif">auto-vectorized (-O1 -ftree-vectorize)</text>
+<text x="450.0" y="510" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif">Vector length</text>
+<text x="22" y="260.0" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif" transform="rotate(-90 22 260.0)">Mean runtime [s]</text>
+</svg>

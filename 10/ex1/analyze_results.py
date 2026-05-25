@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 
-from __future__ import annotations
-
 import csv
 import math
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Iterable
+from typing import Dict, List, Optional, Tuple
 from xml.sax.saxutils import escape
 
 
-def read_rows(path: Path) -> list[dict[str, str]]:
+def read_rows(path):
     if not path.exists():
         return []
 
@@ -19,26 +17,26 @@ def read_rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
-def mean(values: list[float]) -> float:
-    return sum(values) / len(values)
+def mean(values):
+    return sum(values) / float(len(values))
 
 
-def sample_stddev(values: list[float]) -> float:
+def sample_stddev(values):
     if len(values) < 2:
         return 0.0
 
     avg = mean(values)
-    variance = sum((value - avg) ** 2 for value in values) / (len(values) - 1)
+    variance = sum((value - avg) ** 2 for value in values) / float(len(values) - 1)
     return math.sqrt(variance)
 
 
-def summarize_time_rows(rows: list[dict[str, str]]) -> list[dict[str, object]]:
-    grouped: dict[tuple[str, int], list[float]] = defaultdict(list)
+def summarize_time_rows(rows):
+    grouped = defaultdict(list)
 
     for row in rows:
         grouped[(row["variant"], int(row["size"]))].append(float(row["elapsed_seconds"]))
 
-    summary: list[dict[str, object]] = []
+    summary = []
     for (variant, size), values in sorted(grouped.items(), key=lambda item: (item[0][1], item[0][0])):
         summary.append(
             {
@@ -55,9 +53,9 @@ def summarize_time_rows(rows: list[dict[str, str]]) -> list[dict[str, object]]:
     return summary
 
 
-def summarize_speedup(time_summary: list[dict[str, object]]) -> list[dict[str, object]]:
-    baseline_means: dict[int, float] = {}
-    auto_means: dict[int, float] = {}
+def summarize_speedup(time_summary):
+    baseline_means = {}
+    auto_means = {}
 
     for row in time_summary:
         size = int(row["size"])
@@ -68,7 +66,7 @@ def summarize_speedup(time_summary: list[dict[str, object]]) -> list[dict[str, o
         elif row["variant"] == "auto_vectorized":
             auto_means[size] = mean_seconds
 
-    result: list[dict[str, object]] = []
+    result = []
     for size in sorted(set(baseline_means) & set(auto_means)):
         result.append(
             {
@@ -82,16 +80,16 @@ def summarize_speedup(time_summary: list[dict[str, object]]) -> list[dict[str, o
     return result
 
 
-def summarize_perf_rows(rows: list[dict[str, str]]) -> list[dict[str, object]]:
-    grouped: dict[tuple[str, int, str], list[float]] = defaultdict(list)
-    units: dict[tuple[str, int, str], str] = {}
+def summarize_perf_rows(rows):
+    grouped = defaultdict(list)
+    units = {}
 
     for row in rows:
         key = (row["variant"], int(row["size"]), row["metric"])
         grouped[key].append(float(row["value"]))
         units[key] = row["unit"]
 
-    summary: list[dict[str, object]] = []
+    summary = []
     for (variant, size, metric), values in sorted(grouped.items(), key=lambda item: (item[0][1], item[0][0], item[0][2])):
         summary.append(
             {
@@ -107,14 +105,14 @@ def summarize_perf_rows(rows: list[dict[str, str]]) -> list[dict[str, object]]:
     return summary
 
 
-def write_csv(path: Path, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
+def write_csv(path, rows, fieldnames):
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
 
 
-def write_summary_table(path: Path, time_summary: list[dict[str, object]], speedup_summary: list[dict[str, object]]) -> None:
+def write_summary_table(path, time_summary, speedup_summary):
     lines = [
         "# Exercise 1 Summary",
         "",
@@ -126,9 +124,15 @@ def write_summary_table(path: Path, time_summary: list[dict[str, object]], speed
 
     for row in time_summary:
         lines.append(
-            f"| {row['variant']} | {row['size']} | {row['runs']} | "
-            f"{float(row['mean_seconds']):.6f} | {float(row['stddev_seconds']):.6f} | "
-            f"{float(row['min_seconds']):.6f} | {float(row['max_seconds']):.6f} |"
+            "| {variant} | {size} | {runs} | {mean:.6f} | {stddev:.6f} | {minv:.6f} | {maxv:.6f} |".format(
+                variant=row["variant"],
+                size=row["size"],
+                runs=row["runs"],
+                mean=float(row["mean_seconds"]),
+                stddev=float(row["stddev_seconds"]),
+                minv=float(row["min_seconds"]),
+                maxv=float(row["max_seconds"]),
+            )
         )
 
     lines.extend(
@@ -143,14 +147,18 @@ def write_summary_table(path: Path, time_summary: list[dict[str, object]], speed
 
     for row in speedup_summary:
         lines.append(
-            f"| {row['size']} | {float(row['baseline_mean_seconds']):.6f} | "
-            f"{float(row['auto_mean_seconds']):.6f} | {float(row['speedup']):.3f} |"
+            "| {size} | {baseline:.6f} | {auto:.6f} | {speedup:.3f} |".format(
+                size=row["size"],
+                baseline=float(row["baseline_mean_seconds"]),
+                auto=float(row["auto_mean_seconds"]),
+                speedup=float(row["speedup"]),
+            )
         )
 
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def write_perf_table(path: Path, perf_summary: list[dict[str, object]]) -> None:
+def write_perf_table(path, perf_summary):
     lines = [
         "# Perf Summary",
         "",
@@ -160,21 +168,20 @@ def write_perf_table(path: Path, perf_summary: list[dict[str, object]]) -> None:
 
     for row in perf_summary:
         lines.append(
-            f"| {row['variant']} | {row['size']} | {row['metric']} | "
-            f"{float(row['mean_value']):.3f} | {float(row['stddev_value']):.3f} | {row['unit']} |"
+            "| {variant} | {size} | {metric} | {meanv:.3f} | {stddev:.3f} | {unit} |".format(
+                variant=row["variant"],
+                size=row["size"],
+                metric=row["metric"],
+                meanv=float(row["mean_value"]),
+                stddev=float(row["stddev_value"]),
+                unit=row["unit"],
+            )
         )
 
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def svg_line_chart(
-    path: Path,
-    title: str,
-    x_label: str,
-    y_label: str,
-    series: list[dict[str, object]],
-    y_reference: float | None = None,
-) -> None:
+def svg_line_chart(path, title, x_label, y_label, series, y_reference=None):
     width = 900
     height = 520
     left = 90
@@ -184,7 +191,10 @@ def svg_line_chart(
     plot_width = width - left - right
     plot_height = height - top - bottom
 
-    all_points = [point for item in series for point in item["points"]]
+    all_points = []
+    for item in series:
+        all_points.extend(item["points"])
+
     x_values = [point[0] for point in all_points]
     y_values = [point[1] for point in all_points]
 
@@ -196,74 +206,66 @@ def svg_line_chart(
         max_y = 1.0
     max_y *= 1.1
 
-    def x_to_svg(value: float) -> float:
+    def x_to_svg(value):
         if max_x == min_x:
-            return left + plot_width / 2
-        return left + ((value - min_x) / (max_x - min_x)) * plot_width
+            return left + plot_width / 2.0
+        return left + ((value - min_x) / float(max_x - min_x)) * plot_width
 
-    def y_to_svg(value: float) -> float:
-        return top + plot_height - ((value - min_y) / (max_y - min_y)) * plot_height
+    def y_to_svg(value):
+        return top + plot_height - ((value - min_y) / float(max_y - min_y)) * plot_height
 
-    lines: list[str] = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+    lines = [
+        '<svg xmlns="http://www.w3.org/2000/svg" width="{0}" height="{1}" viewBox="0 0 {0} {1}">'.format(width, height),
         '<rect width="100%" height="100%" fill="#fffdf8"/>',
-        f'<text x="{width / 2}" y="30" text-anchor="middle" font-size="22" font-family="Helvetica, Arial, sans-serif">{escape(title)}</text>',
+        '<text x="{0}" y="30" text-anchor="middle" font-size="22" font-family="Helvetica, Arial, sans-serif">{1}</text>'.format(
+            width / 2.0, escape(title)
+        ),
     ]
 
     for index in range(6):
-        value = min_y + (max_y - min_y) * index / 5
+        value = min_y + (max_y - min_y) * index / 5.0
         y = y_to_svg(value)
-        lines.append(f'<line x1="{left}" y1="{y:.2f}" x2="{width - right}" y2="{y:.2f}" stroke="#d9d9d9" stroke-dasharray="4 4"/>')
-        lines.append(f'<text x="{left - 10}" y="{y + 5:.2f}" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">{value:.3f}</text>')
+        lines.append('<line x1="{0}" y1="{1:.2f}" x2="{2}" y2="{1:.2f}" stroke="#d9d9d9" stroke-dasharray="4 4"/>'.format(left, y, width - right))
+        lines.append('<text x="{0}" y="{1:.2f}" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">{2:.3f}</text>'.format(left - 10, y + 5, value))
 
     unique_x = sorted(set(x_values))
     for value in unique_x:
         x = x_to_svg(value)
-        lines.append(f'<line x1="{x:.2f}" y1="{top}" x2="{x:.2f}" y2="{top + plot_height}" stroke="#eeeeee"/>')
-        lines.append(f'<text x="{x:.2f}" y="{height - 40}" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">{value:g}</text>')
+        lines.append('<line x1="{0:.2f}" y1="{1}" x2="{0:.2f}" y2="{2}" stroke="#eeeeee"/>'.format(x, top, top + plot_height))
+        lines.append('<text x="{0:.2f}" y="{1}" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">{2:g}</text>'.format(x, height - 40, value))
 
-    lines.append(f'<line x1="{left}" y1="{top}" x2="{left}" y2="{top + plot_height}" stroke="#333333" stroke-width="2"/>')
-    lines.append(f'<line x1="{left}" y1="{top + plot_height}" x2="{width - right}" y2="{top + plot_height}" stroke="#333333" stroke-width="2"/>')
+    lines.append('<line x1="{0}" y1="{1}" x2="{0}" y2="{2}" stroke="#333333" stroke-width="2"/>'.format(left, top, top + plot_height))
+    lines.append('<line x1="{0}" y1="{1}" x2="{2}" y2="{1}" stroke="#333333" stroke-width="2"/>'.format(left, top + plot_height, width - right))
 
     if y_reference is not None:
         y = y_to_svg(y_reference)
-        lines.append(f'<line x1="{left}" y1="{y:.2f}" x2="{width - right}" y2="{y:.2f}" stroke="#9b2226" stroke-width="2" stroke-dasharray="8 5"/>')
+        lines.append('<line x1="{0}" y1="{1:.2f}" x2="{2}" y2="{1:.2f}" stroke="#9b2226" stroke-width="2" stroke-dasharray="8 5"/>'.format(left, y, width - right))
 
     for item in series:
-        points = item["points"]
-        polyline = " ".join(f"{x_to_svg(x):.2f},{y_to_svg(y):.2f}" for x, y in points)
-        color = str(item["color"])
-        lines.append(f'<polyline fill="none" stroke="{color}" stroke-width="3" points="{polyline}"/>')
+        polyline = " ".join("{0:.2f},{1:.2f}".format(x_to_svg(x), y_to_svg(y)) for x, y in item["points"])
+        color = item["color"]
+        lines.append('<polyline fill="none" stroke="{0}" stroke-width="3" points="{1}"/>'.format(color, polyline))
 
-        for x_value, y_value in points:
+        for x_value, y_value in item["points"]:
             x = x_to_svg(x_value)
             y = y_to_svg(y_value)
-            lines.append(f'<circle cx="{x:.2f}" cy="{y:.2f}" r="4.5" fill="{color}" stroke="white" stroke-width="1.5"/>')
+            lines.append('<circle cx="{0:.2f}" cy="{1:.2f}" r="4.5" fill="{2}" stroke="white" stroke-width="1.5"/>'.format(x, y, color))
 
     legend_x = width - right - 270
     legend_y = top + 10
-    lines.append(f'<rect x="{legend_x}" y="{legend_y}" width="250" height="{28 * len(series) + 14}" fill="#ffffff" stroke="#cccccc"/>')
+    lines.append('<rect x="{0}" y="{1}" width="250" height="{2}" fill="#ffffff" stroke="#cccccc"/>'.format(legend_x, legend_y, 28 * len(series) + 14))
     for index, item in enumerate(series):
         y = legend_y + 24 + index * 28
-        lines.append(f'<line x1="{legend_x + 12}" y1="{y}" x2="{legend_x + 42}" y2="{y}" stroke="{item["color"]}" stroke-width="3"/>')
-        lines.append(f'<text x="{legend_x + 52}" y="{y + 5}" font-size="13" font-family="Helvetica, Arial, sans-serif">{escape(str(item["label"]))}</text>')
+        lines.append('<line x1="{0}" y1="{1}" x2="{2}" y2="{1}" stroke="{3}" stroke-width="3"/>'.format(legend_x + 12, y, legend_x + 42, item["color"]))
+        lines.append('<text x="{0}" y="{1}" font-size="13" font-family="Helvetica, Arial, sans-serif">{2}</text>'.format(legend_x + 52, y + 5, escape(str(item["label"]))))
 
-    lines.append(f'<text x="{width / 2}" y="{height - 10}" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif">{escape(x_label)}</text>')
-    lines.append(
-        f'<text x="22" y="{height / 2}" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif" transform="rotate(-90 22 {height / 2})">{escape(y_label)}</text>'
-    )
+    lines.append('<text x="{0}" y="{1}" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif">{2}</text>'.format(width / 2.0, height - 10, escape(x_label)))
+    lines.append('<text x="22" y="{0}" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif" transform="rotate(-90 22 {0})">{1}</text>'.format(height / 2.0, escape(y_label)))
     lines.append("</svg>")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def svg_grouped_bar_chart(
-    path: Path,
-    title: str,
-    x_label: str,
-    y_label: str,
-    categories: list[str],
-    series: list[dict[str, object]],
-) -> None:
+def svg_grouped_bar_chart(path, title, x_label, y_label, categories, series):
     width = 1100
     height = 560
     left = 90
@@ -273,62 +275,65 @@ def svg_grouped_bar_chart(
     plot_width = width - left - right
     plot_height = height - top - bottom
 
-    max_y = max((max((value for value in item["values"]), default=0.0) for item in series), default=0.0)
+    max_y = 0.0
+    for item in series:
+        if item["values"]:
+            max_y = max(max_y, max(item["values"]))
     if max_y <= 0.0:
         max_y = 1.0
     max_y *= 1.1
 
-    def y_to_svg(value: float) -> float:
+    def y_to_svg(value):
         return top + plot_height - (value / max_y) * plot_height
 
-    group_width = plot_width / max(1, len(categories))
-    bar_width = min(40.0, group_width / max(2, len(series) + 1))
+    group_width = plot_width / float(max(1, len(categories)))
+    bar_width = min(40.0, group_width / float(max(2, len(series) + 1)))
 
-    lines: list[str] = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+    lines = [
+        '<svg xmlns="http://www.w3.org/2000/svg" width="{0}" height="{1}" viewBox="0 0 {0} {1}">'.format(width, height),
         '<rect width="100%" height="100%" fill="#fffdf8"/>',
-        f'<text x="{width / 2}" y="30" text-anchor="middle" font-size="22" font-family="Helvetica, Arial, sans-serif">{escape(title)}</text>',
+        '<text x="{0}" y="30" text-anchor="middle" font-size="22" font-family="Helvetica, Arial, sans-serif">{1}</text>'.format(
+            width / 2.0, escape(title)
+        ),
     ]
 
     for index in range(6):
-        value = max_y * index / 5
+        value = max_y * index / 5.0
         y = y_to_svg(value)
-        lines.append(f'<line x1="{left}" y1="{y:.2f}" x2="{width - right}" y2="{y:.2f}" stroke="#d9d9d9" stroke-dasharray="4 4"/>')
-        lines.append(f'<text x="{left - 10}" y="{y + 5:.2f}" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">{value:.0f}</text>')
+        lines.append('<line x1="{0}" y1="{1:.2f}" x2="{2}" y2="{1:.2f}" stroke="#d9d9d9" stroke-dasharray="4 4"/>'.format(left, y, width - right))
+        lines.append('<text x="{0}" y="{1:.2f}" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">{2:.0f}</text>'.format(left - 10, y + 5, value))
 
-    lines.append(f'<line x1="{left}" y1="{top}" x2="{left}" y2="{top + plot_height}" stroke="#333333" stroke-width="2"/>')
-    lines.append(f'<line x1="{left}" y1="{top + plot_height}" x2="{width - right}" y2="{top + plot_height}" stroke="#333333" stroke-width="2"/>')
+    lines.append('<line x1="{0}" y1="{1}" x2="{0}" y2="{2}" stroke="#333333" stroke-width="2"/>'.format(left, top, top + plot_height))
+    lines.append('<line x1="{0}" y1="{1}" x2="{2}" y2="{1}" stroke="#333333" stroke-width="2"/>'.format(left, top + plot_height, width - right))
 
     for cat_index, category in enumerate(categories):
         center_x = left + group_width * (cat_index + 0.5)
         for series_index, item in enumerate(series):
             values = item["values"]
             value = values[cat_index] if cat_index < len(values) else 0.0
-            x = center_x + (series_index - (len(series) - 1) / 2) * (bar_width + 8) - bar_width / 2
+            x = center_x + (series_index - (len(series) - 1) / 2.0) * (bar_width + 8) - bar_width / 2.0
             y = y_to_svg(value)
             height_value = top + plot_height - y
-            lines.append(f'<rect x="{x:.2f}" y="{y:.2f}" width="{bar_width:.2f}" height="{height_value:.2f}" fill="{item["color"]}"/>')
+            lines.append('<rect x="{0:.2f}" y="{1:.2f}" width="{2:.2f}" height="{3:.2f}" fill="{4}"/>'.format(x, y, bar_width, height_value, item["color"]))
 
-        lines.append(f'<text x="{center_x:.2f}" y="{height - 60}" text-anchor="middle" font-size="11" font-family="Helvetica, Arial, sans-serif" transform="rotate(-25 {center_x:.2f} {height - 60})">{escape(category)}</text>')
+        lines.append('<text x="{0:.2f}" y="{1}" text-anchor="middle" font-size="11" font-family="Helvetica, Arial, sans-serif" transform="rotate(-25 {0:.2f} {1})">{2}</text>'.format(center_x, height - 60, escape(category)))
 
     legend_x = width - right - 220
     legend_y = top + 10
-    lines.append(f'<rect x="{legend_x}" y="{legend_y}" width="200" height="{28 * len(series) + 14}" fill="#ffffff" stroke="#cccccc"/>')
+    lines.append('<rect x="{0}" y="{1}" width="200" height="{2}" fill="#ffffff" stroke="#cccccc"/>'.format(legend_x, legend_y, 28 * len(series) + 14))
     for index, item in enumerate(series):
         y = legend_y + 24 + index * 28
-        lines.append(f'<rect x="{legend_x + 12}" y="{y - 11}" width="20" height="14" fill="{item["color"]}"/>')
-        lines.append(f'<text x="{legend_x + 42}" y="{y}" font-size="13" font-family="Helvetica, Arial, sans-serif">{escape(str(item["label"]))}</text>')
+        lines.append('<rect x="{0}" y="{1}" width="20" height="14" fill="{2}"/>'.format(legend_x + 12, y - 11, item["color"]))
+        lines.append('<text x="{0}" y="{1}" font-size="13" font-family="Helvetica, Arial, sans-serif">{2}</text>'.format(legend_x + 42, y, escape(str(item["label"]))))
 
-    lines.append(f'<text x="{width / 2}" y="{height - 12}" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif">{escape(x_label)}</text>')
-    lines.append(
-        f'<text x="22" y="{height / 2}" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif" transform="rotate(-90 22 {height / 2})">{escape(y_label)}</text>'
-    )
+    lines.append('<text x="{0}" y="{1}" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif">{2}</text>'.format(width / 2.0, height - 12, escape(x_label)))
+    lines.append('<text x="22" y="{0}" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif" transform="rotate(-90 22 {0})">{1}</text>'.format(height / 2.0, escape(y_label)))
     lines.append("</svg>")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def plot_runtime(path: Path, time_summary: list[dict[str, object]]) -> None:
-    grouped: dict[str, list[tuple[int, float]]] = defaultdict(list)
+def plot_runtime(path, time_summary):
+    grouped = defaultdict(list)
 
     for row in time_summary:
         grouped[str(row["variant"])].append((int(row["size"]), float(row["mean_seconds"])))
@@ -353,7 +358,7 @@ def plot_runtime(path: Path, time_summary: list[dict[str, object]]) -> None:
     )
 
 
-def plot_speedup(path: Path, speedup_summary: list[dict[str, object]]) -> None:
+def plot_speedup(path, speedup_summary):
     svg_line_chart(
         path,
         "Speedup due to compiler auto-vectorization",
@@ -370,21 +375,21 @@ def plot_speedup(path: Path, speedup_summary: list[dict[str, object]]) -> None:
     )
 
 
-def plot_perf(path: Path, perf_summary: list[dict[str, object]]) -> None:
+def plot_perf(path, perf_summary):
     metric_labels = {
-        "r0410": "SSE_FP",
-        "r1010": "SSE_FP_PACKED",
-        "r2010": "SSE_FP_SCALAR",
-        "r4010": "SSE_SINGLE_PRECISION",
+        "r0410:u": "SSE_FP",
+        "r1010:u": "SSE_FP_PACKED",
+        "r2010:u": "SSE_FP_SCALAR",
+        "r4010:u": "SSE_SINGLE_PRECISION",
     }
-    categories: list[str] = []
-    baseline_values: list[float] = []
-    auto_values: list[float] = []
+    categories = []
+    baseline_values = []
+    auto_values = []
 
-    sizes = sorted({int(row["size"]) for row in perf_summary})
+    sizes = sorted(set(int(row["size"]) for row in perf_summary))
     for size in sizes:
         for metric, label in metric_labels.items():
-            categories.append(f"n={size} {label}")
+            categories.append("n={0} {1}".format(size, label))
 
             baseline_match = next(
                 (
@@ -418,9 +423,9 @@ def plot_perf(path: Path, perf_summary: list[dict[str, object]]) -> None:
     )
 
 
-def main() -> int:
-    if len(sys.argv) not in {2, 3}:
-        print(f"usage: {sys.argv[0]} TIME_CSV [PERF_CSV]", file=sys.stderr)
+def main():
+    if len(sys.argv) not in (2, 3):
+        print("usage: {0} TIME_CSV [PERF_CSV]".format(sys.argv[0]), file=sys.stderr)
         return 1
 
     time_csv = Path(sys.argv[1])
