@@ -366,15 +366,6 @@ static unsigned long long delannoy_seq(int m, int n) {
 }
 ```
 
-Wichtig dabei:
-
-- es wird **keine dynamische Programmierung**
-- **keine Memoisierung**
-- und **keine mathematische Abkürzung**
-
-verwendet.
-
-Damit ist die Lösung wirklich die geforderte **naive** Variante.
 
 #### Korrektheitsprüfung
 
@@ -444,12 +435,7 @@ Das bedeutet:
 - für große Teilprobleme werden noch Tasks erzeugt
 - für kleine Teilprobleme wird wieder direkt sequenziell weitergerechnet
 
-Wichtig:
-
-- der **Algorithmus selbst bleibt gleich**
-- es wird nur vermieden, dass für winzige Teilprobleme unnötig viel Task-Verwaltung entsteht
-
-Das ist genau eine sinnvolle Antwort auf die Bottleneck-Frage:
+Bottleneck:
 
 - **Bottleneck**: sehr hoher Verwaltungsaufwand für sehr viele kleine Tasks
 - **Verbesserung ohne Algorithmuswechsel**: Cutoff-Größe verwenden, damit kleine Teilprobleme nicht mehr als einzelne Tasks erzeugt werden
@@ -481,127 +467,129 @@ Das Jobscript liegt hier:
 - [09/delannoy/job.sh](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/09/delannoy/job.sh)
 
 Es macht automatisch folgende Schritte:
-
-1. lädt bei Bedarf das GCC-Modul
-2. kompiliert das Programm mit OpenMP
-3. testet `N = 3` bis `15`
-4. führt jede Konfiguration `5` mal aus
-5. misst:
+1. kompiliert das Programm mit OpenMP
+2. testet `N = 3` bis `15`
+3. führt jede Konfiguration `5` mal aus
+4. misst:
    `seq` mit `1` Thread sowie `task` mit `1` und `12` Threads
-6. schreibt die Rohdaten nach `results/time_results.csv`
-7. erzeugt daraus:
+5. schreibt die Rohdaten nach `results/time_results.csv`
+6. erzeugt daraus:
    - `results/summary_stats.csv`
    - `results/summary_table.md`
 
-Ausführen auf LCC3:
 
-```bash
-cd 09/delannoy
-sbatch job.sh
-```
-
-Nach dem Lauf:
-
-```bash
-cat results/summary_table.md
-cat results/summary_stats.csv
-```
-
-
-### 6) Welche Werte gehören in die Comparison Spreadsheet?
-
-Laut Aufgabenstellung sind für `N = 12` besonders diese Zeiten wichtig:
-
-- sequenzielle Version
-- parallele Version mit `1` Thread
-- parallele Version mit `12` Threads
-
-Dafür würde ich jeweils den Mittelwert `elapsed_mean` aus `results/summary_table.md` eintragen.
-
-Warum:
-
-- hier misst das Programm nur die eigentliche Delannoy-Berechnung
-- damit ist die gemessene Wall-Clock-Time direkt die relevante Rechenzeit
-
-
-### 7) Ergebnisvorlage zum Eintragen nach dem Clusterlauf
+### 6) Ergebnisse 
 
 | Variante | Threads | N | Mean [s] |
 | --- | ---: | ---: | ---: |
-| seq | 1 | 12 | `<hier eintragen>` |
-| task | 1 | 12 | `<hier eintragen>` |
-| task | 12 | 12 | `<hier eintragen>` |
+| seq | 1 | 12 | `0.609723` |
+| task | 1 | 12 | `0.796849` |
+| task | 12 | 12 | `3.482125` |
 
 
-### 8) Schritt-für-Schritt-Erklärung in einfacher Sprache
+#### Interpretation der wichtigsten Messwerte für `N = 12`
 
-#### Schritt 1: Rekurrenz verstehen
+Für `N = 12` ergeben sich auf LCC3 folgende Mittelwerte:
 
-Eine Delannoy-Zahl zählt Wege durch ein Gitter.
+- `seq`, `1` Thread: `0.609723 s`
+- `task`, `1` Thread: `0.796849 s`
+- `task`, `12` Threads: `3.482125 s`
 
-Wenn ich bei `(m, n)` ankommen will, dann kann der letzte Schritt nur aus drei Richtungen gekommen sein:
+Damit sieht man sofort:
 
-- von links
-- von unten
-- von links unten diagonal
+- die Task-Variante mit `1` Thread ist schon langsamer als die rein sequenzielle Variante
+- mit `12` Threads wird die naive Task-Version noch einmal deutlich langsamer
 
-Darum setzt sich `D(m, n)` aus genau drei kleineren Teilproblemen zusammen.
+Relativ zur sequenziellen Version gilt:
 
-#### Schritt 2: Naive rekursive Lösung
+- `task`, `1` Thread: Speedup `0.765`
+- `task`, `12` Threads: Speedup `0.175`
 
-Die einfachste Idee ist:
+Ein Speedup kleiner als `1` bedeutet hier:
 
-- wenn ich am Rand bin, ist das Ergebnis `1`
-- sonst berechne ich die drei kleineren Fälle rekursiv und addiere sie
-
-Das ist leicht zu verstehen, aber ineffizient, weil dieselben Teilprobleme oft sehr oft neu berechnet werden.
-
-#### Schritt 3: Tasks einsetzen
-
-Die drei rekursiven Aufrufe sind zunächst unabhängige Arbeiten.
-
-Deshalb kann man sie als Tasks formulieren:
-
-- ein Task für `D(m - 1, n)`
-- ein Task für `D(m - 1, n - 1)`
-- ein Task für `D(m, n - 1)`
-
-Danach muss mit `taskwait` gewartet werden, bis alle drei Ergebnisse fertig sind.
-
-#### Schritt 4: Bottleneck verstehen
-
-Das Problem ist nicht nur die Rechnung selbst, sondern auch die Organisation:
-
-- ein Task muss erzeugt werden
-- er muss geplant werden
-- Threads müssen ihn übernehmen
-- am Ende muss synchronisiert werden
-
-Wenn Teilprobleme sehr klein sind, ist diese Verwaltung oft teurer als die eigentliche Berechnung.
-
-#### Schritt 5: Verbesserung ohne neuen Algorithmus
-
-Mit einem Cutoff kann man sagen:
-
-- große Teilprobleme: parallel mit Tasks
-- kleine Teilprobleme: direkt sequenziell
-
-Dadurch bleibt der Grundalgorithmus gleich, aber der Verwaltungsaufwand sinkt deutlich.
+- keine Beschleunigung
+- sondern eine Verlangsamung
 
 
-### 9) Lokale Vorprüfung
 
-Die echten Messungen sollen auf LCC3 laufen. Lokal kann man aber schon die Struktur prüfen.
+### 7) Beobachtungen über mehrere `N`
 
-Sinnvolle Testaufrufe:
+Die gemessenen Laufzeiten zeigen ein klares Muster.
 
-```bash
-cd 09/delannoy
-make
-OMP_NUM_THREADS=1 ./delannoy seq 12 8
-OMP_NUM_THREADS=1 ./delannoy task 12 8
-OMP_NUM_THREADS=4 OMP_PLACES=cores OMP_PROC_BIND=true ./delannoy task 12 8
-```
+#### Sequenzielle Variante
 
-Wenn `result` und `expected` übereinstimmen, ist die Berechnung korrekt.
+Die sequenzielle Laufzeit wächst mit `N` sehr stark an:
+
+- `N = 10`: `0.025903 s`
+- `N = 11`: `0.115798 s`
+- `N = 12`: `0.609723 s`
+- `N = 13`: `3.025472 s`
+- `N = 14`: `11.940489 s`
+- `N = 15`: `141.674963 s`
+
+Das passt zur naiven Rekursion, weil sehr viele Teilprobleme mehrfach berechnet werden.
+
+#### Task-Variante mit 1 Thread
+
+Die Task-Variante mit `1` Thread ist fast immer langsamer als die reine sequenzielle Variante:
+
+- `N = 12`: `0.796849 s` statt `0.609723 s`
+- `N = 13`: `4.516253 s` statt `3.025472 s`
+- `N = 14`: `25.764436 s` statt `11.940489 s`
+
+Das zeigt:
+
+- schon ohne echte Parallelität kostet die Task-Verwaltung zusätzliche Zeit
+
+#### Task-Variante mit 12 Threads
+
+Die Task-Variante mit `12` Threads ist in diesen Messungen sogar noch deutlich schlechter:
+
+- `N = 12`: `3.482125 s`
+- `N = 13`: `20.554107 s`
+- `N = 14`: `118.605577 s`
+
+Für `N = 15` gibt es nur **einen** Lauf, weil der Rest bewusst abgebrochen wurde (dauert zu lang):
+
+- `N = 15`: `676.674172 s` bei nur `1` Lauf
+
+
+#### Gesamtbeobachtung
+
+Die wichtigste Beobachtung ist also:
+
+- die naive Task-Parallelisierung bringt hier **keinen Speedup**
+- stattdessen verursacht sie zusätzlichen Overhead
+- dieser Overhead wird mit mehr Threads sogar noch deutlicher sichtbar
+
+
+### 8) Antwort auf die Beobachtungsfrage
+
+„What can you observe?“ 
+
+> Die naive Task-Variante ist in allen relevanten Messungen langsamer als die sequenzielle Variante. Bereits bei einem Thread entsteht zusätzlicher Overhead durch das Erzeugen und Synchronisieren der Tasks. Mit 12 Threads wird dieser Overhead noch größer, sodass keine Beschleunigung erreicht wird. Die Parallelisierung mit Tasks allein reicht hier also nicht aus, um die naive Rekursion effizient zu machen.
+
+
+### 9) Haupt-Bottleneck und Verbesserung
+
+Das Haupt-Bottleneck ist der **Task-Overhead**.
+
+Genauer:
+
+- es werden extrem viele rekursive Teilprobleme erzeugt
+- für viele davon lohnt sich ein eigener Task überhaupt nicht
+- das Erzeugen, Verwalten und Synchronisieren der Tasks kostet zu viel Zeit
+
+Zusätzlich ist die naive Rekursion selbst sehr ungünstig, weil identische Teilprobleme mehrfach berechnet werden. Diese Mehrfacharbeit bleibt auch in der Task-Version bestehen.
+
+Eine Verbesserung **ohne** Änderung des Grundalgorithmus ist:
+
+- ein geeigneter **Cutoff**
+
+Dann gilt:
+
+- große Teilprobleme werden noch als Tasks behandelt
+- kleine Teilprobleme werden direkt sequenziell berechnet
+
+Genau so ist das Programm aufgebaut. Das reduziert den Verwaltungsaufwand, ändert aber nicht die eigentliche Rekurrenz.
 
