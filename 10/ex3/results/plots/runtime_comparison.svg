@@ -4,30 +4,50 @@
 <line x1="90" y1="440.00" x2="890" y2="440.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
 <text x="80" y="445.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">0.000</text>
 <line x1="90" y1="364.00" x2="890" y2="364.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
-<text x="80" y="369.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">0.591</text>
+<text x="80" y="369.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">2.372</text>
 <line x1="90" y1="288.00" x2="890" y2="288.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
-<text x="80" y="293.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">1.182</text>
+<text x="80" y="293.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">4.744</text>
 <line x1="90" y1="212.00" x2="890" y2="212.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
-<text x="80" y="217.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">1.773</text>
+<text x="80" y="217.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">7.116</text>
 <line x1="90" y1="136.00" x2="890" y2="136.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
-<text x="80" y="141.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">2.363</text>
+<text x="80" y="141.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">9.488</text>
 <line x1="90" y1="60.00" x2="890" y2="60.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
-<text x="80" y="65.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">2.954</text>
+<text x="80" y="65.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">11.860</text>
 <line x1="90.00" y1="60" x2="90.00" y2="440" stroke="#eeeeee"/>
 <text x="90.00" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">256</text>
+<line x1="115.81" y1="60" x2="115.81" y2="440" stroke="#eeeeee"/>
+<text x="115.81" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">512</text>
+<line x1="167.42" y1="60" x2="167.42" y2="440" stroke="#eeeeee"/>
+<text x="167.42" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">1024</text>
+<line x1="270.65" y1="60" x2="270.65" y2="440" stroke="#eeeeee"/>
+<text x="270.65" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">2048</text>
+<line x1="477.10" y1="60" x2="477.10" y2="440" stroke="#eeeeee"/>
+<text x="477.10" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">4096</text>
 <line x1="890.00" y1="60" x2="890.00" y2="440" stroke="#eeeeee"/>
-<text x="890.00" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">2048</text>
+<text x="890.00" y="480" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">8192</text>
 <line x1="90" y1="60" x2="90" y2="440" stroke="#333333" stroke-width="2"/>
 <line x1="90" y1="440" x2="890" y2="440" stroke="#333333" stroke-width="2"/>
-<polyline fill="none" stroke="#9b2226" stroke-width="3" points="90.00,396.41 890.00,94.55"/>
-<circle cx="90.00" cy="396.41" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<polyline fill="none" stroke="#9b2226" stroke-width="3" points="90.00,429.14 115.81,418.37 167.42,396.75 270.65,353.95 477.10,267.52 890.00,94.55"/>
+<circle cx="90.00" cy="429.14" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<circle cx="115.81" cy="418.37" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<circle cx="167.42" cy="396.75" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<circle cx="270.65" cy="353.95" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
+<circle cx="477.10" cy="267.52" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
 <circle cx="890.00" cy="94.55" r="4.5" fill="#9b2226" stroke="white" stroke-width="1.5"/>
-<polyline fill="none" stroke="#0a9396" stroke-width="3" points="90.00,431.83 890.00,374.34"/>
-<circle cx="90.00" cy="431.83" r="4.5" fill="#0a9396" stroke="white" stroke-width="1.5"/>
-<circle cx="890.00" cy="374.34" r="4.5" fill="#0a9396" stroke="white" stroke-width="1.5"/>
-<polyline fill="none" stroke="#005f73" stroke-width="3" points="90.00,440.00 890.00,440.00"/>
-<circle cx="90.00" cy="440.00" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
-<circle cx="890.00" cy="440.00" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<polyline fill="none" stroke="#0a9396" stroke-width="3" points="90.00,437.97 115.81,435.74 167.42,431.70 270.65,423.65 477.10,382.09 890.00,324.35"/>
+<circle cx="90.00" cy="437.97" r="4.5" fill="#0a9396" stroke="white" stroke-width="1.5"/>
+<circle cx="115.81" cy="435.74" r="4.5" fill="#0a9396" stroke="white" stroke-width="1.5"/>
+<circle cx="167.42" cy="431.70" r="4.5" fill="#0a9396" stroke="white" stroke-width="1.5"/>
+<circle cx="270.65" cy="423.65" r="4.5" fill="#0a9396" stroke="white" stroke-width="1.5"/>
+<circle cx="477.10" cy="382.09" r="4.5" fill="#0a9396" stroke="white" stroke-width="1.5"/>
+<circle cx="890.00" cy="324.35" r="4.5" fill="#0a9396" stroke="white" stroke-width="1.5"/>
+<polyline fill="none" stroke="#005f73" stroke-width="3" points="90.00,437.89 115.81,435.62 167.42,431.54 270.65,423.02 477.10,382.06 890.00,324.13"/>
+<circle cx="90.00" cy="437.89" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<circle cx="115.81" cy="435.62" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<circle cx="167.42" cy="431.54" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<circle cx="270.65" cy="423.02" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<circle cx="477.10" cy="382.06" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
+<circle cx="890.00" cy="324.13" r="4.5" fill="#005f73" stroke="white" stroke-width="1.5"/>
 <rect x="600" y="70" width="270" height="98" fill="#ffffff" stroke="#cccccc"/>
 <line x1="612" y1="94" x2="642" y2="94" stroke="#9b2226" stroke-width="3"/>
 <text x="652" y="99" font-size="13" font-family="Helvetica, Arial, sans-serif">baseline (-O1, no vectorization)</text>

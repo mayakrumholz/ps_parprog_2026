@@ -66,7 +66,7 @@ for size in $SIZES; do
             exit 1
         fi
 
-        printf "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n" \
+        printf "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n" \
             "intrinsics_float" \
             "$size" \
             "$REPETITIONS" \

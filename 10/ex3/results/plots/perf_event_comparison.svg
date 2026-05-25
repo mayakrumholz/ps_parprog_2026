@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="560" viewBox="0 0 1100 560">
+<rect width="100%" height="100%" fill="#fffdf8"/>
+<text x="550.0" y="30" text-anchor="middle" font-size="22" font-family="Helvetica, Arial, sans-serif">Perf event comparison at size 2048</text>
+<line x1="90" y1="450.00" x2="1070" y2="450.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="455.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">0</text>
+<line x1="90" y1="372.00" x2="1070" y2="372.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="377.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">901137577</text>
+<line x1="90" y1="294.00" x2="1070" y2="294.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="299.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">1802275153</text>
+<line x1="90" y1="216.00" x2="1070" y2="216.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="221.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">2703412730</text>
+<line x1="90" y1="138.00" x2="1070" y2="138.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="143.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">3604550307</text>
+<line x1="90" y1="60.00" x2="1070" y2="60.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="65.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">4505687883</text>
+<line x1="90" y1="60" x2="90" y2="450" stroke="#333333" stroke-width="2"/>
+<line x1="90" y1="450" x2="1070" y2="450" stroke="#333333" stroke-width="2"/>
+<rect x="169.33" y="450.00" width="36.00" height="0.00" fill="#9b2226"/>
+<rect x="213.33" y="361.41" width="36.00" height="88.59" fill="#0a9396"/>
+<rect x="257.33" y="361.35" width="36.00" height="88.65" fill="#94d2bd"/>
+<rect x="301.33" y="361.11" width="36.00" height="88.89" fill="#005f73"/>
+<text x="253.33" y="510" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">SSE_FP_PACKED</text>
+<rect x="496.00" y="95.45" width="36.00" height="354.55" fill="#9b2226"/>
+<rect x="540.00" y="450.00" width="36.00" height="0.00" fill="#0a9396"/>
+<rect x="584.00" y="450.00" width="36.00" height="0.00" fill="#94d2bd"/>
+<rect x="628.00" y="450.00" width="36.00" height="0.00" fill="#005f73"/>
+<text x="580.00" y="510" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">SSE_FP_SCALAR</text>
+<rect x="822.67" y="95.48" width="36.00" height="354.52" fill="#9b2226"/>
+<rect x="866.67" y="361.30" width="36.00" height="88.70" fill="#0a9396"/>
+<rect x="910.67" y="361.40" width="36.00" height="88.60" fill="#94d2bd"/>
+<rect x="954.67" y="361.43" width="36.00" height="88.57" fill="#005f73"/>
+<text x="906.67" y="510" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif">SSE_SINGLE_PRECISION</text>
+<rect x="840" y="70" width="210" height="126" fill="#ffffff" stroke="#cccccc"/>
+<rect x="852" y="83" width="20" height="14" fill="#9b2226"/>
+<text x="882" y="94" font-size="13" font-family="Helvetica, Arial, sans-serif">baseline</text>
+<rect x="852" y="111" width="20" height="14" fill="#0a9396"/>
+<text x="882" y="122" font-size="13" font-family="Helvetica, Arial, sans-serif">auto</text>
+<rect x="852" y="139" width="20" height="14" fill="#94d2bd"/>
+<text x="882" y="150" font-size="13" font-family="Helvetica, Arial, sans-serif">omp</text>
+<rect x="852" y="167" width="20" height="14" fill="#005f73"/>
+<text x="882" y="178" font-size="13" font-family="Helvetica, Arial, sans-serif">intrinsics</text>
+</svg>

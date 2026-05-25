@@ -1,0 +1,13 @@
+variant,size,metric,unit,mean_value,stddev_value
+intrinsics_float,2048,cycles:u,,1814819267.0,0.0
+intrinsics_float,2048,instructions:u,,3586215203.0,0.0
+intrinsics_float,2048,r0410:u,,1023316009.0,0.0
+intrinsics_float,2048,r1010:u,,1026914157.0,0.0
+intrinsics_float,2048,r2010:u,,2477.0,0.0
+intrinsics_float,2048,r4010:u,,1023249190.0,0.0
+intrinsics_float,8192,cycles:u,,11034840066.0,0.0
+intrinsics_float,8192,instructions:u,,14342594916.0,0.0
+intrinsics_float,8192,r0410:u,,4096139664.0,0.0
+intrinsics_float,8192,r1010:u,,4096328977.0,0.0
+intrinsics_float,8192,r2010:u,,9856.0,0.0
+intrinsics_float,8192,r4010:u,,4096712206.0,0.0

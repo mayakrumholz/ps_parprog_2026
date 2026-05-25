@@ -836,24 +836,8 @@ sowie den Header:
 #include <xmmintrin.h>
 ```
 
-Die Idee dieser Aufgabe ist:
 
-- in Exercise 1 hat der Compiler die Vektorisierung selbst erkannt
-- in Exercise 2 haben wir dem Compiler mit `#pragma omp simd` die SIMD-Struktur explizit mitgeteilt
-- in Exercise 3 schreiben wir die SIMD-Rechnung direkt selbst
-
-Dadurch rückt man noch näher an die eigentlichen Maschinenoperationen heran.
-
-
-### 2. Welches Thema man dafür verstehen muss
-
-Der wichtige neue Punkt hier ist der Unterschied zwischen:
-
-- automatischer Vektorisierung
-- deklarativer Vektorisierung mit OpenMP
-- expliziter Vektorisierung mit Intrinsics
-
-#### Was sind Intrinsics?
+### 2. Was sind Intrinsics?
 
 Intrinsics sind Compiler-Funktionen, die sehr eng an konkrete SIMD-Instruktionen gebunden sind. Sie sehen im C-Code wie Funktionsaufrufe aus, stehen aber konzeptionell fast direkt für Maschinenbefehle.
 
@@ -907,8 +891,6 @@ Verwendete Dateien:
 - Auswertung: [10/ex3/analyze_results.py](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/analyze_results.py)
 
 #### 3.1 Die manuell vektorisierte Schleife
-
-Die Kernschleife steht in [10/ex3/vector_add_intrinsics.c](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/vector_add_intrinsics.c:42):
 
 ```c
 for (i = 0; i + 3 < size; i += 4) {
@@ -975,7 +957,7 @@ Dadurch ist sichergestellt, dass die verwendeten Adressen für diese SSE-Ladeope
 
 #### 3.4 Build-Entscheidung
 
-Im [10/ex3/Makefile](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/Makefile:1) wird die Intrinsics-Version mit:
+Im Makefile wird die Intrinsics-Version mit:
 
 - `-O1`
 - `-fno-tree-vectorize`
@@ -1007,7 +989,6 @@ Die Auswertung liest dann:
 - die OpenMP-SIMD-Daten aus `ex2`
 - die neuen Intrinsics-Daten aus `ex3`
 
-Dadurch kann Exercise 3 direkt gegen beide vorherigen Lösungen verglichen werden, ohne dass auf dem Cluster unnötig alle alten Programme noch einmal mitgemessen werden müssen.
 
 
 ### 4. Was man vor den Ergebnissen erwarten kann und warum
@@ -1023,12 +1004,6 @@ Warum?
 
 Wenn Compiler und OpenMP in den vorherigen Aufgaben bereits sehr guten SIMD-Code erzeugt haben, dann bleibt für die manuelle Intrinsics-Variante oft nur wenig zusätzlicher Spielraum.
 
-Trotzdem gibt es hier einen wichtigen inhaltlichen Unterschied:
-
-- Exercise 1: der Compiler entscheidet selbst
-- Exercise 2: der Compiler bekommt eine SIMD-Direktive
-- Exercise 3: die SIMD-Rechenoperation wird direkt von uns festgelegt
-
 Ein möglicher Vorteil von Intrinsics ist:
 
 - maximale Kontrolle über die SIMD-Operationen
@@ -1042,32 +1017,157 @@ Mögliche Nachteile sind:
 
 ### 5. Ergebnisse und Einordnung
 
-Die finale Ergebnisinterpretation wird ergänzt, sobald die echten LCC3-Daten für `10/ex3` vorliegen.
-
-Nach dem Clusterlauf sollen hier insbesondere ergänzt werden:
-
-- Laufzeit der Intrinsics-Version für alle Problemgrößen
-- Vergleich zu Baseline und Auto-Vektorisierung aus Exercise 1
-- Vergleich zur OpenMP-SIMD-Version aus Exercise 2
-- spezielle Betrachtung von `size = 2048`
-- Interpretation der `perf`-Zähler
-- Einordnung der automatisch erzeugten Vergleichsgrafiken
+Die Messungen auf LCC3 wurden erfolgreich durchgeführt. Alle Läufe liefern korrekte Ergebnisse.
 
 
-### 6. Vorbereitung für den LCC3-Lauf
+#### 5.1 Laufzeitergebnisse der Intrinsics-Version
 
-Für Exercise 3 sind jetzt alle Materialien vorbereitet. Auf dem Cluster sind dann nur diese Schritte nötig:
+Die gemittelten Laufzeiten der manuellen Intrinsics-Lösung sind:
 
-```bash
-cd 10/ex3
-sbatch job.sh
-```
+| Size | Intrinsics mean [s] |
+| --- | ---: |
+| 256 | 0.065769 |
+| 512 | 0.136790 |
+| 1024 | 0.264104 |
+| 2048 | 0.529982 |
+| 4096 | 1.808508 |
+| 8192 | 3.616467 |
 
-Wichtige Ergebnisdateien danach:
 
-- `10/ex3/job_ex3.log`
-- `10/ex3/results/time_results.csv`
-- `10/ex3/results/perf_results.csv`
-- `10/ex3/results/summary_table.md`
-- `10/ex3/results/perf_summary.md`
-- `10/ex3/results/plots/*.svg`
+#### 5.2 Vergleich zu Exercise 1 und 2
+
+Der direkte Vergleich mit den vorhandenen Referenzdaten ergibt:
+
+| Size | Baseline [s] | Auto [s] | OMP SIMD [s] | Intrinsics [s] | Speedup vs baseline | Speedup vs auto | Speedup vs OMP |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 256 | 0.338855 | 0.063496 | - | 0.065769 | 5.152 | 0.965 | - |
+| 512 | 0.675002 | 0.133095 | - | 0.136790 | 4.935 | 0.973 | - |
+| 1024 | 1.349851 | 0.258918 | - | 0.264104 | 5.111 | 0.980 | - |
+| 2048 | 2.685649 | 0.510449 | 0.509245 | 0.529982 | 5.067 | 0.963 | 0.961 |
+| 4096 | 5.383164 | 1.807423 | - | 1.808508 | 2.977 | 0.999 | - |
+| 8192 | 10.781906 | 3.609614 | - | 3.616467 | 2.981 | 0.998 | - |
+
+Diese Tabelle zeigt zwei Dinge sehr deutlich:
+
+- gegenüber der nicht-vektorisierten Baseline ist die Intrinsics-Version klar schneller
+- gegenüber Auto-Vektorisierung und OpenMP-SIMD ist sie aber **nicht** schneller, sondern leicht langsamer oder praktisch gleichauf
+
+#### 5.3 Analyse der Laufzeitgrafik
+
+Die Grafik [runtime_comparison.svg](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/results/plots/runtime_comparison.svg:1) vergleicht Baseline, Auto-Vektorisierung und Intrinsics über alle Größen.
+
+![Laufzeitvergleich für Exercise 3](./ex3/results/plots/runtime_comparison.svg)
+
+Man erkennt:
+
+- die Intrinsics-Version liegt deutlich unter der Baseline
+- sie folgt fast exakt der Kurve der Auto-Vektorisierung
+- bei großen Größen (`4096`, `8192`) ist der Unterschied zwischen Auto und Intrinsics praktisch nicht mehr sichtbar
+
+Das spricht dafür, dass der Compiler in Exercise 1 bereits sehr guten SIMD-Code erzeugt hat und die manuelle Intrinsics-Version deshalb kaum noch zusätzlichen Spielraum bietet.
+
+#### 5.4 Analyse der Speedup-Grafik
+
+Die Grafik [speedup_comparison.svg](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/results/plots/speedup_comparison.svg:1) zeigt den Vergleich der Intrinsics-Version relativ zu Baseline und Auto.
+
+![Speedup-Vergleich für Exercise 3](./ex3/results/plots/speedup_comparison.svg)
+
+Interpretation:
+
+- der Speedup gegenüber der Baseline liegt wieder bei ungefähr Faktor `5` für kleine und mittlere Größen und bei ungefähr Faktor `3` für große Größen
+- das Muster ist damit fast identisch zu Exercise 1
+- der Quotient `auto / intrinsics` liegt knapp unter `1`, also ist die Intrinsics-Version minimal langsamer als die Auto-Vektorisierung
+
+Für `size = 2048` ist das besonders gut sichtbar:
+
+- Baseline / Intrinsics = `5.067`
+- Auto / Intrinsics = `0.963`
+- OMP SIMD / Intrinsics = `0.961`
+
+Das heißt:
+
+- die Intrinsics-Version ist ungefähr gleich schnell wie die beiden SIMD-Lösungen aus Exercise 1 und 2
+- aber sie übertrifft sie nicht
+
+#### 5.5 Analyse der `perf`-Ergebnisse
+
+Für die Intrinsics-Version ergeben sich bei `size = 2048`:
+
+- `cycles:u = 1814819267`
+- `instructions:u = 3586215203`
+- `r1010:u = 1026914157`
+- `r2010:u = 2477`
+- `r4010:u = 1023249190`
+
+Für `size = 8192`:
+
+- `cycles:u = 11034840066`
+- `instructions:u = 14342594916`
+- `r1010:u = 4096328977`
+- `r2010:u = 9856`
+- `r4010:u = 4096712206`
+
+Die Interpretation ist dieselbe wie in den vorigen Aufgaben:
+
+- `r1010:u` entspricht `SSE_FP_PACKED`
+- `r2010:u` entspricht `SSE_FP_SCALAR`
+- `r4010:u` entspricht `SSE_SINGLE_PRECISION`
+
+Damit sieht man:
+
+- die Intrinsics-Version verwendet sehr viele gepackte SIMD-FP-Operationen
+- die Zahl der skalaren FP-Operationen ist sehr klein
+- der Code arbeitet also tatsächlich wie beabsichtigt als SIMD-Lösung
+
+Interessant ist außerdem:
+
+- bei `size = 2048` hat die Intrinsics-Version weniger Instruktionen als die Auto- und OpenMP-SIMD-Versionen
+- trotzdem ist die Laufzeit nicht besser
+
+Das zeigt, dass reine Instruktionsanzahl allein nicht alles erklärt. Auch Details wie Scheduling, Registerverwendung, Speicherzugriffe und die konkrete vom Compiler erzeugte Gesamtstruktur des Codes spielen eine Rolle.
+
+#### 5.6 Analyse der `perf`-Vergleichsgrafik
+
+Die Grafik [perf_event_comparison.svg](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex3/results/plots/perf_event_comparison.svg:1) vergleicht für `size = 2048` die Ereignisse von:
+
+- Baseline
+- Auto-Vektorisierung
+- OpenMP-SIMD
+- Intrinsics
+
+![Perf-Vergleich für Exercise 3](./ex3/results/plots/perf_event_comparison.svg)
+
+Besonders gut zu sehen ist:
+
+- Baseline hat praktisch kein `SSE_FP_PACKED`
+- Auto, OpenMP-SIMD und Intrinsics haben alle sehr hohe `SSE_FP_PACKED`-Werte
+- `SSE_FP_SCALAR` ist bei den drei SIMD-Varianten nahezu null
+
+Genau diese Grafik belegt am besten, dass alle drei SIMD-Ansätze tatsächlich denselben grundsätzlichen Effekt erreichen:
+
+- die Rechnung wird nicht mehr skalar, sondern gepackt ausgeführt
+
+
+### 6. Vergleich zu Exercise 2 und Exercise 1 sowie Fazit
+
+Exercise 3 ist der kontrollierteste, aber auch der aufwendigste Ansatz.
+
+Vorteile von Intrinsics:
+
+- sehr direkte Kontrolle über die SIMD-Operationen
+- klare Sichtbarkeit, welche Vektoroperationen tatsächlich ausgeführt werden sollen
+- nützlich, wenn der Compiler oder OpenMP nicht die gewünschte Struktur erzeugen
+
+Nachteile von Intrinsics:
+
+- deutlich schlechter lesbar als die sequenzielle oder OpenMP-SIMD-Version
+- stärker an eine konkrete SIMD-Architektur gebunden
+- weniger portabel
+- fehleranfälliger, weil man sich selbst um Registerbreite, Restfälle und Speicherzugriffe kümmern muss
+
+Die Ergebnisse dieser Aufgabe zeigen:
+
+1. Die Intrinsics-Version ist korrekt.
+2. Gegenüber der Baseline ist sie deutlich schneller.
+3. Sie erreicht praktisch dieselbe Leistung wie Auto-Vektorisierung und OpenMP-SIMD.
+4. Sie liefert aber **keinen** zusätzlichen messbaren Vorteil gegenüber den vorherigen SIMD-Varianten.
