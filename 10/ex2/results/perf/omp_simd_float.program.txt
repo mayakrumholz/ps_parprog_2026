@@ -1,0 +1,1 @@
+variant=omp_simd_float type=float size=2048 repetitions=1000000 elapsed_seconds=0.513156651 checksum=256002048.000000000000 expected_checksum=256002048.000000000000 sample0=125001.000000000000 samplemid=125001.000000000000 samplelast=125001.000000000000 expected_value=125001.000000000000 status=ok

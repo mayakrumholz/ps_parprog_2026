@@ -1,0 +1,5 @@
+comparison,reference,candidate,speedup
+float auto vs baseline,baseline_float,auto_float,5.274860271664835
+float omp simd vs baseline,baseline_float,omp_simd_float,5.271756580695893
+float omp simd vs auto,auto_float,omp_simd_float,0.999411606979314
+double omp simd vs baseline,baseline_double,omp_simd_double,1.5004852059794678

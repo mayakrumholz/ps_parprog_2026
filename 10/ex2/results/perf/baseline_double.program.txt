@@ -1,0 +1,1 @@
+variant=baseline_double type=double size=2048 repetitions=1000000 elapsed_seconds=2.698830783 checksum=256002048.000000000000 expected_checksum=256002048.000000000000 sample0=125001.000000000000 samplemid=125001.000000000000 samplelast=125001.000000000000 expected_value=125001.000000000000 status=ok

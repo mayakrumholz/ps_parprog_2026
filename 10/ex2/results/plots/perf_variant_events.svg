@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560">
+<rect width="100%" height="100%" fill="#fffdf8"/>
+<text x="500.0" y="30" text-anchor="middle" font-size="22" font-family="Helvetica, Arial, sans-serif">Perf event comparison for Exercise 2</text>
+<line x1="90" y1="440.00" x2="970" y2="440.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="445.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">0.000</text>
+<line x1="90" y1="364.00" x2="970" y2="364.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="369.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">902047174.160</text>
+<line x1="90" y1="288.00" x2="970" y2="288.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="293.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">1804094348.320</text>
+<line x1="90" y1="212.00" x2="970" y2="212.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="217.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">2706141522.480</text>
+<line x1="90" y1="136.00" x2="970" y2="136.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="141.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">3608188696.640</text>
+<line x1="90" y1="60.00" x2="970" y2="60.00" stroke="#d9d9d9" stroke-dasharray="4 4"/>
+<text x="80" y="65.00" text-anchor="end" font-size="12" font-family="Helvetica, Arial, sans-serif">4510235870.800</text>
+<line x1="90" y1="60" x2="90" y2="440" stroke="#333333" stroke-width="2"/>
+<line x1="90" y1="440" x2="970" y2="440" stroke="#333333" stroke-width="2"/>
+<rect x="95.75" y="440.00" width="27.50" height="0.00" fill="#9b2226"/>
+<rect x="131.25" y="353.78" width="27.50" height="86.22" fill="#94d2bd"/>
+<rect x="166.75" y="353.71" width="27.50" height="86.29" fill="#005f73"/>
+<text x="145.00" y="495" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" transform="rotate(-18 145.00 495)">float r1010:u</text>
+<rect x="205.75" y="94.92" width="27.50" height="345.08" fill="#9b2226"/>
+<rect x="241.25" y="440.00" width="27.50" height="0.00" fill="#94d2bd"/>
+<rect x="276.75" y="440.00" width="27.50" height="0.00" fill="#005f73"/>
+<text x="255.00" y="495" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" transform="rotate(-18 255.00 495)">float r2010:u</text>
+<rect x="315.75" y="94.55" width="27.50" height="345.45" fill="#9b2226"/>
+<rect x="351.25" y="353.69" width="27.50" height="86.31" fill="#94d2bd"/>
+<rect x="386.75" y="353.76" width="27.50" height="86.24" fill="#005f73"/>
+<text x="365.00" y="495" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" transform="rotate(-18 365.00 495)">float r4010:u</text>
+<rect x="425.75" y="440.00" width="27.50" height="0.00" fill="#9b2226"/>
+<rect x="461.25" y="440.00" width="27.50" height="0.00" fill="#94d2bd"/>
+<rect x="496.75" y="440.00" width="27.50" height="0.00" fill="#005f73"/>
+<text x="475.00" y="495" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" transform="rotate(-18 475.00 495)">float r8010:u</text>
+<rect x="535.75" y="440.00" width="27.50" height="0.00" fill="#9b2226"/>
+<rect x="571.25" y="440.00" width="27.50" height="0.00" fill="#94d2bd"/>
+<rect x="606.75" y="264.69" width="27.50" height="175.31" fill="#005f73"/>
+<text x="585.00" y="495" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" transform="rotate(-18 585.00 495)">double r1010:u</text>
+<rect x="645.75" y="94.90" width="27.50" height="345.10" fill="#9b2226"/>
+<rect x="681.25" y="440.00" width="27.50" height="0.00" fill="#94d2bd"/>
+<rect x="716.75" y="440.00" width="27.50" height="0.00" fill="#005f73"/>
+<text x="695.00" y="495" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" transform="rotate(-18 695.00 495)">double r2010:u</text>
+<rect x="755.75" y="440.00" width="27.50" height="0.00" fill="#9b2226"/>
+<rect x="791.25" y="440.00" width="27.50" height="0.00" fill="#94d2bd"/>
+<rect x="826.75" y="440.00" width="27.50" height="0.00" fill="#005f73"/>
+<text x="805.00" y="495" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" transform="rotate(-18 805.00 495)">double r4010:u</text>
+<rect x="865.75" y="94.86" width="27.50" height="345.14" fill="#9b2226"/>
+<rect x="901.25" y="440.00" width="27.50" height="0.00" fill="#94d2bd"/>
+<rect x="936.75" y="264.50" width="27.50" height="175.50" fill="#005f73"/>
+<text x="915.00" y="495" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" transform="rotate(-18 915.00 495)">double r8010:u</text>
+<rect x="730" y="70" width="220" height="98" fill="#ffffff" stroke="#cccccc"/>
+<rect x="742" y="83" width="20" height="14" fill="#9b2226"/>
+<text x="772" y="94" font-size="13" font-family="Helvetica, Arial, sans-serif">baseline</text>
+<rect x="742" y="111" width="20" height="14" fill="#94d2bd"/>
+<text x="772" y="122" font-size="13" font-family="Helvetica, Arial, sans-serif">auto/omp reference</text>
+<rect x="742" y="139" width="20" height="14" fill="#005f73"/>
+<text x="772" y="150" font-size="13" font-family="Helvetica, Arial, sans-serif">omp simd</text>
+<text x="22" y="280.0" text-anchor="middle" font-size="14" font-family="Helvetica, Arial, sans-serif" transform="rotate(-90 22 280.0)">Mean event count</text>
+</svg>
