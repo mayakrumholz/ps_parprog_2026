@@ -1,0 +1,1 @@
+variant=intrinsics_float size=8192 repetitions=1000000 elapsed_seconds=3.634752373 checksum=1024008192.000000000 expected_checksum=1024008192.000000000 sample0=125001.000000000 samplemid=125001.000000000 samplelast=125001.000000000 expected_value=125001.000000000 status=ok

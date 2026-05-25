@@ -1,0 +1,15 @@
+rm -f intrinsics_float
+rm -f report/raw/intrinsics_float_disassembly.txt
+mkdir -p report/raw
+gcc -std=c11 -Wall -Wextra -Wpedantic -O1 -fno-tree-vectorize -msse -DVARIANT_NAME=\"intrinsics_float\" vector_add_intrinsics.c -o intrinsics_float  -lm
+objdump -d intrinsics_float > report/raw/intrinsics_float_disassembly.txt
+./intrinsics_float 16 8
+variant=intrinsics_float size=16 repetitions=8 elapsed_seconds=0.000000188 checksum=32.000000000 expected_checksum=32.000000000 sample0=2.000000000 samplemid=2.000000000 samplelast=2.000000000 expected_value=2.000000000 status=ok
+Traceback (most recent call last):
+  File "./analyze_results.py", line 441, in <module>
+    raise SystemExit(main())
+  File "./analyze_results.py", line 418, in main
+    ex3_summary = summarize_ex3_rows(ex3_rows)
+  File "./analyze_results.py", line 33, in summarize_ex3_rows
+    grouped[(row["variant"], int(row["size"]))].append(float(row["elapsed_seconds"]))
+ValueError: invalid literal for int() with base 10: ''
