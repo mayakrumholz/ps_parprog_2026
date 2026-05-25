@@ -1,0 +1,42 @@
+vector_add.c:44:27: missed: couldn't vectorize loop
+vector_add.c:44:27: missed: not vectorized: control flow in loop.
+vector_add.c:45:27: optimized: loop vectorized using 16 byte vectors
+vector_add.c:45:27: optimized: loop vectorized using 8 byte vectors
+vector_add.c:39:13: note: vectorized 1 loops in function.
+vector_add.c:49:1: note: ***** Analysis failed with vector mode V4SF
+vector_add.c:49:1: note: ***** Skipping vector mode V16QI, which would repeat the analysis for V4SF
+vector_add.c:28:14: missed: statement clobbers memory: rc_8 = posix_memalign (&ptr, alignment_5(D), bytes_6(D));
+vector_add.c:31:9: missed: statement clobbers memory: _1 = strerror (rc_8);
+vector_add.c:31:9: missed: statement clobbers memory: fprintf (stderr.2_2, "posix_memalign failed: %s\n", _1);
+vector_add.c:32:9: missed: statement clobbers memory: exit (1);
+vector_add.c:32:9: note: ***** Analysis failed with vector mode V2DI
+vector_add.c:32:9: note: ***** Skipping vector mode V16QI, which would repeat the analysis for V2DI
+vector_add.c:22:5: missed: statement clobbers memory: clock_gettime (1, &ts);
+vector_add.c:23:30: note: ***** Analysis failed with vector mode V2DI
+vector_add.c:23:30: note: ***** Skipping vector mode V16QI, which would repeat the analysis for V2DI
+vector_add.c:62:23: missed: couldn't vectorize loop
+vector_add.c:63:30: missed: not vectorized: no vectype for stmt: _81 = *_80;
+ scalar_type: const float
+vector_add.c:52:23: optimized: loop vectorized using 16 byte vectors
+vector_add.c:52:23: optimized:  loop versioned for vectorization because of possible aliasing
+vector_add.c:69:5: note: vectorized 1 loops in function.
+/usr/include/stdlib.h:363:16: missed: statement clobbers memory: _59 = strtol (_1, 0B, 10);
+/usr/include/stdlib.h:363:16: missed: statement clobbers memory: _72 = strtol (_2, 0B, 10);
+vector_add.c:90:16: missed: statement clobbers memory: a_46 = xaligned_alloc (64, bytes_44);
+vector_add.c:91:16: missed: statement clobbers memory: b_48 = xaligned_alloc (64, bytes_44);
+vector_add.c:92:16: missed: statement clobbers memory: c_50 = xaligned_alloc (64, bytes_44);
+vector_add.c:96:20: missed: statement clobbers memory: start_53 = now_seconds ();
+vector_add.c:97:5: missed: statement clobbers memory: run_kernel (a_46, b_48, c_50, size_60, repetitions_94);
+vector_add.c:98:22: missed: statement clobbers memory: _9 = now_seconds ();
+vector_add.c:114:5: missed: statement clobbers memory: printf ("variant=%s size=%d repetitions=%d elapsed_seconds=%.9f checksum=%.9f expected_checksum=%.9f sample0=%.9f samplemid=%.9f samplelast=%.9f expected_value=%.9f status=%s\n", "auto_vectorized", size_60, repetitions_94, elapsed_56, sum_83, expected_checksum_58, _23, _33, _32, _13, iftmp.1_38);
+vector_add.c:129:5: missed: statement clobbers memory: free (a_46);
+vector_add.c:130:5: missed: statement clobbers memory: free (b_48);
+vector_add.c:131:5: missed: statement clobbers memory: free (c_50);
+vector_add.c:133:12: missed: statement clobbers memory: _34 = strcmp (iftmp.1_38, "ok");
+vector_add.c:85:9: missed: statement clobbers memory: fprintf (stderr.0_7, "usage: %s [size>0] [repetitions>0]\n", _6);
+vector_add.c:84:19: note: ***** Analysis failed with vector mode V2DI
+vector_add.c:84:19: note: ***** The result for vector mode V16QI would be the same
+vector_add.c:84:19: note: ***** Re-trying analysis with vector mode V8QI
+vector_add.c:84:19: note: ***** Analysis failed with vector mode V8QI
+vector_add.c:84:19: note: ***** Re-trying analysis with vector mode V4QI
+vector_add.c:84:19: note: ***** Analysis failed with vector mode V4QI

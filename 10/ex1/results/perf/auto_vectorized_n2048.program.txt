@@ -1,0 +1,1 @@
+variant=auto_vectorized size=2048 repetitions=1000000 elapsed_seconds=0.514737558 checksum=256002048.000000000 expected_checksum=256002048.000000000 sample0=125001.000000000 samplemid=125001.000000000 samplelast=125001.000000000 expected_value=125001.000000000 status=ok
