@@ -389,8 +389,6 @@ Besonders wichtig ist dort:
 - rot ist bei `SSE_FP_SCALAR` sehr hoch
 - blau ist dort nahezu null
 
-Diese Grafik eignet sich deshalb besonders gut für die Abgabe, weil sie den Kern der Aufgabe direkt sichtbar macht.
-
 #### 5.5 Compiler-Report zur Vektorisierung
 
 Der Compiler-Report in [10/ex1/report/raw/auto_vec_report.txt](/Users/mayakrumholz/Desktop/Uni/5_Semester/Parallele_Programmierung/ps_parprog_2026/10/ex1/report/raw/auto_vec_report.txt:1) enthält die entscheidenden Zeilen:
@@ -575,7 +573,6 @@ Gemessen werden:
 - `r4010` = `SSE_SINGLE_PRECISION`
 - `r8010` = `SSE_DOUBLE_PRECISION`
 
-Dadurch können wir später sowohl die `float`- als auch die `double`-Variante passend interpretieren.
 
 #### 3.6 Automatische Auswertung
 
