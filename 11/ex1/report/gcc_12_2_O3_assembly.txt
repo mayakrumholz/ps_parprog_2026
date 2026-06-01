@@ -1,0 +1,292 @@
+Compiler Explorer
+Compiler: x86-64 gcc 12.2
+Options: -O3
+
+# Legende:
+# eax, edi, esi, ...        Register für Integerwerte und Adressen
+# xmm0, xmm1, ...           Register für Gleitkomma- oder SIMD-Operationen
+# sal x, n                  Links-Shift: Multiplikation mit 2^n
+# shr x, n                  Rechts-Shift: unsigned Division durch 2^n
+# lea                       Berechnet einen Ausdruck, ohne Speicher zu lesen
+# cvtsi2sd / cvttsd2si      Konvertiert zwischen Integer und double
+# mulsd / divsd / addsd     Skalare double-Operation
+# divpd / addpd             SIMD-Operation auf mehreren double-Werten
+# PTR [rdi]                 Speicherzugriff auf die Adresse in rdi
+#
+# Die Labels .L14, .L25 usw. kennzeichnen Sprungziele und Schleifen.
+# .LC0, .LC1 usw. sind vom Compiler angelegte Konstanten.
+
+# a) 32 * c1
+# sal eax, 5 bedeutet eax << 5 und damit eax * 32.
+# GCC erkennt die Strength Reduction bereits im Original. Beide Versionen
+# erzeugen exakt dieselben Instruktionen.
+original_a(unsigned int):
+        mov     eax, edi
+        sal     eax, 5
+        ret
+transformed_a(unsigned int):
+        mov     eax, edi
+        sal     eax, 5
+        ret
+
+# b) 15 * c1
+# sal eax, 4 berechnet zuerst 16 * c1. Danach zieht sub eax, edi einmal c1
+# wieder ab. Das Ergebnis ist 15 * c1.
+# GCC erzeugt für Original und Transformation erneut denselben Code.
+original_b(unsigned int):
+        mov     eax, edi
+        sal     eax, 4
+        sub     eax, edi
+        ret
+transformed_b(unsigned int):
+        mov     eax, edi
+        sal     eax, 4
+        sub     eax, edi
+        ret
+
+# c) 96 * c1
+# lea eax, [rdi+rdi*2] berechnet c1 + 2*c1 = 3*c1.
+# sal eax, 5 multipliziert das Zwischenergebnis anschließend mit 32.
+# Insgesamt ergibt sich 3 * 32 * c1 = 96 * c1.
+# Original und Transformation sind auch hier identisch.
+original_c(unsigned int):
+        lea     eax, [rdi+rdi*2]
+        sal     eax, 5
+        ret
+transformed_c(unsigned int):
+        lea     eax, [rdi+rdi*2]
+        sal     eax, 5
+        ret
+
+# d) 0.125 * c1
+# Im Original muss GCC wegen der Gleitkommakonstante 0.125:
+# 1. c1 von unsigned nach double konvertieren (cvtsi2sd),
+# 2. mit 0.125 multiplizieren (mulsd),
+# 3. das Ergebnis wieder nach unsigned konvertieren (cvttsd2si).
+# Die Transformation verwendet nur shr eax, 3, also unsigned c1 / 8.
+original_d(unsigned int):
+        mov     edi, edi
+        pxor    xmm0, xmm0
+        cvtsi2sd        xmm0, rdi
+        mulsd   xmm0, QWORD PTR .LC0[rip]
+        cvttsd2si       rax, xmm0
+        ret
+transformed_d(unsigned int):
+        mov     eax, edi
+        shr     eax, 3
+        ret
+
+# e) Jedes fünfte Array-Element summieren
+# Die ersten Instruktionen berechnen n / 5. Statt einer langsamen Division
+# verwendet GCC eine Multiplikation mit der "magischen" Konstante 1717986919
+# und passende Shifts. Diese Optimierung ist bei Division durch eine zur
+# Compile-Zeit bekannte Konstante üblich.
+#
+# Im Schleifenrumpf:
+# add edx, DWORD PTR [rdi]  addiert das aktuelle Array-Element zur Summe.
+# add rdi, 20               springt 20 Bytes weiter.
+# Da ein unsigned 4 Bytes belegt, sind 20 Bytes genau 5 Elemente.
+# GCC erkennt die Zeiger-Strength-Reduction bereits selbst. Die Schleifen
+# von Original und Transformation sind identisch.
+original_e(unsigned int const*, int):
+        movsx   rcx, esi
+        mov     eax, esi
+        imul    rcx, rcx, 1717986919
+        sar     eax, 31
+        sar     rcx, 33
+        sub     ecx, eax
+        cmp     esi, 4
+        jle     .L15
+        xor     eax, eax
+        xor     edx, edx
+.L14:
+        add     eax, 1
+        add     edx, DWORD PTR [rdi]
+        add     rdi, 20
+        cmp     eax, ecx
+        jl      .L14
+        mov     eax, edx
+        ret
+.L15:
+        xor     edx, edx
+        mov     eax, edx
+        ret
+transformed_e(unsigned int const*, int):
+        movsx   rcx, esi
+        mov     eax, esi
+        imul    rcx, rcx, 1717986919
+        sar     eax, 31
+        sar     rcx, 33
+        sub     ecx, eax
+        cmp     esi, 4
+        jle     .L20
+        xor     eax, eax
+        xor     edx, edx
+.L19:
+        add     eax, 1
+        add     edx, DWORD PTR [rdi]
+        add     rdi, 20
+        cmp     eax, ecx
+        jl      .L19
+        mov     eax, edx
+        ret
+.L20:
+        xor     edx, edx
+        mov     eax, edx
+        ret
+
+# f) a[i] += i / 5.3
+# Das Original ist umfangreicher, weil GCC die Schleife vektorisiert.
+# In .L25 verarbeitet es vier Array-Elemente pro Durchlauf:
+# - cvtdq2pd konvertiert Integer-Indizes nach double,
+# - divpd teilt mehrere double-Werte parallel durch 5.3,
+# - addpd addiert mehrere Ergebnisse parallel zu a[i].
+# .L24 behandelt verbleibende Elemente einzeln mit divsd und addsd.
+original_f(double*, int):
+        mov     ecx, esi
+        test    esi, esi
+        jle     .L22
+        lea     eax, [rsi-1]
+        cmp     eax, 2
+        jbe     .L27
+        mov     edx, esi
+        movsd   xmm3, QWORD PTR .LC4[rip]
+        mov     rax, rdi
+        movdqa  xmm2, XMMWORD PTR .LC1[rip]
+        shr     edx, 2
+        movdqa  xmm4, XMMWORD PTR .LC2[rip]
+        sal     rdx, 5
+        unpcklpd        xmm3, xmm3
+        add     rdx, rdi
+.L25:
+        movdqa  xmm0, xmm2
+        movupd  xmm6, XMMWORD PTR [rax]
+        add     rax, 32
+        paddd   xmm2, xmm4
+        pshufd  xmm1, xmm0, 238
+        cvtdq2pd        xmm0, xmm0
+        movupd  xmm5, XMMWORD PTR [rax-16]
+        divpd   xmm0, xmm3
+        cvtdq2pd        xmm1, xmm1
+        divpd   xmm1, xmm3
+        addpd   xmm0, xmm6
+        movups  XMMWORD PTR [rax-32], xmm0
+        addpd   xmm1, xmm5
+        movups  XMMWORD PTR [rax-16], xmm1
+        cmp     rax, rdx
+        jne     .L25
+        mov     eax, ecx
+        and     eax, -4
+        test    cl, 3
+        je      .L29
+.L24:
+        pxor    xmm0, xmm0
+        movsd   xmm1, QWORD PTR .LC4[rip]
+        movsx   rdx, eax
+        cvtsi2sd        xmm0, eax
+        sal     rdx, 3
+        lea     rsi, [rdi+rdx]
+        divsd   xmm0, xmm1
+        addsd   xmm0, QWORD PTR [rsi]
+        movsd   QWORD PTR [rsi], xmm0
+        lea     esi, [rax+1]
+        cmp     ecx, esi
+        jle     .L22
+        pxor    xmm0, xmm0
+        lea     r8, [rdi+8+rdx]
+        add     eax, 2
+        cvtsi2sd        xmm0, esi
+        divsd   xmm0, xmm1
+        addsd   xmm0, QWORD PTR [r8]
+        movsd   QWORD PTR [r8], xmm0
+        cmp     ecx, eax
+        jle     .L22
+        pxor    xmm0, xmm0
+        lea     rdx, [rdi+16+rdx]
+        cvtsi2sd        xmm0, eax
+        divsd   xmm0, xmm1
+        addsd   xmm0, QWORD PTR [rdx]
+        movsd   QWORD PTR [rdx], xmm0
+.L22:
+        ret
+.L29:
+        ret
+.L27:
+        xor     eax, eax
+        jmp     .L24
+
+# In der transformierten Variante enthält xmm0 den laufenden Quotienten und
+# xmm2 den konstanten Schritt 1.0 / 5.3. Pro Iteration:
+# - addsd xmm1, xmm0 addiert den aktuellen Quotienten zu a[i],
+# - addsd xmm0, xmm2 aktualisiert den Quotienten für die nächste Iteration.
+# Dadurch gibt es keine Division mehr. Der neue Quotient hängt jedoch immer
+# vom vorherigen Schleifendurchlauf ab. GCC kann die Schleife deshalb nicht
+# wie das Original vektorisieren.
+transformed_f(double*, int):
+        test    esi, esi
+        jle     .L30
+        movsx   rsi, esi
+        movsd   xmm2, QWORD PTR .LC6[rip]
+        pxor    xmm0, xmm0
+        lea     rax, [rdi+rsi*8]
+.L32:
+        movsd   xmm1, QWORD PTR [rdi]
+        add     rdi, 8
+        addsd   xmm1, xmm0
+        addsd   xmm0, xmm2
+        movsd   QWORD PTR [rdi-8], xmm1
+        cmp     rax, rdi
+        jne     .L32
+.L30:
+        ret
+
+# g) -1 * c1
+# Bei IEEE-754-Binary32 liegt das Vorzeichen im höchsten Bit.
+# GCC ersetzt die Multiplikation im Original durch xorps mit einer Maske, in
+# der dieses Bit gesetzt ist. XOR schaltet das Vorzeichenbit direkt um.
+original_g(float):
+        xorps   xmm0, XMMWORD PTR .LC7[rip]
+        ret
+
+# Die explizite Bit-Transformation erzeugt eine andere, aber gleichwertige
+# Folge:
+# - movd kopiert die float-Bits in das Integerregister eax,
+# - add eax, -2147483648 addiert 0x80000000 modulo 2^32,
+# - movd kopiert die Bits zurück.
+# Das Addieren von 0x80000000 schaltet das höchste Bit ebenfalls um.
+transformed_g(float):
+        movd    eax, xmm0
+        add     eax, -2147483648
+        movd    xmm0, eax
+        ret
+
+# Vom Compiler angelegte Konstanten:
+# .LC0 repräsentiert 0.125 als double.
+# .LC1 und .LC2 enthalten SIMD-Indexwerte für die vektorisierte Schleife f.
+# .LC4 repräsentiert 5.3 als double.
+# .LC6 repräsentiert 1.0 / 5.3 als double.
+# .LC7 ist die Maske 0x80000000 für das Vorzeichenbit eines float-Werts.
+.LC0:
+        .long   0
+        .long   1069547520
+.LC1:
+        .long   0
+        .long   1
+        .long   2
+        .long   3
+.LC2:
+        .long   4
+        .long   4
+        .long   4
+        .long   4
+.LC4:
+        .long   858993459
+        .long   1075131187
+.LC6:
+        .long   972445426
+        .long   1070081700
+.LC7:
+        .long   -2147483648
+        .long   0
+        .long   0
+        .long   0
