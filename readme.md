@@ -40,6 +40,7 @@ for that assignment have to be handed in via OLAT by 17:00 on the previous day
 | 2026-05-19 | [9](9)     | First touch, OpenMP affinity and tasks                      |
 | 2026-05-26 | [10](10)   | Vectorization                                               |
 | 2026-06-02 | [11](11)   | Scalar architectures and optimizations                      |
+| 2026-06-09 | [12](12)   | Profiling and parallelization of a mystery application      |
 
 ## General Information
 
