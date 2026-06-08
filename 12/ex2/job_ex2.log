@@ -1,0 +1,5 @@
+rm -f real real_serial real_openmp gmon.out
+gcc -std=c99 -O3 -g3 real.c randdp.c print_results.c wtime.c c_timers.c -lm -o real_serial
+gcc -std=c99 -O3 -g3 -fopenmp real.c randdp.c print_results.c wtime.c c_timers.c -lm -o real_openmp
+Wrote results/summary.csv, results/summary.md, wall_time.png, speedup.png and efficiency.png.
+Finished. Results written to results

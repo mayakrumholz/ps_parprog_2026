@@ -1,0 +1,39 @@
+
+
+ Benchmark
+
+ OpenMP max threads:              6
+ No input file. Using compiled defaults 
+ Size:  256x 256x 256  (class B)
+ Iterations:                     20
+
+  iter   1
+  iter   5
+  iter  10
+  iter  15
+  iter  20
+
+ Benchmark completed
+ VERIFICATION SUCCESSFUL
+ L2 Norm is  1.8005644013552E-06
+ Error is    1.0455225727311E-13
+
+
+ Benchmark Completed.
+ Class           =                        B
+ Size            =            256x 256x 256
+ Iterations      =                       20
+ Operation type  =           floating point
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+RESULT variant=openmp threads=6 benchmark_seconds=3.014857774 verification=SUCCESSFUL l2_norm=1.8005644013552E-06
+  SECTION   Time (secs)
+  benchmk :    3.015  (100.00%)
+  mg3P    :    2.140  ( 70.99%)
+  psinv   :    0.628  ( 20.81%)
+  resid   :    1.717  ( 56.94%)
+    --> mg-resid:    0.857  ( 28.43%)
+  rprj3   :    0.243  (  8.06%)
+  interp  :    0.309  ( 10.26%)
+  norm2   :    0.015  (  0.49%)
+  comm3   :    0.050  (  1.67%)
