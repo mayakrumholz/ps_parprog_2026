@@ -595,7 +595,7 @@ static void rprj3(void *or, int m1k, int m2k, int m3k,
     d3 = 1;
   }
 
-#pragma omp parallel for collapse(2) private(j1, i3, i2, i1, x2, y2) schedule(static)
+#pragma omp parallel for private(j2, j1, i3, i2, i1, x2, y2) schedule(static)
   for (j3 = 1; j3 < m3j-1; j3++) {
     i3 = 2*j3-d3;
     for (j2 = 1; j2 < m2j-1; j2++) {

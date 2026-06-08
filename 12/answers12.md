@@ -231,8 +231,11 @@ Damit entstehen keine Datenrennen zwischen Threads.
 einen eigenen Punkt im Zielgitter `s`. Die Eingabedaten aus `r` werden nur
 gelesen.
 
-Die Schleifen über `j3` und `j2` wurden mit OpenMP parallelisiert. Auch hier
-müssen temporäre Arrays wie `x1` und `y1` thread-lokal sein.
+Die äußere Schleife über `j3` wurde mit OpenMP parallelisiert. Eine
+Parallelisierung mit `collapse(2)` wurde hier nicht verwendet, weil zwischen
+den Schleifen noch Indexwerte wie `i3` berechnet werden. Dadurch sind die
+Schleifen nicht perfekt geschachtelt. Auch hier müssen temporäre Arrays wie
+`x1` und `y1` thread-lokal sein.
 
 #### `interp`
 
@@ -272,6 +275,16 @@ Threads verteilt werden kann.
 
 `schedule(static)` verteilt die Iterationen fest auf die Threads. Das passt hier
 gut, weil die Arbeit pro Gitterpunkt ungefähr gleich groß ist.
+
+Bei `rprj3` wird dagegen nur die äußere Schleife parallelisiert:
+
+```c
+#pragma omp parallel for schedule(static)
+```
+
+Der Grund ist, dass OpenMP für `collapse(2)` perfekt geschachtelte Schleifen
+verlangt. Diese Bedingung ist in `rprj3` wegen der zusätzlichen
+Indexberechnungen zwischen den Schleifen nicht erfüllt.
 
 ### 4. Korrektheit
 
