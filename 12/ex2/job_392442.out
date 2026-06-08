@@ -1,0 +1,3 @@
+rm -f real_seq real_omp
+gcc -std=c99 -O3 -g original/wtime.c original/real.c original/randdp.c original/print_results.c original/c_timers.c -lm -o real_seq
+gcc -std=c99 -O3 -g -fopenmp wtime.c real.c randdp.c print_results.c c_timers.c -lm -o real_omp

@@ -1,0 +1,5 @@
+real.c: In function 'rprj3':
+real.c:600:5: error: not enough perfectly nested loops before 'i3'
+  600 |     i3 = 2*j3-d3;
+      |     ^~
+make: *** [Makefile:17: real_omp] Error 1
