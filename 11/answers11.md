@@ -100,6 +100,12 @@ sinnvoll, wenn diese Instruktionsfolge günstiger als die Multiplikation ist.
 Auf x86 kann der Compiler `c1 + 2 * c1` gegebenenfalls zusätzlich mit einer
 `lea`-Instruktion berechnen.
 
+Shift → Addition → Shift
+
+  kann der Prozessor also eventuell rechnen:
+
+  lea → Shift
+
 #### d) Multiplikation mit 0.125
 
 Original:
