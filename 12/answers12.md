@@ -325,39 +325,43 @@ Iterations: 20
 
 Alle gemessenen Varianten wurden erfolgreich verifiziert.
 
-| Version | Threads | Zeit in Sekunden | Speedup gegenüber sequenziell | Verifikation |
+Die Tabelle verwendet die äußere Wall Time. Diese Zeit wurde mit
+`/usr/bin/time` gemessen und umfasst den vollständigen Programmlauf inklusive
+Initialisierung, Benchmark, Verifikation und Ausgabe.
+
+| Version | Threads | Wall Time in Sekunden | Speedup gegenüber sequenziell | Verifikation |
 |---|---:|---:|---:|---|
-| Original | 1 | 5.347 | 1.00 | erfolgreich |
-| OpenMP | 1 | 5.559 | 0.96 | erfolgreich |
-| OpenMP | 2 | 3.519 | 1.52 | erfolgreich |
-| OpenMP | 6 | 3.095 | 1.73 | erfolgreich |
-| OpenMP | 12 | 1.691 | 3.16 | erfolgreich |
+| Original | 1 | 6.88 | 1.00 | erfolgreich |
+| OpenMP | 1 | 7.17 | 0.96 | erfolgreich |
+| OpenMP | 2 | 4.76 | 1.45 | erfolgreich |
+| OpenMP | 6 | 4.40 | 1.56 | erfolgreich |
+| OpenMP | 12 | 2.90 | 2.37 | erfolgreich |
 
 Erinnerung:
 
 ```text
-Speedup = Zeit der sequenziellen Referenz / Zeit der OpenMP-Version
+Speedup = Wall Time der sequenziellen Referenz / Wall Time der OpenMP-Version
 ```
 
-### 7. Diskussion der Ergebnisse
+### 6. Diskussion der Ergebnisse
 
 Die OpenMP-Version mit einem Thread ist etwas langsamer als die sequenzielle
 Referenz. Das ist plausibel, weil OpenMP auch bei nur einem Thread zusätzlichen
 Overhead erzeugt. Dazu gehören zum Beispiel das Erzeugen paralleler Regionen und
 die Verwaltung der Schleifenverteilung.
 
-Mit zwei Threads sinkt die Laufzeit von `5.347 s` auf `3.519 s`. Das entspricht
-einem Speedup von etwa `1.52`. Die Parallelisierung wirkt also, erreicht aber
+Mit zwei Threads sinkt die Wall Time von `6.88 s` auf `4.76 s`. Das entspricht
+einem Speedup von etwa `1.45`. Die Parallelisierung wirkt also, erreicht aber
 noch keine ideale Verdopplung.
 
-Mit sechs Threads beträgt die Laufzeit `3.095 s`. Der Speedup steigt damit nur
-auf etwa `1.73`. Dieser Schritt skaliert schwächer als erwartet. Ein Grund ist,
+Mit sechs Threads beträgt die Wall Time `4.40 s`. Der Speedup steigt damit nur
+auf etwa `1.56`. Dieser Schritt skaliert schwächer als erwartet. Ein Grund ist,
 dass nicht alle Programmteile parallelisiert wurden. Außerdem sind einige
 Operationen speicherlastig. Dann begrenzt die Speicherbandbreite, wie stark
 zusätzliche Threads helfen können.
 
-Mit zwölf Threads fällt die Laufzeit auf `1.691 s`. Das entspricht einem
-Speedup von etwa `3.16`. Das ist der beste gemessene Wert. Trotzdem bleibt der
+Mit zwölf Threads fällt die Wall Time auf `2.90 s`. Das entspricht einem
+Speedup von etwa `2.37`. Das ist der beste gemessene Wert. Trotzdem bleibt der
 Speedup deutlich unter `12`, weil weiterhin sequenzielle und schlecht
 skalierende Programmteile vorhanden sind.
 
@@ -369,26 +373,27 @@ Speedup. Das betrifft hier unter anderem:
 - Initialisierung und Zufallsdaten in `zran3`
 - kleinere Gitterebenen mit wenig Arbeit
 
-Auch die Abschnittszeiten zeigen, dass die wichtigsten Kernfunktionen schneller
-werden. Zum Beispiel sinkt `psinv` von `1.334 s` in der Referenz auf `0.343 s`
-mit zwölf Threads. `resid` sinkt von `2.681 s` auf `0.904 s`. Gleichzeitig
-bleibt `comm3` relativ klein, skaliert aber nicht gut. Bei zwölf Threads liegt
-`comm3` bei `0.132 s` und ist damit sogar etwas höher als in der sequenziellen
-Referenz. Das passt zur Interpretation, dass Randbehandlung und Verwaltung bei
-mehr Threads stärker ins Gewicht fallen.
+Auch die internen Abschnittszeiten zeigen, dass die wichtigsten Kernfunktionen
+schneller werden. Diese Zeiten messen nur den Benchmark-Abschnitt und sind
+deshalb kleiner als die äußere Wall Time. Zum Beispiel sinkt `psinv` von
+`1.328 s` in der Referenz auf `0.338 s` mit zwölf Threads. `resid` sinkt von
+`2.664 s` auf `0.896 s`. Gleichzeitig bleibt `comm3` relativ klein, skaliert
+aber nicht gut. Bei zwölf Threads liegt `comm3` bei `0.132 s` und ist damit
+etwas höher als in der sequenziellen Referenz. Das passt zur Interpretation,
+dass Randbehandlung und Verwaltung bei mehr Threads stärker ins Gewicht fallen.
 
 Wichtig bleibt, dass alle Versionen weiterhin korrekt verifiziert wurden. Die
 OpenMP-Änderungen haben also die numerische Korrektheit nicht verletzt.
 
-### 8. Zusammenfassung
+### 7. Zusammenfassung
 
 Die Parallelisierung verbessert die Laufzeit deutlich. Die beste gemessene
 Variante ist die OpenMP-Version mit zwölf Threads:
 
 ```text
-Original, 1 Thread: 5.347 s
-OpenMP, 12 Threads: 1.691 s
-Speedup: 3.16
+Original, 1 Thread: 6.88 s
+OpenMP, 12 Threads: 2.90 s
+Speedup: 2.37
 ```
 
 Der Speedup ist nicht ideal, aber sachlich erklärbar. Das Programm enthält

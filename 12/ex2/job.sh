@@ -17,7 +17,9 @@ module load gcc || true
 make clean || true
 make CC=gcc
 
-touch timer.flag
+# The comparison spreadsheet asks for wall time. Disable the optional
+# internal section timers so the measured run matches the normal program run.
+rm -f timer.flag
 
 run_measured() {
   local label="$1"
