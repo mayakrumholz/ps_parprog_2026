@@ -193,9 +193,6 @@ Die unveränderte Referenzversion liegt zusätzlich in:
 
 - `12/ex2/original`
 
-Dadurch kann die sequenzielle Originalversion direkt mit der OpenMP-Version
-verglichen werden.
-
 ### 2. Parallelisierte Schleifen
 
 #### `resid`
@@ -286,24 +283,7 @@ Der Grund ist, dass OpenMP für `collapse(2)` perfekt geschachtelte Schleifen
 verlangt. Diese Bedingung ist in `rprj3` wegen der zusätzlichen
 Indexberechnungen zwischen den Schleifen nicht erfüllt.
 
-### 4. Korrektheit
-
-Die Parallelisierung darf das Ergebnis nicht verändern. Deshalb wurde darauf
-geachtet, dass:
-
-- jeder Thread nur eigene temporäre Arrays verwendet
-- jede parallele Iteration auf eigene Zielwerte schreibt
-- gemeinsame Summen und Maxima mit Reduction berechnet werden
-- Randaktualisierungen wie `comm3` nach den Rechenkernen erhalten bleiben
-
-Die Korrektheit wird über die vorhandene Benchmark-Verifikation geprüft. Ein
-korrekter Lauf muss weiterhin ausgeben:
-
-```text
-VERIFICATION SUCCESSFUL
-```
-
-### 5. Benchmark auf LCC3
+### 4. Benchmark auf LCC3
 
 Für den Benchmark wird das Jobscript verwendet:
 
@@ -334,30 +314,52 @@ Für die Auswertung sind besonders diese Dateien wichtig:
 - `results/omp_12_threads_output.txt`
 - `results/benchmark_summary.txt`
 
-### 6. Ergebnistabelle
+### 5. Ergebnistabelle
 
-Die folgende Tabelle wird nach dem LCC3-Lauf mit den gemessenen Zeiten ergänzt.
+Der Benchmark wurde auf LCC3 mit der Problemklasse B ausgeführt:
+
+```text
+Size: 256 x 256 x 256
+Iterations: 20
+```
+
+Alle gemessenen Varianten wurden erfolgreich verifiziert.
 
 | Version | Threads | Zeit in Sekunden | Speedup gegenüber sequenziell | Verifikation |
 |---|---:|---:|---:|---|
-| Original | 1 | noch einzutragen | 1.00 | noch einzutragen |
-| OpenMP | 1 | noch einzutragen | noch einzutragen | noch einzutragen |
-| OpenMP | 2 | noch einzutragen | noch einzutragen | noch einzutragen |
-| OpenMP | 6 | noch einzutragen | noch einzutragen | noch einzutragen |
-| OpenMP | 12 | noch einzutragen | noch einzutragen | noch einzutragen |
+| Original | 1 | 5.347 | 1.00 | erfolgreich |
+| OpenMP | 1 | 5.559 | 0.96 | erfolgreich |
+| OpenMP | 2 | 3.519 | 1.52 | erfolgreich |
+| OpenMP | 6 | 3.095 | 1.73 | erfolgreich |
+| OpenMP | 12 | 1.691 | 3.16 | erfolgreich |
 
-Der Speedup wird berechnet als:
+Erinnerung:
 
 ```text
 Speedup = Zeit der sequenziellen Referenz / Zeit der OpenMP-Version
 ```
 
-### 7. Erwartete Diskussion
+### 7. Diskussion der Ergebnisse
 
-Ein guter Speedup ist vor allem für 2 und 6 Threads zu erwarten, weil die großen
-Gitterkerne parallel laufen. Bei 12 Threads kann der Speedup geringer ausfallen
-als ideal, weil nicht das gesamte Programm parallelisiert ist. Zusätzlich kosten
-Speicherzugriffe, Synchronisation und Randaktualisierungen weiterhin Zeit.
+Die OpenMP-Version mit einem Thread ist etwas langsamer als die sequenzielle
+Referenz. Das ist plausibel, weil OpenMP auch bei nur einem Thread zusätzlichen
+Overhead erzeugt. Dazu gehören zum Beispiel das Erzeugen paralleler Regionen und
+die Verwaltung der Schleifenverteilung.
+
+Mit zwei Threads sinkt die Laufzeit von `5.347 s` auf `3.519 s`. Das entspricht
+einem Speedup von etwa `1.52`. Die Parallelisierung wirkt also, erreicht aber
+noch keine ideale Verdopplung.
+
+Mit sechs Threads beträgt die Laufzeit `3.095 s`. Der Speedup steigt damit nur
+auf etwa `1.73`. Dieser Schritt skaliert schwächer als erwartet. Ein Grund ist,
+dass nicht alle Programmteile parallelisiert wurden. Außerdem sind einige
+Operationen speicherlastig. Dann begrenzt die Speicherbandbreite, wie stark
+zusätzliche Threads helfen können.
+
+Mit zwölf Threads fällt die Laufzeit auf `1.691 s`. Das entspricht einem
+Speedup von etwa `3.16`. Das ist der beste gemessene Wert. Trotzdem bleibt der
+Speedup deutlich unter `12`, weil weiterhin sequenzielle und schlecht
+skalierende Programmteile vorhanden sind.
 
 Nach Amdahls Gesetz begrenzt jeder sequenzielle Programmteil den maximalen
 Speedup. Das betrifft hier unter anderem:
@@ -367,5 +369,30 @@ Speedup. Das betrifft hier unter anderem:
 - Initialisierung und Zufallsdaten in `zran3`
 - kleinere Gitterebenen mit wenig Arbeit
 
-Wichtig ist daher nicht nur die absolute Laufzeit, sondern auch, ob alle
-Versionen weiterhin korrekt verifiziert werden.
+Auch die Abschnittszeiten zeigen, dass die wichtigsten Kernfunktionen schneller
+werden. Zum Beispiel sinkt `psinv` von `1.334 s` in der Referenz auf `0.343 s`
+mit zwölf Threads. `resid` sinkt von `2.681 s` auf `0.904 s`. Gleichzeitig
+bleibt `comm3` relativ klein, skaliert aber nicht gut. Bei zwölf Threads liegt
+`comm3` bei `0.132 s` und ist damit sogar etwas höher als in der sequenziellen
+Referenz. Das passt zur Interpretation, dass Randbehandlung und Verwaltung bei
+mehr Threads stärker ins Gewicht fallen.
+
+Wichtig bleibt, dass alle Versionen weiterhin korrekt verifiziert wurden. Die
+OpenMP-Änderungen haben also die numerische Korrektheit nicht verletzt.
+
+### 8. Zusammenfassung
+
+Die Parallelisierung verbessert die Laufzeit deutlich. Die beste gemessene
+Variante ist die OpenMP-Version mit zwölf Threads:
+
+```text
+Original, 1 Thread: 5.347 s
+OpenMP, 12 Threads: 1.691 s
+Speedup: 3.16
+```
+
+Der Speedup ist nicht ideal, aber sachlich erklärbar. Das Programm enthält
+weiterhin sequenzielle Teile, kleinere Gitterebenen mit wenig Arbeit und
+speicherlastige Operationen. Insgesamt zeigt der Benchmark trotzdem, dass die
+aus dem Profiling ausgewählten Schleifen sinnvolle Ansatzpunkte für OpenMP
+waren.
