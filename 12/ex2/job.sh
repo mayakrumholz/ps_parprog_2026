@@ -1,55 +1,91 @@
 #!/bin/bash
+
+#SBATCH --partition=lva
 #SBATCH --job-name=assignment12_ex2
-#SBATCH --output=job_%j.out
-#SBATCH --error=job_%j.err
-#SBATCH --nodes=1
+#SBATCH --output=job_ex2.log
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12
-#SBATCH --time=00:20:00
+#SBATCH --exclusive
 
-set -euo pipefail
+set -eu
 
-mkdir -p results
+cd "${SLURM_SUBMIT_DIR:-$(pwd)}"
 
-module purge
-module load gcc || true
+if command -v module >/dev/null 2>&1; then
+    module load gcc/12.2.0-gcc-8.5.0-p4pe45v
+fi
 
-make clean || true
-make CC=gcc
+RESULTS_DIR="results"
+OUTPUT_DIR="${RESULTS_DIR}/raw"
+CSV_FILE="${RESULTS_DIR}/time_results.csv"
+RUNS="${RUNS:-5}"
+THREADS="1 2 6 12"
 
-# The comparison spreadsheet asks for wall time. Disable the optional
-# internal section timers so the measured run matches the normal program run.
-rm -f timer.flag
+mkdir -p "$OUTPUT_DIR"
+touch timer.flag
 
-run_measured() {
-  local label="$1"
-  local output_file="$2"
-  shift 2
+make clean
+make CC=gcc all
 
-  echo "${label}" | tee -a results/benchmark_summary.txt
-  /usr/bin/time -f "WALL_TIME_SECONDS %e" -o "${output_file}.time" "$@" \
-    | tee "${output_file}"
-  cat "${output_file}.time" | tee -a results/benchmark_summary.txt
+printf "variant,threads,run,benchmark_seconds,wall_seconds,l2_norm,verification,output_file\n" > "$CSV_FILE"
+
+extract_result_field() {
+    local key="$1"
+    awk -v search_key="$key" '
+        /^RESULT / {
+            for (i = 1; i <= NF; ++i) {
+                split($i, pair, "=");
+                if (pair[1] == search_key) {
+                    print pair[2];
+                    exit;
+                }
+            }
+        }
+    '
 }
 
-echo "Sequential reference" | tee results/benchmark_summary.txt
-run_measured "Sequential reference run" "results/seq_output.txt" \
-  env OMP_NUM_THREADS=1 ./real_seq
+run_case() {
+    local variant="$1"
+    local threads="$2"
+    local run="$3"
+    local executable="$4"
+    local output_file="${OUTPUT_DIR}/${variant}_t${threads}_run${run}.txt"
+    local start_ns end_ns wall_seconds output benchmark_seconds l2_norm verification
 
-for threads in 1 2 6 12; do
-  echo | tee -a results/benchmark_summary.txt
-  run_measured "OpenMP with ${threads} thread(s)" "results/omp_${threads}_threads_output.txt" \
-    env OMP_NUM_THREADS=${threads} OMP_PROC_BIND=close OMP_PLACES=cores ./real_omp
+    export OMP_NUM_THREADS="$threads"
+    export OMP_PLACES=cores
+    export OMP_PROC_BIND=close
+
+    start_ns=$(date +%s%N)
+    output=$("./$executable")
+    end_ns=$(date +%s%N)
+    wall_seconds=$(awk -v start="$start_ns" -v end="$end_ns" 'BEGIN { printf "%.9f", (end - start) / 1000000000.0 }')
+
+    printf "%s\n" "$output" > "$output_file"
+
+    benchmark_seconds=$(printf "%s\n" "$output" | extract_result_field benchmark_seconds)
+    l2_norm=$(printf "%s\n" "$output" | extract_result_field l2_norm)
+    verification=$(printf "%s\n" "$output" | extract_result_field verification)
+
+    if [ "$verification" != "SUCCESSFUL" ]; then
+        echo "Verification failed for variant=$variant threads=$threads run=$run" >&2
+        exit 1
+    fi
+
+    printf "%s,%s,%s,%s,%s,%s,%s,%s\n" \
+        "$variant" "$threads" "$run" "$benchmark_seconds" "$wall_seconds" \
+        "$l2_norm" "$verification" "$output_file" >> "$CSV_FILE"
+}
+
+for run in $(seq 1 "$RUNS"); do
+    run_case "serial" "1" "$run" "real_serial"
 done
 
-{
-  echo
-  echo "Collected benchmark lines"
-  echo "========================="
-  grep -H "Verification\\|Time in seconds\\|Mop/s total\\|benchmk\\|mg3P\\|psinv\\|resid\\|rprj3\\|interp\\|norm2\\|comm3" \
-    results/seq_output.txt results/omp_*_threads_output.txt || true
-  echo
-  echo "Collected wall times"
-  echo "===================="
-  grep -H "WALL_TIME_SECONDS" results/*.time || true
-} >> results/benchmark_summary.txt
+for threads in $THREADS; do
+    for run in $(seq 1 "$RUNS"); do
+        run_case "openmp" "$threads" "$run" "real_openmp"
+    done
+done
+
+python3 ./analyze_results.py "$CSV_FILE"
+echo "Finished. Results written to $RESULTS_DIR"

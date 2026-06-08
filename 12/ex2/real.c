@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 #include "globals.h"
 #include "randdp.h"
@@ -97,6 +100,11 @@ int main()
   }
 
   printf("\n\n Benchmark\n\n");
+#ifdef _OPENMP
+  printf(" OpenMP max threads:          %5d\n", omp_get_max_threads());
+#else
+  printf(" OpenMP max threads:              1\n");
+#endif
 
   if ((fp = fopen("mg.input", "r")) != NULL) {
     int result;
@@ -301,6 +309,14 @@ int main()
                 verified, NPBVERSION, COMPILETIME,
                 CS1, CS2, CS3, CS4, CS5, CS6, CS7);
 
+#ifdef _OPENMP
+  printf("RESULT variant=openmp threads=%d benchmark_seconds=%.9f verification=%s l2_norm=%.13E\n",
+         omp_get_max_threads(), t, verified ? "SUCCESSFUL" : "UNSUCCESSFUL", rnm2);
+#else
+  printf("RESULT variant=serial threads=1 benchmark_seconds=%.9f verification=%s l2_norm=%.13E\n",
+         t, verified ? "SUCCESSFUL" : "UNSUCCESSFUL", rnm2);
+#endif
+
   //---------------------------------------------------------------------
   // More timers
   //---------------------------------------------------------------------
@@ -380,6 +396,7 @@ static void setup(int *n1, int *n2, int *n3)
 }
 
 
+
 //---------------------------------------------------------------------
 // multigrid V-cycle routine
 //---------------------------------------------------------------------
@@ -453,10 +470,10 @@ static void psinv(void *or, void *ou, int n1, int n2, int n3,
   int i3, i2, i1;
 
   if (timeron) timer_start(T_psinv);
-#pragma omp parallel for collapse(2) private(i1) schedule(static)
+#pragma omp parallel for private(i2, i1) schedule(static)
   for (i3 = 1; i3 < n3-1; i3++) {
+    double r1[M], r2[M];
     for (i2 = 1; i2 < n2-1; i2++) {
-      double r1[M], r2[M];
       for (i1 = 0; i1 < n1; i1++) {
         r1[i1] = r[i3][i2-1][i1] + r[i3][i2+1][i1]
                + r[i3-1][i2][i1] + r[i3+1][i2][i1];
@@ -514,12 +531,11 @@ static void resid(void *ou, void *ov, void *or, int n1, int n2, int n3,
   double (*r)[n2][n1] = (double (*)[n2][n1])or;
 
   int i3, i2, i1;
-
   if (timeron) timer_start(T_resid);
-#pragma omp parallel for collapse(2) private(i1) schedule(static)
+#pragma omp parallel for private(i2, i1) schedule(static)
   for (i3 = 1; i3 < n3-1; i3++) {
+    double u1[M], u2[M];
     for (i2 = 1; i2 < n2-1; i2++) {
-      double u1[M], u2[M];
       for (i1 = 0; i1 < n1; i1++) {
         u1[i1] = u[i3][i2-1][i1] + u[i3][i2+1][i1]
                + u[i3-1][i2][i1] + u[i3+1][i2][i1];
@@ -597,10 +613,10 @@ static void rprj3(void *or, int m1k, int m2k, int m3k,
 
 #pragma omp parallel for private(j2, j1, i3, i2, i1, x2, y2) schedule(static)
   for (j3 = 1; j3 < m3j-1; j3++) {
+    double x1[M], y1[M];
     i3 = 2*j3-d3;
     for (j2 = 1; j2 < m2j-1; j2++) {
       i2 = 2*j2-d2;
-      double x1[M], y1[M];
 
       for (j1 = 1; j1 < m1j; j1++) {
         i1 = 2*j1-d1;
@@ -663,10 +679,10 @@ static void interp(void *oz, int mm1, int mm2, int mm3,
   //      parameter( m=535 )
   if (timeron) timer_start(T_interp);
   if (n1 != 3 && n2 != 3 && n3 != 3) {
-#pragma omp parallel for collapse(2) private(i1) schedule(static)
+#pragma omp parallel for private(i2, i1) schedule(static)
     for (i3 = 0; i3 < mm3-1; i3++) {
+      double z1[M], z2[M], z3[M];
       for (i2 = 0; i2 < mm2-1; i2++) {
-        double z1[M], z2[M], z3[M];
         for (i1 = 0; i1 < mm1; i1++) {
           z1[i1] = z[i3][i2+1][i1] + z[i3][i2][i1];
           z2[i1] = z[i3+1][i2][i1] + z[i3][i2][i1];
@@ -822,20 +838,15 @@ static void norm2u3(void *or, int n1, int n2, int n3,
   s = 0.0;
   max_rnmu = 0.0;
 
-  double my_rnmu = 0.0;
-#pragma omp parallel for collapse(3) reduction(+:s) reduction(max:my_rnmu) private(a) schedule(static)
+#pragma omp parallel for private(i2, i1, a) reduction(+:s) reduction(max:max_rnmu) schedule(static)
   for (i3 = 1; i3 < n3-1; i3++) {
     for (i2 = 1; i2 < n2-1; i2++) {
       for (i1 = 1; i1 < n1-1; i1++) {
         s = s + pow(r[i3][i2][i1], 2.0);
         a = fabs(r[i3][i2][i1]);
-        my_rnmu = (a > my_rnmu) ? a : my_rnmu;
+        max_rnmu = (a > max_rnmu) ? a : max_rnmu;
       }
     }
-  }
-
-  if (my_rnmu > max_rnmu) {
-    max_rnmu = (my_rnmu > max_rnmu) ? my_rnmu : max_rnmu;
   }
 
   *rnmu = max_rnmu;
@@ -868,6 +879,7 @@ static void comm3(void *ou, int n1, int n2, int n3, int kk)
 
   if (timeron) timer_start(T_comm3);
 
+#pragma omp parallel for private(i2, i1) schedule(static)
   for (i3 = 1; i3 < n3-1; i3++) {
     for (i2 = 1; i2 < n2-1; i2++) {
       u[i3][i2][   0] = u[i3][i2][n1-2];
@@ -882,6 +894,7 @@ static void comm3(void *ou, int n1, int n2, int n3, int kk)
     }
   }
 
+#pragma omp parallel for private(i1) schedule(static)
   for (i2 = 0; i2 < n2; i2++) {
     for (i1 = 0; i1 < n1; i1++) {
       u[   0][i2][i1] = u[n3-2][i2][i1];
@@ -1074,6 +1087,7 @@ static void zran3(void *oz, int n1, int n2, int n3, int nx1, int ny1, int k)
   }
   */
 
+#pragma omp parallel for private(i2, i1) schedule(static)
   for (i3 = 0; i3 < n3; i3++) {
     for (i2 = 0; i2 < n2; i2++) {
       for (i1 = 0; i1 < n1; i1++) {
@@ -1209,7 +1223,6 @@ static void zero3(void *oz, int n1, int n2, int n3)
 
   int i1, i2, i3;
 
-#pragma omp parallel for collapse(3) schedule(static)
   for (i3 = 0; i3 < n3; i3++) {
     for (i2 = 0; i2 < n2; i2++) {
       for (i1 = 0; i1 < n1; i1++) {

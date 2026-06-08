@@ -1,26 +1,26 @@
-CC ?= gcc
-CFLAGS ?= -std=c99 -O3 -g
+CC = gcc
+CFLAGS ?= -std=c99 -O3 -g3
+LDFLAGS ?= -lm
 OMPFLAGS ?= -fopenmp
-LDLIBS = -lm
 
-SEQ_SRC = $(wildcard original/*.c)
-OMP_SRC = $(wildcard *.c)
+SRC := $(wildcard *.c)
 
-.PHONY: all clean run-seq run-omp
+.PHONY: all clean run
 
-all: real_seq real_omp
+all: real_serial real_openmp
 
-real_seq: $(SEQ_SRC)
-	$(CC) $(CFLAGS) $^ $(LDLIBS) -o $@
+real_serial: $(SRC)
+	$(CC) $(CFLAGS) $(SRC) $(LDFLAGS) -o $@
 
-real_omp: $(OMP_SRC)
-	$(CC) $(CFLAGS) $(OMPFLAGS) $^ $(LDLIBS) -o $@
+real_openmp: $(SRC)
+	$(CC) $(CFLAGS) $(OMPFLAGS) $(SRC) $(LDFLAGS) -o $@
 
-run-seq: real_seq
-	OMP_NUM_THREADS=1 ./real_seq
-
-run-omp: real_omp
-	./real_omp
+run: all
+	@echo "Sequential original:"
+	@./real_serial
+	@echo
+	@echo "OpenMP, OMP_NUM_THREADS=$${OMP_NUM_THREADS:-1}:"
+	@./real_openmp
 
 clean:
-	rm -f real_seq real_omp
+	rm -f real real_serial real_openmp gmon.out
