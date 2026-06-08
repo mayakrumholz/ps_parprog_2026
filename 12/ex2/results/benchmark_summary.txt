@@ -1,0 +1,62 @@
+Sequential reference
+
+OpenMP with 1 thread(s)
+
+OpenMP with 2 thread(s)
+
+OpenMP with 6 thread(s)
+
+OpenMP with 12 thread(s)
+
+Collected benchmark lines
+=========================
+results/seq_output.txt: Verification    =               SUCCESSFUL
+results/seq_output.txt:  benchmk :    5.347  (100.00%)
+results/seq_output.txt:  mg3P    :    3.982  ( 74.48%)
+results/seq_output.txt:  psinv   :    1.334  ( 24.94%)
+results/seq_output.txt:  resid   :    2.681  ( 50.15%)
+results/seq_output.txt:    --> mg-resid:    1.369  ( 25.60%)
+results/seq_output.txt:  rprj3   :    0.641  ( 11.98%)
+results/seq_output.txt:  interp  :    0.489  (  9.15%)
+results/seq_output.txt:  norm2   :    0.051  (  0.96%)
+results/seq_output.txt:  comm3   :    0.100  (  1.88%)
+results/omp_12_threads_output.txt: Verification    =               SUCCESSFUL
+results/omp_12_threads_output.txt:  benchmk :    1.691  (100.00%)
+results/omp_12_threads_output.txt:  mg3P    :    1.202  ( 71.06%)
+results/omp_12_threads_output.txt:  psinv   :    0.343  ( 20.28%)
+results/omp_12_threads_output.txt:  resid   :    0.904  ( 53.44%)
+results/omp_12_threads_output.txt:    --> mg-resid:    0.424  ( 25.05%)
+results/omp_12_threads_output.txt:  rprj3   :    0.133  (  7.84%)
+results/omp_12_threads_output.txt:  interp  :    0.154  (  9.09%)
+results/omp_12_threads_output.txt:  norm2   :    0.009  (  0.55%)
+results/omp_12_threads_output.txt:  comm3   :    0.132  (  7.78%)
+results/omp_1_threads_output.txt: Verification    =               SUCCESSFUL
+results/omp_1_threads_output.txt:  benchmk :    5.559  (100.00%)
+results/omp_1_threads_output.txt:  mg3P    :    4.102  ( 73.79%)
+results/omp_1_threads_output.txt:  psinv   :    1.357  ( 24.41%)
+results/omp_1_threads_output.txt:  resid   :    2.770  ( 49.83%)
+results/omp_1_threads_output.txt:    --> mg-resid:    1.411  ( 25.39%)
+results/omp_1_threads_output.txt:  rprj3   :    0.649  ( 11.68%)
+results/omp_1_threads_output.txt:  interp  :    0.497  (  8.94%)
+results/omp_1_threads_output.txt:  norm2   :    0.098  (  1.77%)
+results/omp_1_threads_output.txt:  comm3   :    0.101  (  1.82%)
+results/omp_2_threads_output.txt: Verification    =               SUCCESSFUL
+results/omp_2_threads_output.txt:  benchmk :    3.519  (100.00%)
+results/omp_2_threads_output.txt:  mg3P    :    2.562  ( 72.81%)
+results/omp_2_threads_output.txt:  psinv   :    0.778  ( 22.11%)
+results/omp_2_threads_output.txt:  resid   :    1.806  ( 51.31%)
+results/omp_2_threads_output.txt:    --> mg-resid:    0.900  ( 25.57%)
+results/omp_2_threads_output.txt:  rprj3   :    0.375  ( 10.67%)
+results/omp_2_threads_output.txt:  interp  :    0.358  ( 10.18%)
+results/omp_2_threads_output.txt:  norm2   :    0.051  (  1.44%)
+results/omp_2_threads_output.txt:  comm3   :    0.105  (  2.99%)
+results/omp_6_threads_output.txt: Verification    =               SUCCESSFUL
+results/omp_6_threads_output.txt:  benchmk :    3.095  (100.00%)
+results/omp_6_threads_output.txt:  mg3P    :    2.191  ( 70.78%)
+results/omp_6_threads_output.txt:  psinv   :    0.637  ( 20.59%)
+results/omp_6_threads_output.txt:  resid   :    1.739  ( 56.17%)
+results/omp_6_threads_output.txt:    --> mg-resid:    0.852  ( 27.53%)
+results/omp_6_threads_output.txt:  rprj3   :    0.245  (  7.92%)
+results/omp_6_threads_output.txt:  interp  :    0.316  ( 10.22%)
+results/omp_6_threads_output.txt:  norm2   :    0.018  (  0.58%)
+results/omp_6_threads_output.txt:  comm3   :    0.106  (  3.42%)

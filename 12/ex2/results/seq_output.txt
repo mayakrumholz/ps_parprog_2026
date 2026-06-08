@@ -1,0 +1,37 @@
+
+
+ Benchmark
+
+ No input file. Using compiled defaults 
+ Size:  256x 256x 256  (class B)
+ Iterations:                     20
+
+  iter   1
+  iter   5
+  iter  10
+  iter  15
+  iter  20
+
+ Benchmark completed
+ VERIFICATION SUCCESSFUL
+ L2 Norm is  1.8005644013551E-06
+ Error is    6.6330115975290E-14
+
+
+ Benchmark Completed.
+ Class           =                        B
+ Size            =            256x 256x 256
+ Iterations      =                       20
+ Operation type  =           floating point
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+  SECTION   Time (secs)
+  benchmk :    5.347  (100.00%)
+  mg3P    :    3.982  ( 74.48%)
+  psinv   :    1.334  ( 24.94%)
+  resid   :    2.681  ( 50.15%)
+    --> mg-resid:    1.369  ( 25.60%)
+  rprj3   :    0.641  ( 11.98%)
+  interp  :    0.489  (  9.15%)
+  norm2   :    0.051  (  0.96%)
+  comm3   :    0.100  (  1.88%)
